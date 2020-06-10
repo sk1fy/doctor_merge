@@ -1,4 +1,4 @@
-#Tue Jun 09 12:39:41 IRKT 2020
-base.0=/home/nik/AndroidStudioProjects/faker/doctor_merge/build/app/intermediates/dex/debug/mergeDexDebug/out/classes.dex
+#Wed Jun 10 15:00:17 IRKT 2020
+base.0=E\:\\Projects\\Flutter\\doctor_merge\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\out\\classes.dex
 path.0=classes.dex
 renamed.0=classes.dex

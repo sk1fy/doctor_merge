@@ -21,7 +21,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return FloatingActionButton(
       onPressed: () => Navigator.push(context,
                   MaterialPageRoute(builder: (ctx) => AvalibleOrderScreen())),
-      child: Icon(Icons.add),
+      child: Icon(Icons.queue),
       backgroundColor: Color.fromRGBO(33, 153, 252, 1.0),
     );
   }
@@ -38,7 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final _kBottmonNavBarItems = <BottomNavigationBarItem>[
       BottomNavigationBarItem(
           icon: Icon(Icons.view_agenda), title: Text('Акции')),
-      BottomNavigationBarItem(icon: Icon(Icons.person), title: Text('Заметки')),
+      BottomNavigationBarItem(icon: Icon(Icons.receipt), title: Text('Заметки')),
       BottomNavigationBarItem(icon: Icon(Icons.calendar_view_day), title: Text('Заказы')),
       BottomNavigationBarItem(icon: Icon(Icons.group), title: Text('О нас')),
       BottomNavigationBarItem(

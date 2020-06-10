@@ -5,7 +5,7 @@ class ProfilePage extends StatefulWidget {
   _ProfilePageState createState() => _ProfilePageState();
 }
 
-String _dropdownValue = 'Мужчина';
+String _dropdownValue = 'Педиатр';
 bool notification = false;
 
 class _ProfilePageState extends State<ProfilePage> {
@@ -26,16 +26,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   icon: Icon(Icons.person),
                   hintText: 'Иванов Иван Иванович?',
                   labelText: 'ФИО',
-                  fillColor: Color.fromRGBO(228, 239, 243, 1.0)),
-            ),
-            SizedBox(height: 30.0),
-            TextFormField(
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                  filled: true,
-                  icon: Icon(Icons.calendar_today),
-                  hintText: '01.05.1970',
-                  labelText: 'Дата рождения',
+                  labelStyle: TextStyle(color: Colors.black),
                   fillColor: Color.fromRGBO(228, 239, 243, 1.0)),
             ),
             SizedBox(height: 30.0),
@@ -50,7 +41,7 @@ class _ProfilePageState extends State<ProfilePage> {
               decoration: InputDecoration(
                 icon: Icon(Icons.supervised_user_circle),
               ),
-              items: <String>['Мужчина', 'Женщина']
+              items: <String>['Педиатр', 'Терапевт']
                   .map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
@@ -59,14 +50,31 @@ class _ProfilePageState extends State<ProfilePage> {
               }).toList(),
             ),
             SizedBox(height: 30.0),
-            TextFormField(
-              textCapitalization: TextCapitalization.words,
-              decoration: InputDecoration(
-                  filled: true,
-                  icon: Icon(Icons.room),
-                  hintText: 'г.Улан-Удэ,ул.Байкальская 10',
-                  labelText: 'Адрес',
-                  fillColor: Color.fromRGBO(228, 239, 243, 1.0)),
+            Row(
+              children: <Widget>[
+                Expanded(
+                  flex: 1,
+                  child: FlatButton(
+                      onPressed: () => print("Diplom"),
+                      child: Column(
+                        children: <Widget>[
+                          Icon(Icons.insert_photo, size:  64.0, color: Colors.black87,),
+                          const Text("Диплом", style: TextStyle(color: Colors.black87))
+                        ],
+                      )),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: FlatButton(
+                      onPressed: () => print("Lisence"),
+                      child: Column(
+                        children: <Widget>[
+                          Icon(Icons.insert_photo, size:  64.0, color: Colors.black87,),
+                          const Text("Лицензия", style: TextStyle(color: Colors.black87),)
+                        ],
+                      )),
+                )
+              ],
             ),
             SizedBox(height: 30.0),
             SwitchListTile(
