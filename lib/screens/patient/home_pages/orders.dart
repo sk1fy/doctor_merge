@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:medical_app/models/order.dart';
-import 'package:medical_app/screens/detail_order.dart';
+import 'package:medical_app/screens/patient/detail_order.dart';
 
-import '../models/order.dart';
+
 
 class CustomTabs extends StatefulWidget {
   @override

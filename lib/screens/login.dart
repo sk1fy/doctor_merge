@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:medical_app/screens/doctor/home.dart';
-import 'package:medical_app/screens/home.dart';
+import 'package:medical_app/screens/patient/home.dart';
 import '../utilities/contrast.dart';
-import 'home.dart';
+
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -84,7 +84,9 @@ class _LoginScreenState extends State<LoginScreen> {
     return Container(
       alignment: Alignment.center,
       child: FlatButton(
-        onPressed: () => print('Registred Button Pressed'),
+        onPressed: () => {
+          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (ctx) => HomePageDoctor()))
+        },
         padding: EdgeInsets.only(right: 0.0),
         child: Text(
           'Зарегистрироваться?',
@@ -129,7 +131,7 @@ class _LoginScreenState extends State<LoginScreen> {
       child: RaisedButton(
         elevation: 5.0,
         onPressed: () {
-          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (ctx) => MyHomePage()));
+          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (ctx) => HomePagePatient()));
         },
         padding: EdgeInsets.all(20.0),
         shape: RoundedRectangleBorder(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:medical_app/screens/detail_note.dart';
+import 'package:medical_app/screens/doctor/detail_note.dart';
+
 
 class NotesDoctor extends StatelessWidget {
   @override

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:medical_app/screens/detail_doctor_order.dart';
+import 'package:medical_app/screens/doctor/detail_doctor_order.dart';
+
 
 class AvalibleOrderScreen extends StatefulWidget {
   @override
