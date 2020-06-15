@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:medical_app/screens/doctor/detail_order.dart';
 
-
 class CustomTabs extends StatefulWidget {
   @override
   _CustomTabsState createState() => _CustomTabsState();
@@ -99,6 +98,14 @@ Widget _buildOrdersList() {
                                 "Статус:",
                                 style: TextStyle(fontSize: 16.0),
                               ),
+                              Spacer(),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 10),
+                                child: GestureDetector(
+                                  child: Icon(Icons.assignment_turned_in, color: Colors.grey,),
+                                  onTap: () => print("Complete"),
+                                ),
+                              )
                             ],
                           ),
                         ),
@@ -212,6 +219,14 @@ Widget _buildOrdersList() {
                                 "Комментарий врача:",
                                 style: TextStyle(fontSize: 16.0),
                               ),
+                              Spacer(),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 10),
+                                child: GestureDetector(
+                                  child: Icon(Icons.edit, color: Colors.grey),
+                                  onTap: () => print("Edit"),
+                                ),
+                              )
                             ],
                           ),
                         ),
@@ -241,6 +256,14 @@ Widget _buildOrdersList() {
                                 "Связанные вызовы:",
                                 style: TextStyle(fontSize: 16.0),
                               ),
+                              Spacer(),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 10),
+                                child: GestureDetector(
+                                  child: Icon(Icons.playlist_add, color: Colors.grey),
+                                  onTap: () => print("Add"),
+                                ),
+                              )
                             ],
                           ),
                         ),
@@ -510,7 +533,6 @@ Widget _buildOrdersListComplete() {
 }
 
 class _OrderPageState extends State<OrderPage> {
-
   @override
   Widget build(BuildContext context) {
     return CustomTabs();
