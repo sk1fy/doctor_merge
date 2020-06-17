@@ -12,7 +12,7 @@ class Order {
   String status, address, userComment, doctorComment;
   DateTime date;
   List<ChatMessage> chat;
-  List<Call> call;
+  List<Call> connectedCalls;
 
   @JsonKey(name: "_id")
   final String id;
@@ -25,7 +25,9 @@ class Order {
       this.userComment,
       this.doctorComment,
       this.id,
-      this.date});
+      this.date,
+      this.connectedCalls,
+      this.chat});
 
   factory Order.rand() {
     return Order(
@@ -34,8 +36,7 @@ class Order {
         address: "ул.Байкальская 5",
         userComment:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-        doctorComment:
-            "Lorem ipsum dolor doctor.",
+        doctorComment: "Lorem ipsum dolor doctor.",
         id: "4431");
   }
 

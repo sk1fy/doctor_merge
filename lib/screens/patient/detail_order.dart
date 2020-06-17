@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:medical_app/models/data_providers.dart';
+import 'package:provider/provider.dart';
 
 class DetailOrderScreen extends StatefulWidget {
   @override
@@ -90,10 +92,11 @@ class _DetailOrderScreenState extends State<DetailOrderScreen> {
               Expanded(
                 flex: 5,
                 child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 16),
-                    width: double.infinity,
-                    child: SingleChildScrollView(
-                      child: Column(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  width: double.infinity,
+                  child: SingleChildScrollView(
+                    child: Consumer<OrderProvider>(
+                      builder: (_, order, child) => Column(
                         children: <Widget>[
                           _buildMessageTo(),
                           _buildMessageFrom(),
@@ -102,7 +105,9 @@ class _DetailOrderScreenState extends State<DetailOrderScreen> {
                           _buildMessageFrom()
                         ],
                       ),
-                    )),
+                    ),
+                  ),
+                ),
               ),
               Expanded(
                 flex: 1,
@@ -119,14 +124,12 @@ class _DetailOrderScreenState extends State<DetailOrderScreen> {
                           maxLength: 200,
                           decoration: InputDecoration.collapsed(
                               hintText: "Отправить сообщение"),
-
                           onChanged: (String text) => null,
                         ),
                       ),
                       IconButton(
-                        icon: Icon(Icons.send),
-                        onPressed: () => print("Send Message")
-                      ),
+                          icon: Icon(Icons.send),
+                          onPressed: () => print("Send Message")),
                     ],
                   ),
                 ),

@@ -25,7 +25,7 @@ Order _$OrderFromJson(Map<String, dynamic> json) {
         ?.map((e) =>
             e == null ? null : ChatMessage.fromJson(e as Map<String, dynamic>))
         ?.toList()
-    ..call = (json['call'] as List)
+    ..connectedCalls = (json['connectedCalls'] as List)
         ?.map(
             (e) => e == null ? null : Call.fromJson(e as Map<String, dynamic>))
         ?.toList();
@@ -40,6 +40,6 @@ Map<String, dynamic> _$OrderToJson(Order instance) => <String, dynamic>{
       'doctorComment': instance.doctorComment,
       'date': instance.date?.toIso8601String(),
       'chat': instance.chat?.map((e) => e?.toJson())?.toList(),
-      'call': instance.call?.map((e) => e?.toJson())?.toList(),
+      'connectedCalls': instance.connectedCalls?.map((e) => e?.toJson())?.toList(),
       '_id': instance.id,
     };

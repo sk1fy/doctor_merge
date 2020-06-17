@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:medical_app/models/data_providers.dart';
+import 'package:provider/provider.dart';
 
 class DetailOrderScreen extends StatefulWidget {
   @override
   _DetailOrderScreenState createState() => _DetailOrderScreenState();
 }
 
-Widget _buildMessageFrom() {
+Widget _buildMessageFrom({DateTime toDate}) {
+  var result = "${toDate.day}.${toDate.month}.${toDate.year} ${toDate.hour}:${toDate.minute}:${toDate.second}";
+
   return Row(
     mainAxisAlignment: MainAxisAlignment.end,
     children: <Widget>[
@@ -31,7 +35,7 @@ Widget _buildMessageFrom() {
               padding: const EdgeInsets.all(5.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[Text("12.04.20 16:45")],
+                children: <Widget>[Text(result)],
               ),
             )
           ],
@@ -41,7 +45,12 @@ Widget _buildMessageFrom() {
   );
 }
 
-Widget _buildMessageTo() {
+Widget _buildMessageTo({DateTime toDate}) {
+  String modifed = DateTime(toDate.year, toDate.month, toDate.day, toDate.hour,
+          toDate.minute, toDate.second)
+      .toString()
+      ?.replaceFirst(RegExp(r"\.[^]*"), '');
+
   return Row(
     mainAxisAlignment: MainAxisAlignment.start,
     children: <Widget>[
@@ -67,7 +76,7 @@ Widget _buildMessageTo() {
               padding: const EdgeInsets.all(5.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[Text("12.04.20 16:45")],
+                children: <Widget>[Text(modifed)],
               ),
             )
           ],
@@ -90,19 +99,22 @@ class _DetailOrderScreenState extends State<DetailOrderScreen> {
               Expanded(
                 flex: 5,
                 child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 16),
-                    width: double.infinity,
-                    child: SingleChildScrollView(
-                      child: Column(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  width: double.infinity,
+                  child: SingleChildScrollView(
+                    child: Consumer<OrderProvider>(
+                      builder: (_, order, child) => Column(
                         children: <Widget>[
-                          _buildMessageTo(),
-                          _buildMessageFrom(),
-                          _buildMessageTo(),
-                          _buildMessageFrom(),
-                          _buildMessageFrom()
+                          _buildMessageTo(toDate: order.order.date),
+                          _buildMessageFrom(toDate: order.order.date),
+                          _buildMessageTo(toDate: order.order.date),
+                          _buildMessageFrom(toDate: order.order.date),
+                          _buildMessageFrom(toDate: order.order.date),
                         ],
                       ),
-                    )),
+                    ),
+                  ),
+                ),
               ),
               Expanded(
                 flex: 1,
@@ -119,14 +131,12 @@ class _DetailOrderScreenState extends State<DetailOrderScreen> {
                           maxLength: 200,
                           decoration: InputDecoration.collapsed(
                               hintText: "Отправить сообщение"),
-
                           onChanged: (String text) => null,
                         ),
                       ),
                       IconButton(
-                        icon: Icon(Icons.send),
-                        onPressed: () => print("Send Message")
-                      ),
+                          icon: Icon(Icons.send),
+                          onPressed: () => print("Send Message")),
                     ],
                   ),
                 ),

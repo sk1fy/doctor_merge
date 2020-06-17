@@ -231,7 +231,8 @@ Widget _buildOrdersList() {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10),
                                   child: GestureDetector(
-                                    child: Icon(Icons.edit, color: Colors.black87),
+                                    child:
+                                        Icon(Icons.edit, color: Colors.black87),
                                     onTap: () => print("Edit"),
                                   ),
                                 )
@@ -281,28 +282,29 @@ Widget _buildOrdersList() {
                             height: 10,
                           ),
                           Container(
-                              width: double.infinity,
-                              // padding: EdgeInsets.all(24.0),
-                              color: Color.fromRGBO(228, 239, 243, 1.0),
-                              child: Column(
-                                children: <Widget>[
-                                  ListTile(
-                                    title: Center(
-                                      child: Text("20-04-2020"),
-                                    ),
+                            width: double.infinity,
+                            // padding: EdgeInsets.all(24.0),
+                            color: Color.fromRGBO(228, 239, 243, 1.0),
+                            child: Column(
+                              children: <Widget>[
+                                ListTile(
+                                  title: Center(
+                                    child: Text("20-04-2020"),
                                   ),
-                                  ListTile(
-                                    title: Center(
-                                      child: Text("20-04-2020"),
-                                    ),
+                                ),
+                                ListTile(
+                                  title: Center(
+                                    child: Text("20-04-2020"),
                                   ),
-                                  ListTile(
-                                    title: Center(
-                                      child: Text("20-04-2020"),
-                                    ),
+                                ),
+                                ListTile(
+                                  title: Center(
+                                    child: Text("20-04-2020"),
                                   ),
-                                ],
-                              )),
+                                ),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                     ),
