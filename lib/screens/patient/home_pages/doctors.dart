@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:medical_app/models/data_providers.dart';
 import 'package:medical_app/screens/patient/test.dart';
+import 'package:provider/provider.dart';
 
 
 class DoctorPage extends StatefulWidget {
@@ -57,6 +59,8 @@ class _DoctorPageState extends State<DoctorPage> {
 
   @override
   Widget build(BuildContext context) {
+    final doctor = Provider.of<DoctorProvider>(context, listen: false);
+
     return Column(
       children: <Widget>[
         Container(
@@ -193,11 +197,13 @@ class _DoctorPageState extends State<DoctorPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Text(
-                                      filteredDoctors[index]['name'],
+                                      // filteredDoctors[index]['name'],
+                                      doctor.doctor.name,
                                       style: TextStyle(fontSize: 18),
                                     ),
                                     Text(
-                                      filteredDoctors[index]['company']['name'],
+                                      // filteredDoctors[index]['company']['name'],
+                                      doctor.doctor.specialty,
                                       style: TextStyle(fontSize: 14),
                                     ),
                                   ],

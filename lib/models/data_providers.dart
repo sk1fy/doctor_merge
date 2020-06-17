@@ -2,22 +2,43 @@ import 'package:flutter/foundation.dart';
 import 'package:medical_app/models/call.dart';
 import 'package:medical_app/models/chat_message.dart';
 import 'package:medical_app/models/doctor.dart';
+import 'package:medical_app/models/m_provider.dart';
 import 'package:medical_app/models/order.dart';
+import 'package:medical_app/models/stock.dart';
 import 'package:medical_app/models/user.dart';
 
-class OrderProvider extends ChangeNotifier {
-  // static Order orderFromJson(json) {
-  //   return Order.fromJson(json);
-  // }
+class OrderProvider extends  SDProvider<Order>{
 
-  User user;
-  Doctor doctor;
-  String status = "Активный",
-      address = "ул.Байкальская 5",
-      userComment = "Lorem user Comment",
-      doctorComment = "Lorem doctor Comment";
-  DateTime date = DateTime.now();
-  List<ChatMessage> chat;
-  List<Call> call;
-  String id = "4321";
+  static Order orderFromJson(json) {
+    return Order.fromJson(json);
+    Order.rand();
+  }
+  Order order = Order.rand();
+}
+
+class DoctorProvider extends  SDProvider<Doctor>{
+
+  static Doctor docotorFromJson(json) {
+    return Doctor.fromJson(json);
+    Doctor.rand();
+  }
+  Doctor doctor = Doctor.rand();
+}
+
+class StockProvider extends SDProvider<Stock> {
+  
+  static Stock stockFromJson(json) {
+    return Stock.fromJson(json);
+    Stock.rand();
+  }
+  Stock stock = Stock.rand();
+}
+
+class UserProvider extends SDProvider<User> {
+  
+  static User userFromJson(json) {
+    return User.fromJson(json);
+    User.rand();
+  }
+  User user = User.rand();
 }

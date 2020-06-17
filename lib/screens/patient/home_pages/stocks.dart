@@ -1,34 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:medical_app/models/data_providers.dart';
+import 'package:provider/provider.dart';
 
-class StocksPage extends StatefulWidget {
-  @override
-  _StocksPageState createState() => _StocksPageState();
-}
 
-Widget _buildStocksCard() {
-  return Stack(
-    children: <Widget>[
-      Container(
-          height: 250.0,
-          width: double.infinity,
-          padding: const EdgeInsets.all(12),
-          child: Image.network(
-              "https://raw.githubusercontent.com/flutter/website/master/examples/layout/lakes/step5/images/lake.jpg",
-              fit: BoxFit.cover)),
-    ],
-  );
-}
 
-class _StocksPageState extends State<StocksPage> {
+class StocksPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: <Widget>[
-        _buildStocksCard(),
-        _buildStocksCard(),
-        _buildStocksCard(),
-        _buildStocksCard(),
-      ],
+    final stock = Provider.of<StockProvider>(context);
+    return Consumer<StockProvider>(
+      builder: (context, stock, child) => ListView.builder(
+        itemCount: 3,
+        itemBuilder: (context, index) {
+          return Stack(
+            children: <Widget>[
+              Container(
+                  height: 250.0,
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(12),
+                  child:
+                      Image.network(stock.stock.imageUrl, fit: BoxFit.cover)),
+            ],
+          );
+        },
+      ),
     );
   }
 }

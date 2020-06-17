@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:medical_app/models/data_providers.dart';
 import 'package:medical_app/screens/doctor/detail_order.dart';
+import 'package:provider/provider.dart';
 
 class CustomTabs extends StatefulWidget {
   @override
@@ -59,247 +61,256 @@ class OrderPage extends StatefulWidget {
 Widget _buildOrdersList() {
   return ListView.builder(
     itemBuilder: (context, position) {
-      return Container(
-        margin: EdgeInsets.fromLTRB(10.0, 12.0, 10.0, 12.0),
-        color: Colors.grey[300],
-        child: ExpansionTile(
-          leading: IconButton(
-            icon: Icon(Icons.mail),
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (ctx) => DetailOrderScreen()));
-            },
-          ),
-          title: Row(
+      return Consumer<OrderProvider>(
+        builder: (_, order, child) => Container(
+          margin: EdgeInsets.fromLTRB(10.0, 12.0, 10.0, 12.0),
+          color: Colors.grey[300],
+          child: ExpansionTile(
+            leading: IconButton(
+              icon: Icon(Icons.mail),
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (ctx) => DetailOrderScreen()));
+              },
+            ),
+            title: Row(
+              children: <Widget>[
+                Text("Заказ ${order.order.id}"),
+                SizedBox(width: 10),
+                Icon(
+                  Icons.info,
+                  color: Colors.orange,
+                )
+              ],
+            ),
+            subtitle: Text("от ${order.order.date}"),
             children: <Widget>[
-              Text("Заказ 1231234112"),
-              SizedBox(width: 10),
-              Icon(
-                Icons.info,
-                color: Colors.orange,
-              )
-            ],
-          ),
-          subtitle: Text("от 12.12.4444"),
-          children: <Widget>[
-            Container(
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.only(top: 5),
-                    child: Column(
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(10, 5, 0, 5),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                "Статус:",
-                                style: TextStyle(fontSize: 16.0),
-                              ),
-                              Spacer(),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 10),
-                                child: GestureDetector(
-                                  child: Icon(Icons.assignment_turned_in, color: Colors.grey,),
-                                  onTap: () => print("Complete"),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                          width: double.infinity,
-                          padding: EdgeInsets.all(24.0),
-                          color: Color.fromRGBO(228, 239, 243, 1.0),
-                          child: Text("Новый"),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(top: 5),
-                    child: Column(
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(10, 5, 0, 5),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                "Врач:",
-                                style: TextStyle(fontSize: 16.0),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                          width: double.infinity,
-                          padding: EdgeInsets.all(24.0),
-                          color: Color.fromRGBO(228, 239, 243, 1.0),
-                          child: Text("Иванов Иван Иванович"),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(top: 5),
-                    child: Column(
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(10, 5, 0, 5),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                "Адрес:",
-                                style: TextStyle(fontSize: 16.0),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                          width: double.infinity,
-                          padding: EdgeInsets.all(24.0),
-                          color: Color.fromRGBO(228, 239, 243, 1.0),
-                          child: Text("г. Иркутск, ул. Байкальская 10"),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(top: 5),
-                    child: Column(
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(10, 8, 0, 5),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                "Комментарий пациента:",
-                                style: TextStyle(fontSize: 16.0),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                          width: double.infinity,
-                          padding: EdgeInsets.all(24.0),
-                          color: Color.fromRGBO(228, 239, 243, 1.0),
-                          child: Text(
-                              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ac ultrices blandit elit nisl nisi quam. Potenti egestas purus mattis in. Duis erat purus eget risus velit feugiat risus amet. Lacus nisi, accumsan egestas massa eget odio mi penatibus. Lectus semper dui lectus habitant sit quis elementum suspendisse. Auctor vitae feugiat dignissim ipsum vivamus."),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(top: 5),
-                    child: Column(
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(10, 8, 0, 5),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                "Комментарий врача:",
-                                style: TextStyle(fontSize: 16.0),
-                              ),
-                              Spacer(),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 10),
-                                child: GestureDetector(
-                                  child: Icon(Icons.edit, color: Colors.grey),
-                                  onTap: () => print("Edit"),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                          width: double.infinity,
-                          padding: EdgeInsets.all(24.0),
-                          color: Color.fromRGBO(228, 239, 243, 1.0),
-                          child: Text(
-                              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ac ultrices blandit elit nisl nisi quam. Potenti egestas purus mattis in. Duis erat purus eget risus velit feugiat risus amet. Lacus nisi, accumsan egestas massa eget odio mi penatibus. Lectus semper dui lectus habitant sit quis elementum suspendisse. Auctor vitae feugiat dignissim ipsum vivamus."),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(top: 5),
-                    child: Column(
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(10, 8, 0, 5),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                "Связанные вызовы:",
-                                style: TextStyle(fontSize: 16.0),
-                              ),
-                              Spacer(),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 10),
-                                child: GestureDetector(
-                                  child: Icon(Icons.playlist_add, color: Colors.grey),
-                                  onTap: () => print("Add"),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                            width: double.infinity,
-                            // padding: EdgeInsets.all(24.0),
-                            color: Color.fromRGBO(228, 239, 243, 1.0),
-                            child: Column(
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.only(top: 5),
+                      child: Column(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 5, 0, 5),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                ListTile(
-                                  title: Center(
-                                    child: Text("20-04-2020"),
-                                  ),
+                                Text(
+                                  "Статус:",
+                                  style: TextStyle(fontSize: 16.0),
                                 ),
-                                ListTile(
-                                  title: Center(
-                                    child: Text("20-04-2020"),
+                                Spacer(),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10),
+                                  child: GestureDetector(
+                                    child: Icon(
+                                      Icons.check_circle,
+                                      color: Colors.green[600],
+                                    ),
+                                    onTap: () => print("Complete"),
                                   ),
-                                ),
-                                ListTile(
-                                  title: Center(
-                                    child: Text("20-04-2020"),
-                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.all(24.0),
+                            color: Color.fromRGBO(228, 239, 243, 1.0),
+                            child: Text("Новый"),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 5),
+                      child: Column(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 5, 0, 5),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  "Пациент:",
+                                  style: TextStyle(fontSize: 16.0),
                                 ),
                               ],
-                            )),
-                      ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.all(24.0),
+                            color: Color.fromRGBO(228, 239, 243, 1.0),
+                            child: Text("Иванов Иван Иванович"),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                    Container(
+                      margin: EdgeInsets.only(top: 5),
+                      child: Column(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 5, 0, 5),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  "Адрес:",
+                                  style: TextStyle(fontSize: 16.0),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.all(24.0),
+                            color: Color.fromRGBO(228, 239, 243, 1.0),
+                            child: Text("г. Иркутск, ул. Байкальская 10"),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 5),
+                      child: Column(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 8, 0, 5),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  "Комментарий пациента:",
+                                  style: TextStyle(fontSize: 16.0),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.all(24.0),
+                            color: Color.fromRGBO(228, 239, 243, 1.0),
+                            child: Text(
+                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ac ultrices blandit elit nisl nisi quam. Potenti egestas purus mattis in. Duis erat purus eget risus velit feugiat risus amet. Lacus nisi, accumsan egestas massa eget odio mi penatibus. Lectus semper dui lectus habitant sit quis elementum suspendisse. Auctor vitae feugiat dignissim ipsum vivamus."),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 5),
+                      child: Column(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 8, 0, 5),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  "Комментарий врача:",
+                                  style: TextStyle(fontSize: 16.0),
+                                ),
+                                Spacer(),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10),
+                                  child: GestureDetector(
+                                    child: Icon(Icons.edit, color: Colors.black87),
+                                    onTap: () => print("Edit"),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.all(24.0),
+                            color: Color.fromRGBO(228, 239, 243, 1.0),
+                            child: Text(
+                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ac ultrices blandit elit nisl nisi quam. Potenti egestas purus mattis in. Duis erat purus eget risus velit feugiat risus amet. Lacus nisi, accumsan egestas massa eget odio mi penatibus. Lectus semper dui lectus habitant sit quis elementum suspendisse. Auctor vitae feugiat dignissim ipsum vivamus."),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 5),
+                      child: Column(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 8, 0, 5),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  "Связанные вызовы:",
+                                  style: TextStyle(fontSize: 16.0),
+                                ),
+                                Spacer(),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10),
+                                  child: GestureDetector(
+                                    child: Icon(Icons.playlist_add,
+                                        color: Colors.black87),
+                                    onTap: () => print("Add"),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Container(
+                              width: double.infinity,
+                              // padding: EdgeInsets.all(24.0),
+                              color: Color.fromRGBO(228, 239, 243, 1.0),
+                              child: Column(
+                                children: <Widget>[
+                                  ListTile(
+                                    title: Center(
+                                      child: Text("20-04-2020"),
+                                    ),
+                                  ),
+                                  ListTile(
+                                    title: Center(
+                                      child: Text("20-04-2020"),
+                                    ),
+                                  ),
+                                  ListTile(
+                                    title: Center(
+                                      child: Text("20-04-2020"),
+                                    ),
+                                  ),
+                                ],
+                              )),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       );
     },
@@ -309,223 +320,225 @@ Widget _buildOrdersList() {
 Widget _buildOrdersListComplete() {
   return ListView.builder(
     itemBuilder: (context, position) {
-      return Container(
-        margin: EdgeInsets.fromLTRB(10.0, 12.0, 10.0, 12.0),
-        color: Colors.grey[300],
-        child: ExpansionTile(
-          leading: IconButton(
-            icon: Icon(Icons.mail),
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (ctx) => DetailOrderScreen()));
-            },
-          ),
-          title: Row(
+      return Consumer<OrderProvider>(
+        builder: (_, order, child) => Container(
+          margin: EdgeInsets.fromLTRB(10.0, 12.0, 10.0, 12.0),
+          color: Colors.grey[300],
+          child: ExpansionTile(
+            leading: IconButton(
+              icon: Icon(Icons.mail),
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (ctx) => DetailOrderScreen()));
+              },
+            ),
+            title: Row(
+              children: <Widget>[
+                Text("Заказ ${order.order.id}"),
+                SizedBox(width: 10),
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                )
+              ],
+            ),
+            subtitle: Text("от ${order.order.date}"),
             children: <Widget>[
-              Text("Заказ 1231234112"),
-              SizedBox(width: 10),
-              Icon(
-                Icons.check_circle,
-                color: Colors.green,
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.only(top: 5),
+                      child: Column(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 5, 0, 5),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  "Статус:",
+                                  style: TextStyle(fontSize: 16.0),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.all(24.0),
+                            color: Color.fromRGBO(228, 239, 243, 1.0),
+                            child: Text("Завершен"),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 5),
+                      child: Column(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 5, 0, 5),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  "Врач:",
+                                  style: TextStyle(fontSize: 16.0),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.all(24.0),
+                            color: Color.fromRGBO(228, 239, 243, 1.0),
+                            child: Text("Иванов Иван Иванович"),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 5),
+                      child: Column(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 5, 0, 5),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  "Адрес:",
+                                  style: TextStyle(fontSize: 16.0),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.all(24.0),
+                            color: Color.fromRGBO(228, 239, 243, 1.0),
+                            child: Text("г. Иркутск, ул. Байкальская 10"),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 5),
+                      child: Column(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 8, 0, 5),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  "Комментарий пациента:",
+                                  style: TextStyle(fontSize: 16.0),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.all(24.0),
+                            color: Color.fromRGBO(228, 239, 243, 1.0),
+                            child: Text(
+                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ac ultrices blandit elit nisl nisi quam. Potenti egestas purus mattis in. Duis erat purus eget risus velit feugiat risus amet. Lacus nisi, accumsan egestas massa eget odio mi penatibus. Lectus semper dui lectus habitant sit quis elementum suspendisse. Auctor vitae feugiat dignissim ipsum vivamus."),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 5),
+                      child: Column(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 8, 0, 5),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  "Комментарий врача:",
+                                  style: TextStyle(fontSize: 16.0),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.all(24.0),
+                            color: Color.fromRGBO(228, 239, 243, 1.0),
+                            child: Text(
+                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ac ultrices blandit elit nisl nisi quam. Potenti egestas purus mattis in. Duis erat purus eget risus velit feugiat risus amet. Lacus nisi, accumsan egestas massa eget odio mi penatibus. Lectus semper dui lectus habitant sit quis elementum suspendisse. Auctor vitae feugiat dignissim ipsum vivamus."),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 5),
+                      child: Column(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 8, 0, 5),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  "Связанные вызовы:",
+                                  style: TextStyle(fontSize: 16.0),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Container(
+                              width: double.infinity,
+                              // padding: EdgeInsets.all(24.0),
+                              color: Color.fromRGBO(228, 239, 243, 1.0),
+                              child: Column(
+                                children: <Widget>[
+                                  ListTile(
+                                    title: Center(
+                                      child: Text("20-04-2020"),
+                                    ),
+                                  ),
+                                  ListTile(
+                                    title: Center(
+                                      child: Text("20-04-2020"),
+                                    ),
+                                  ),
+                                  ListTile(
+                                    title: Center(
+                                      child: Text("20-04-2020"),
+                                    ),
+                                  ),
+                                ],
+                              )),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               )
             ],
           ),
-          subtitle: Text("от 12.12.4444"),
-          children: <Widget>[
-            Container(
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.only(top: 5),
-                    child: Column(
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(10, 5, 0, 5),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                "Статус:",
-                                style: TextStyle(fontSize: 16.0),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                          width: double.infinity,
-                          padding: EdgeInsets.all(24.0),
-                          color: Color.fromRGBO(228, 239, 243, 1.0),
-                          child: Text("Завершен"),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(top: 5),
-                    child: Column(
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(10, 5, 0, 5),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                "Врач:",
-                                style: TextStyle(fontSize: 16.0),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                          width: double.infinity,
-                          padding: EdgeInsets.all(24.0),
-                          color: Color.fromRGBO(228, 239, 243, 1.0),
-                          child: Text("Иванов Иван Иванович"),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(top: 5),
-                    child: Column(
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(10, 5, 0, 5),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                "Адрес:",
-                                style: TextStyle(fontSize: 16.0),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                          width: double.infinity,
-                          padding: EdgeInsets.all(24.0),
-                          color: Color.fromRGBO(228, 239, 243, 1.0),
-                          child: Text("г. Иркутск, ул. Байкальская 10"),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(top: 5),
-                    child: Column(
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(10, 8, 0, 5),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                "Комментарий пациента:",
-                                style: TextStyle(fontSize: 16.0),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                          width: double.infinity,
-                          padding: EdgeInsets.all(24.0),
-                          color: Color.fromRGBO(228, 239, 243, 1.0),
-                          child: Text(
-                              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ac ultrices blandit elit nisl nisi quam. Potenti egestas purus mattis in. Duis erat purus eget risus velit feugiat risus amet. Lacus nisi, accumsan egestas massa eget odio mi penatibus. Lectus semper dui lectus habitant sit quis elementum suspendisse. Auctor vitae feugiat dignissim ipsum vivamus."),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(top: 5),
-                    child: Column(
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(10, 8, 0, 5),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                "Комментарий врача:",
-                                style: TextStyle(fontSize: 16.0),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                          width: double.infinity,
-                          padding: EdgeInsets.all(24.0),
-                          color: Color.fromRGBO(228, 239, 243, 1.0),
-                          child: Text(
-                              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ac ultrices blandit elit nisl nisi quam. Potenti egestas purus mattis in. Duis erat purus eget risus velit feugiat risus amet. Lacus nisi, accumsan egestas massa eget odio mi penatibus. Lectus semper dui lectus habitant sit quis elementum suspendisse. Auctor vitae feugiat dignissim ipsum vivamus."),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(top: 5),
-                    child: Column(
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(10, 8, 0, 5),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                "Связанные вызовы:",
-                                style: TextStyle(fontSize: 16.0),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                            width: double.infinity,
-                            // padding: EdgeInsets.all(24.0),
-                            color: Color.fromRGBO(228, 239, 243, 1.0),
-                            child: Column(
-                              children: <Widget>[
-                                ListTile(
-                                  title: Center(
-                                    child: Text("20-04-2020"),
-                                  ),
-                                ),
-                                ListTile(
-                                  title: Center(
-                                    child: Text("20-04-2020"),
-                                  ),
-                                ),
-                                ListTile(
-                                  title: Center(
-                                    child: Text("20-04-2020"),
-                                  ),
-                                ),
-                              ],
-                            )),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            )
-          ],
         ),
       );
     },
