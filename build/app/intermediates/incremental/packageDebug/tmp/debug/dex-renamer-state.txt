@@ -1,4 +1,0 @@
-#Mon Jun 15 17:19:26 IRKT 2020
-base.0=/home/nik/doctor_merge/build/app/intermediates/dex/debug/mergeDexDebug/out/classes.dex
-path.0=classes.dex
-renamed.0=classes.dex
