@@ -4,7 +4,7 @@ part 'user.g.dart';
 @JsonSerializable()
 class User {
   String name, gender, pushToken, address;
-  DateTime date;
+  DateTime dateBirthday;
 
   @JsonKey(name: "_id")
   final String id;
@@ -14,7 +14,7 @@ class User {
       this.gender,
       this.pushToken,
       this.address,
-      this.date,
+      this.dateBirthday,
       this.id
     });
 
@@ -25,7 +25,7 @@ class User {
       pushToken: "03df25c845d460bcdad7802d2vf6fc1dfde97283bf75cc993eb6dca835ea2e2f",
       address: "ул.Байкальская 3",
       id: "123123",
-      date: DateTime.now()
+      dateBirthday: DateTime.now()
     );}
 
   factory User.fromJson(Map<String, dynamic> data) => _$UserFromJson(data);
