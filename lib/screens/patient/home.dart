@@ -5,6 +5,8 @@ import 'package:medical_app/screens/patient/home_pages/doctors.dart';
 import 'package:medical_app/screens/patient/home_pages/orders.dart';
 import 'package:medical_app/screens/patient/home_pages/profile.dart';
 import 'package:medical_app/screens/patient/home_pages/stocks.dart';
+import 'package:medical_app/screens/patient/login.dart';
+import 'package:medical_app/utilities/constans.dart';
 
 
 class HomePagePatient extends StatefulWidget {
@@ -19,8 +21,10 @@ class _HomePagePatientState extends State<HomePagePatient> {
 
   Widget _buildFloatingActionButton() {
     return FloatingActionButton(
-      onPressed: () => showModalBottomSheet(
-          context: context, builder: (ctx) => _buildBottomSheet(ctx)),
+      onPressed: () => Constants.prefs.getBool("type") == false
+        ? showModalBottomSheet(
+          context: context, builder: (ctx) => _buildBottomSheet(ctx))
+        : Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (ctx) => LoginPatientScreen())), 
       child: Image.asset(
         "assets/images/phone.png",
         width: 30,

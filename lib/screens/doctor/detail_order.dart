@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medical_app/models/chat_message.dart';
 import 'package:medical_app/models/data_providers.dart';
 import 'package:provider/provider.dart';
 
@@ -8,7 +9,8 @@ class DetailOrderScreen extends StatefulWidget {
 }
 
 Widget _buildMessageFrom({DateTime toDate}) {
-  var result = "${toDate.day}.${toDate.month}.${toDate.year} ${toDate.hour}:${toDate.minute}:${toDate.second}";
+  var result =
+      "${toDate.day}.${toDate.month}.${toDate.year} ${toDate.hour}:${toDate.minute}:${toDate.second}";
 
   return Row(
     mainAxisAlignment: MainAxisAlignment.end,
@@ -45,14 +47,15 @@ Widget _buildMessageFrom({DateTime toDate}) {
   );
 }
 
-Widget _buildMessageTo({DateTime toDate}) {
+Widget _buildMessageTo({DateTime toDate, bool user}) {
   String modifed = DateTime(toDate.year, toDate.month, toDate.day, toDate.hour,
           toDate.minute, toDate.second)
       .toString()
       ?.replaceFirst(RegExp(r"\.[^]*"), '');
 
   return Row(
-    mainAxisAlignment: MainAxisAlignment.start,
+    mainAxisAlignment:
+        user == true ? MainAxisAlignment.start : MainAxisAlignment.end,
     children: <Widget>[
       Container(
         margin: EdgeInsets.symmetric(vertical: 5),
@@ -105,9 +108,9 @@ class _DetailOrderScreenState extends State<DetailOrderScreen> {
                     child: Consumer<OrderProvider>(
                       builder: (_, order, child) => Column(
                         children: <Widget>[
-                          _buildMessageTo(toDate: order.order.date),
+                          _buildMessageTo(toDate: order.order.date, user: true),
                           _buildMessageFrom(toDate: order.order.date),
-                          _buildMessageTo(toDate: order.order.date),
+                          _buildMessageTo(toDate: order.order.date, user: true),
                           _buildMessageFrom(toDate: order.order.date),
                           _buildMessageFrom(toDate: order.order.date),
                         ],

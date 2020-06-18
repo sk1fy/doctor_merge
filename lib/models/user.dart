@@ -3,7 +3,7 @@ part 'user.g.dart';
 
 @JsonSerializable()
 class User {
-  String name, gender, pushToken, address;
+  String name, gender, pushToken, address, password, pin;
   DateTime dateBirthday;
 
   @JsonKey(name: "_id")
@@ -15,7 +15,9 @@ class User {
       this.pushToken,
       this.address,
       this.dateBirthday,
-      this.id
+      this.id,
+      this.password,
+      this.pin
     });
 
   factory User.rand() {

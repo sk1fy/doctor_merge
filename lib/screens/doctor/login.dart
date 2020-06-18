@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:medical_app/models/data_providers.dart';
 import 'package:medical_app/screens/doctor/home.dart';
-import 'package:medical_app/screens/patient/home.dart';
-import '../utilities/contrast.dart';
+import 'package:medical_app/utilities/contrast.dart';
+import 'package:provider/provider.dart';
 
-
-class LoginScreen extends StatefulWidget {
+class LoginDoctorScreen extends StatefulWidget {
+  static final String routeName = '/login';
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _LoginDoctorScreenState createState() => _LoginDoctorScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginDoctorScreenState extends State<LoginDoctorScreen> {
   // var controller = MaskedTextController(mask: "+7 (000) 000-00-00");
   bool isPhoneValid = true;
   bool hasPassword = false;
@@ -85,7 +86,8 @@ class _LoginScreenState extends State<LoginScreen> {
       alignment: Alignment.center,
       child: FlatButton(
         onPressed: () => {
-          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (ctx) => HomePageDoctor()))
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (ctx) => HomePageDoctor()))
         },
         padding: EdgeInsets.only(right: 0.0),
         child: Text(
@@ -131,13 +133,14 @@ class _LoginScreenState extends State<LoginScreen> {
       child: RaisedButton(
         elevation: 5.0,
         onPressed: () {
-          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (ctx) => HomePagePatient()));
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (ctx) => HomePageDoctor()));
         },
         padding: EdgeInsets.all(20.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(14.0),
         ),
-        color: Color.fromRGBO(104,169,196,1.0),
+        color: Color.fromRGBO(104, 169, 196, 1.0),
         child: Text(
           'Войти',
           style: TextStyle(
@@ -186,23 +189,25 @@ class _LoginScreenState extends State<LoginScreen> {
                     horizontal: 40.0,
                     vertical: 90.0,
                   ),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Image.asset("assets/images/logo_med.png"),
-                      SizedBox(height: 10.0),
-                      _buildEmailTF(),
-                      SizedBox(
-                        height: 30.0,
+                  child: Consumer<DoctorProvider>(
+                    builder: (_, doctor, child) => Form(
+                      key: _formKey,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Image.asset("assets/images/logo_med.png"),
+                          SizedBox(height: 10.0),
+                          _buildEmailTF(),
+                          SizedBox(
+                            height: 30.0,
+                          ),
+                          _buildPasswordTF(),
+                          _buildRememberMeCheckbox(),
+                          _buildLoginBtn(),
+                          _buildForgotPasswordBtn(),
+                        ],
                       ),
-                      _buildPasswordTF(),
-                      _buildRememberMeCheckbox(),
-                      _buildLoginBtn(),
-                      _buildForgotPasswordBtn(),
-                    ],
-                    ), 
+                    ),
                   ),
                 ),
               )

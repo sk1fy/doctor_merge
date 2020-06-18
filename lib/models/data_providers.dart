@@ -1,6 +1,3 @@
-import 'package:flutter/foundation.dart';
-import 'package:medical_app/models/call.dart';
-import 'package:medical_app/models/chat_message.dart';
 import 'package:medical_app/models/doctor.dart';
 import 'package:medical_app/models/m_provider.dart';
 import 'package:medical_app/models/order.dart';
@@ -35,6 +32,8 @@ class StockProvider extends SDProvider<Stock> {
 }
 
 class UserProvider extends SDProvider<User> {
+  var authToken;
+
   
   static User userFromJson(json) {
     return User.fromJson(json);

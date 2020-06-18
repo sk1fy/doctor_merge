@@ -3,7 +3,7 @@ part 'doctor.g.dart';
 
 @JsonSerializable()
 class Doctor {
-  String name, specialty, pushToken, diplomImage, licenseImage;
+  String name, specialty, pushToken, diplomImage, licenseImage, password, pin;
   bool block;
 
   @JsonKey(name: "_id")
@@ -16,15 +16,20 @@ class Doctor {
       this.block,
       this.diplomImage,
       this.licenseImage,
-      this.id});
+      this.id,
+      this.password,
+      this.pin});
 
   factory Doctor.rand() {
     return Doctor(
       name: "Иванов Андрей Петрович",
       specialty: "Педиатр",
-      pushToken: "03df25c845d460bcdad7802d2vf6fc1dfde97283bf75cc993eb6dca835ea2e2f",
-      diplomImage: "https://raw.githubusercontent.com/flutter/website/master/examples/layout/lakes/step5/images/lake.jpg",
-      licenseImage: "https://raw.githubusercontent.com/flutter/website/master/examples/layout/lakes/step5/images/lake.jpg",
+      pushToken:
+          "03df25c845d460bcdad7802d2vf6fc1dfde97283bf75cc993eb6dca835ea2e2f",
+      diplomImage:
+          "https://raw.githubusercontent.com/flutter/website/master/examples/layout/lakes/step5/images/lake.jpg",
+      licenseImage:
+          "https://raw.githubusercontent.com/flutter/website/master/examples/layout/lakes/step5/images/lake.jpg",
       id: "123125",
     );
   }
