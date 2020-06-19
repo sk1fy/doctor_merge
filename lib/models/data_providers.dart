@@ -32,9 +32,7 @@ class StockProvider extends SDProvider<Stock> {
 }
 
 class UserProvider extends SDProvider<User> {
-  var authToken;
 
-  
   static User userFromJson(json) {
     return User.fromJson(json);
     User.rand();

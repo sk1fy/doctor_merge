@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:medical_app/models/network.dart';
+import 'package:medical_app/models/users_provider.dart';
 import 'package:medical_app/screens/patient/call_doctor.dart';
 import 'package:medical_app/screens/patient/home_pages/about.dart';
 import 'package:medical_app/screens/patient/home_pages/doctors.dart';
@@ -7,6 +9,7 @@ import 'package:medical_app/screens/patient/home_pages/profile.dart';
 import 'package:medical_app/screens/patient/home_pages/stocks.dart';
 import 'package:medical_app/screens/patient/login.dart';
 import 'package:medical_app/utilities/constans.dart';
+import 'package:provider/provider.dart';
 
 
 class HomePagePatient extends StatefulWidget {
@@ -20,17 +23,19 @@ class _HomePagePatientState extends State<HomePagePatient> {
   int currentTabIndex = 0;
 
   Widget _buildFloatingActionButton() {
-    return FloatingActionButton(
-      onPressed: () => Constants.prefs.getBool("type") == false
-        ? showModalBottomSheet(
-          context: context, builder: (ctx) => _buildBottomSheet(ctx))
-        : Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (ctx) => LoginPatientScreen())), 
-      child: Image.asset(
-        "assets/images/phone.png",
-        width: 30,
-        height: 30,
+    return Consumer<UsersProvider>(
+      builder: (_, users, child) => FloatingActionButton(
+        onPressed: () => users.authToken != null
+          ? showModalBottomSheet(
+            context: context, builder: (ctx) => _buildBottomSheet(ctx))
+          : Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (ctx) => LoginPatientScreen())), 
+        child: Image.asset(
+          "assets/images/phone.png",
+          width: 30,
+          height: 30,
+        ),
+        backgroundColor: Color.fromRGBO(33, 153, 252, 1.0),
       ),
-      backgroundColor: Color.fromRGBO(33, 153, 252, 1.0),
     );
   }
 

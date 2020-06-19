@@ -4,9 +4,9 @@ import 'package:http/http.dart' as http;
 import 'package:medical_app/models/doctor.dart';
 import 'package:medical_app/models/order.dart';
 import 'package:medical_app/models/user.dart';
+import 'package:medical_app/models/users_provider.dart';
 import 'package:provider/provider.dart';
 
-import 'data_providers.dart';
 
 const baseUrlApi = "http://medic.bw2api.ru/api/v1";
 const baseUrlImage = "http://vp.bw2api.ru/";
@@ -88,7 +88,7 @@ class AuthNetwork extends Network {
   AuthNetwork(this.token);
 
   AuthNetwork.of(context)
-      : token = Provider.of<UserProvider>(context, listen: false).authToken;
+      : token = Provider.of<UsersProvider>(context, listen: false).authToken;
 
   Future<String> refresh() async {
     try {

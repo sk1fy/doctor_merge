@@ -4,16 +4,12 @@ import 'package:medical_app/screens/doctor/login.dart';
 import 'package:medical_app/screens/patient/home.dart';
 import 'package:medical_app/utilities/constans.dart';
 
-
-
 class ChoiceScreen extends StatefulWidget {
   @override
   _ChoiceScreenState createState() => _ChoiceScreenState();
 }
 
 class _ChoiceScreenState extends State<ChoiceScreen> {
-
-
   Widget _buildPatientBtn() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),
@@ -22,13 +18,14 @@ class _ChoiceScreenState extends State<ChoiceScreen> {
         elevation: 5.0,
         onPressed: () {
           Constants.prefs.setBool("type", false);
-          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (ctx) => HomePagePatient()));
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (ctx) => HomePagePatient()));
         },
         padding: EdgeInsets.all(20.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(14.0),
         ),
-        color: Color.fromRGBO(104,169,196,1.0),
+        color: Color.fromRGBO(104, 169, 196, 1.0),
         child: Text(
           'Пациент',
           style: TextStyle(
@@ -42,7 +39,8 @@ class _ChoiceScreenState extends State<ChoiceScreen> {
       ),
     );
   }
-    Widget _buildDoctorBtn() {
+
+  Widget _buildDoctorBtn() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),
       width: double.infinity,
@@ -50,13 +48,14 @@ class _ChoiceScreenState extends State<ChoiceScreen> {
         elevation: 5.0,
         onPressed: () {
           Constants.prefs.setBool("type", true);
-          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (ctx) => LoginDoctorScreen()));
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (ctx) => LoginDoctorScreen()));
         },
         padding: EdgeInsets.all(20.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(14.0),
         ),
-        color: Color.fromRGBO(104,169,196,1.0),
+        color: Color.fromRGBO(104, 169, 196, 1.0),
         child: Text(
           'Врач',
           style: TextStyle(
@@ -102,13 +101,14 @@ class _ChoiceScreenState extends State<ChoiceScreen> {
                   padding: EdgeInsets.all(26),
                   height: double.infinity,
                   child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Image.asset("assets/images/logo_med.png"),
-                    SizedBox(height: 10.0),
-                    _buildPatientBtn(),
-                    _buildDoctorBtn(),
-                  ],
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      SizedBox(height: 40,),
+                      Image.asset("assets/images/logo_med.png"),
+                      Spacer(),
+                      _buildPatientBtn(),
+                      _buildDoctorBtn(),
+                    ],
                   ),
                 ),
               )
