@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:medical_app/screens/doctor/detail_note.dart';
 
+class NotesDoctor extends StatefulWidget {
+  @override
+  _NotesDoctorState createState() => _NotesDoctorState();
+}
 
-class NotesDoctor extends StatelessWidget {
+class _NotesDoctorState extends State<NotesDoctor> {
+  final items = List<String>.generate(20, (i) => "Item ${i + 1}");
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -65,34 +71,53 @@ class NotesDoctor extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
                   child: ListView.builder(
+                    itemCount: items.length,
                     itemBuilder: (context, position) {
-                      return Container(
-                        margin: EdgeInsets.fromLTRB(10.0, 12.0, 10.0, 12.0),
-                        color: Color.fromRGBO(228, 239, 243, 1.0),
-                        child: ExpansionTile(
-                          title: Text("Купить маску"),
-                          trailing: Text("12.12.4444"),
-                          children: <Widget>[
-                            Container(
-                              child: Column(
-                                children: <Widget>[
-                                  Container(
-                                    margin: EdgeInsets.only(top: 5),
-                                    child: Column(
-                                      children: <Widget>[
-                                        Container(
-                                          width: double.infinity,
-                                          padding: EdgeInsets.all(24.0),
-                                          child: Text(
-                                              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ac ultrices blandit elit nisl nisi quam. Potenti egestas purus mattis in. Duis erat purus eget risus velit feugiat risus amet. Lacus nisi, accumsan egestas massa eget odio mi penatibus. Lectus semper dui lectus habitant sit quis elementum suspendisse. Auctor vitae feugiat dignissim ipsum vivamus."),
-                                        ),
-                                      ],
+                      final item = items[position];
+                      return Dismissible(
+                        // Show a red background as the item is swiped away.
+                        background: Container(color: Colors.red),
+                        key: Key(item),
+                        onDismissed: (direction) {
+                          setState(() {
+                            items.removeAt(position);
+                          });
+
+                          Scaffold.of(context).showSnackBar(
+                              SnackBar(content: Text("Удалён")));
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: Color.fromRGBO(228, 239, 243, 1.0),
+                              border: Border(
+                                bottom:
+                                    BorderSide(width: 1.0, color: Colors.grey),
+                              )),
+                          child: ExpansionTile(
+                            title: Text("Купить маску"),
+                            trailing: Text("12.12.4444"),
+                            children: <Widget>[
+                              Container(
+                                child: Column(
+                                  children: <Widget>[
+                                    Container(
+                                      margin: EdgeInsets.only(top: 5),
+                                      child: Column(
+                                        children: <Widget>[
+                                          Container(
+                                            width: double.infinity,
+                                            padding: EdgeInsets.all(24.0),
+                                            child: Text(
+                                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ac ultrices blandit elit nisl nisi quam. Potenti egestas purus mattis in. Duis erat purus eget risus velit feugiat risus amet. Lacus nisi, accumsan egestas massa eget odio mi penatibus. Lectus semper dui lectus habitant sit quis elementum suspendisse. Auctor vitae feugiat dignissim ipsum vivamus."),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            )
-                          ],
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       );
                     },

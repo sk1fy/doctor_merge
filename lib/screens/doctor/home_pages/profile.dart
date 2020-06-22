@@ -9,11 +9,11 @@ class ProfilePage extends StatefulWidget {
 
 String _dropdownValue = 'Педиатр';
 bool notification = false;
-final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
 class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
     return SingleChildScrollView(
       child: Consumer<DoctorProvider>(
         builder: (_, doctor, child) => Padding(

@@ -13,9 +13,6 @@ class UsersProvider extends ChangeNotifier {
 
   String authToken, phone, authId;
   bool tokenIsValid = false;
-  final bool isClientApp;
-
-  UsersProvider({this.isClientApp});
 
   Future clear(){
     user = null;

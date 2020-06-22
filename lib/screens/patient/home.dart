@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:medical_app/models/network.dart';
 import 'package:medical_app/models/users_provider.dart';
 import 'package:medical_app/screens/patient/call_doctor.dart';
@@ -10,7 +11,6 @@ import 'package:medical_app/screens/patient/home_pages/stocks.dart';
 import 'package:medical_app/screens/patient/login.dart';
 import 'package:medical_app/utilities/constans.dart';
 import 'package:provider/provider.dart';
-
 
 class HomePagePatient extends StatefulWidget {
   const HomePagePatient({Key key}) : super(key: key);
@@ -26,9 +26,10 @@ class _HomePagePatientState extends State<HomePagePatient> {
     return Consumer<UsersProvider>(
       builder: (_, users, child) => FloatingActionButton(
         onPressed: () => users.authToken != null
-          ? showModalBottomSheet(
-            context: context, builder: (ctx) => _buildBottomSheet(ctx))
-          : Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (ctx) => LoginPatientScreen())), 
+            ? showModalBottomSheet(
+                context: context, builder: (ctx) => _buildBottomSheet(ctx))
+            : Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (ctx) => LoginPatientScreen())),
         child: Image.asset(
           "assets/images/phone.png",
           width: 30,
@@ -52,7 +53,8 @@ class _HomePagePatientState extends State<HomePagePatient> {
       BottomNavigationBarItem(
           icon: Icon(Icons.view_agenda), title: Text('Акции')),
       BottomNavigationBarItem(icon: Icon(Icons.person), title: Text('Врачи')),
-      BottomNavigationBarItem(icon: Icon(Icons.calendar_view_day), title: Text('Заказы')),
+      BottomNavigationBarItem(
+          icon: Icon(Icons.calendar_view_day), title: Text('Заказы')),
       BottomNavigationBarItem(icon: Icon(Icons.group), title: Text('О нас')),
       BottomNavigationBarItem(
           icon: Icon(Icons.person_outline), title: Text('Профиль')),
@@ -71,31 +73,45 @@ class _HomePagePatientState extends State<HomePagePatient> {
       },
     );
     return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          leading: Image.asset("assets/images/logo_med.png"),
-          title: Text([
-            "Акции",
-            "Врачи",
-            "Заказы",
-            "О нас",
-            "Профиль"
-          ][currentTabIndex]),
+      child: Consumer<UsersProvider>(
+        builder: (_, users, child) => Scaffold(
+          appBar: AppBar(
+            centerTitle: true,
+            leading: Image.asset("assets/images/logo_med.png"),
+            title: Text([
+              "Акции",
+              "Врачи",
+              "Заказы",
+              "О нас",
+              "Профиль"
+            ][currentTabIndex]),
+            actions: <Widget>[
+              if (currentTabIndex == 4 && users.authToken != null)
+                IconButton(
+                  icon: Icon(Icons.exit_to_app),
+                  onPressed: () async {
+                    users.authToken = null;
+                    users.phone = null;
+                    await Provider.of<UsersProvider>(context, listen: false)
+                        .clear();
+                    // Navigator.pushReplacementNamed(context, 'choice');
+                    SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+                  },
+                ),
+            ],
+          ),
+          floatingActionButton: _buildFloatingActionButton(),
+          body: _kTabPages[currentTabIndex],
+          bottomNavigationBar: bottomNavBar,
         ),
-        floatingActionButton: _buildFloatingActionButton(),
-        body: _kTabPages[currentTabIndex],
-        bottomNavigationBar: bottomNavBar,
       ),
     );
   }
 
   Widget _buildSheetButton() {
     return RaisedButton(
-      child: Text(
-        'Педиатр',
-        style: TextStyle(color: Colors.white, fontSize: 18) 
-      ),
+      child:
+          Text('Педиатр', style: TextStyle(color: Colors.white, fontSize: 18)),
       color: Color.fromRGBO(33, 153, 252, 1.0),
       onPressed: () {
         Navigator.push(

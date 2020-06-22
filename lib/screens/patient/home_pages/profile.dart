@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:medical_app/models/data_providers.dart';
 import 'package:medical_app/models/users_provider.dart';
+import 'package:medical_app/screens/patient/login.dart';
 import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -10,11 +11,11 @@ class ProfilePage extends StatefulWidget {
 
 String _dropdownValue = 'Мужчина';
 bool notification = false;
-final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
 class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
     return Consumer<UsersProvider>(
       builder: (_, users, child) => SafeArea(
           child: users.authToken != null
@@ -151,10 +152,20 @@ class _ProfilePageState extends State<ProfilePage> {
                           textAlign: TextAlign.center,
                         ),
                       ),
-                      SizedBox(height: 20,),
+                      SizedBox(
+                        height: 20,
+                      ),
                       FlatButton(
-                        child: Text("Авторизируйтесь", style: TextStyle(color: Colors.blue),),
-                        onPressed: () {},
+                        child: Text(
+                          "Авторизируйтесь",
+                          style: TextStyle(color: Colors.blue),
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (ctx) => LoginPatientScreen()));
+                        },
                       ),
                     ],
                   ),

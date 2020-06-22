@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:medical_app/models/network.dart';
-import 'package:medical_app/screens/doctor/home.dart';
 import 'package:medical_app/screens/patient/home.dart';
 import 'package:medical_app/screens/patient/pin.dart';
 import 'package:medical_app/utilities/contrast.dart';
@@ -21,7 +20,7 @@ class _LoginPatientScreenState extends State<LoginPatientScreen> {
   bool isPhoneValid = true;
   bool hasPassword = false;
   bool isPasswordShort = false;
-  bool _rememberMe = false;
+
   final _formKey = GlobalKey<FormState>();
 
   Widget _buildPhone() {
@@ -102,43 +101,12 @@ class _LoginPatientScreenState extends State<LoginPatientScreen> {
     return Container(
       alignment: Alignment.center,
       child: FlatButton(
-        onPressed: () => register(context)
-          // Navigator.of(context)
-          //     .pushReplacement(MaterialPageRoute(builder: (ctx) => PinScreen()))
-        ,
+        onPressed: () => register(context),
         padding: EdgeInsets.only(right: 0.0),
         child: Text(
           'Зарегистрироваться?',
-          style: kLabelStyle,
+          style: TextStyle(color: Colors.white, fontSize: 16),
         ),
-      ),
-    );
-  }
-
-  Widget _buildRememberMeCheckbox() {
-    return Container(
-      alignment: Alignment.center,
-      height: 60.0,
-      child: Row(
-        children: <Widget>[
-          Theme(
-            data: ThemeData(unselectedWidgetColor: Colors.white),
-            child: Checkbox(
-              value: _rememberMe,
-              checkColor: Colors.blue,
-              activeColor: Colors.white,
-              onChanged: (value) {
-                setState(() {
-                  _rememberMe = value;
-                });
-              },
-            ),
-          ),
-          Text(
-            'Я принимаю условия',
-            style: kLabelStyle,
-          ),
-        ],
       ),
     );
   }
@@ -150,10 +118,6 @@ class _LoginPatientScreenState extends State<LoginPatientScreen> {
       child: RaisedButton(
         elevation: 5.0,
         onPressed: () => login(context),
-        // {
-        //   Navigator.of(context).pushReplacement(
-        //       MaterialPageRoute(builder: (ctx) => HomePagePatient()));
-        // },
         padding: EdgeInsets.all(20.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(14.0),
@@ -219,9 +183,25 @@ class _LoginPatientScreenState extends State<LoginPatientScreen> {
                           height: 30.0,
                         ),
                         _buildPasswordTF(),
-                        _buildRememberMeCheckbox(),
                         _buildLoginBtn(),
-                        _buildForgotPasswordBtn(),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            IconButton(
+                              icon: Icon(Icons.chevron_left),
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (ctx) => HomePagePatient()));
+                              },
+                              color: Colors.white,
+                            ),
+                            _buildForgotPasswordBtn(),
+                            SizedBox(width: 40)
+                          ],
+                        ),
                       ],
                     ),
                   ),
@@ -273,12 +253,12 @@ class _LoginPatientScreenState extends State<LoginPatientScreen> {
                   phone: phone,
                 )));
       else
-      print("error");
-        // Scaffold.of(context)
-        //   ..removeCurrentSnackBar()
-        //   ..showSnackBar(SnackBar(
-        //     content: Text("Ошибка при попытки регистрации"),
-        //   ));
+        print("error");
+      // Scaffold.of(context)
+      //   ..removeCurrentSnackBar()
+      //   ..showSnackBar(SnackBar(
+      //     content: Text("Ошибка при попытки регистрации"),
+      //   ));
     }
   }
 }

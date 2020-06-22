@@ -1,25 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:medical_app/models/data_providers.dart';
+import 'package:flutter_masked_text/flutter_masked_text.dart';
+import 'package:form_field_validator/form_field_validator.dart';
+import 'package:medical_app/models/network.dart';
 import 'package:medical_app/screens/doctor/home.dart';
+import 'package:medical_app/screens/patient/pin.dart';
 import 'package:medical_app/utilities/contrast.dart';
+import 'package:medical_app/models/users_provider.dart';
 import 'package:provider/provider.dart';
 
 class LoginDoctorScreen extends StatefulWidget {
-  static final String routeName = '/login';
   @override
   _LoginDoctorScreenState createState() => _LoginDoctorScreenState();
 }
 
 class _LoginDoctorScreenState extends State<LoginDoctorScreen> {
-  // var controller = MaskedTextController(mask: "+7 (000) 000-00-00");
+  var phoneController = MaskedTextController(mask: "+7 (000) 000 00 00");
+  var passwordController = TextEditingController();
   bool isPhoneValid = true;
   bool hasPassword = false;
   bool isPasswordShort = false;
-  bool _rememberMe = false;
   final _formKey = GlobalKey<FormState>();
 
-  Widget _buildEmailTF() {
+  Widget _buildPhone() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -28,12 +31,15 @@ class _LoginDoctorScreenState extends State<LoginDoctorScreen> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextFormField(
+            controller: phoneController,
             keyboardType: TextInputType.number,
             style: TextStyle(
               color: Colors.white,
               fontFamily: 'OpenSans',
               fontSize: 20.0,
             ),
+            validator: (val) =>
+                val.length != 18 ? "Введите номер телефона" : null,
             decoration: InputDecoration(
               border: InputBorder.none,
               contentPadding: EdgeInsets.only(top: 14.0),
@@ -59,12 +65,21 @@ class _LoginDoctorScreenState extends State<LoginDoctorScreen> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextFormField(
+            controller: passwordController,
             obscureText: true,
             style: TextStyle(
               color: Colors.white,
               fontFamily: 'OpenSans',
               fontSize: 20.0,
             ),
+            inputFormatters: [
+              WhitelistingTextInputFormatter(RegExp("[\\w\\d_]"))
+            ],
+            validator: MultiValidator([
+              RequiredValidator(errorText: "Введите пароль"),
+              MinLengthValidator(6,
+                  errorText: "Пароль должен быть длинее 6 символов")
+            ]),
             decoration: InputDecoration(
               border: InputBorder.none,
               contentPadding: EdgeInsets.only(top: 14.0),
@@ -85,43 +100,15 @@ class _LoginDoctorScreenState extends State<LoginDoctorScreen> {
     return Container(
       alignment: Alignment.center,
       child: FlatButton(
-        onPressed: () => {
-          Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (ctx) => HomePageDoctor()))
-        },
+        onPressed: () => register(context)
+        // Navigator.of(context)
+        //     .pushReplacement(MaterialPageRoute(builder: (ctx) => PinScreen()))
+        ,
         padding: EdgeInsets.only(right: 0.0),
         child: Text(
           'Зарегистрироваться?',
-          style: kLabelStyle,
+          style: TextStyle(color: Colors.white, fontSize: 16),
         ),
-      ),
-    );
-  }
-
-  Widget _buildRememberMeCheckbox() {
-    return Container(
-      alignment: Alignment.center,
-      height: 60.0,
-      child: Row(
-        children: <Widget>[
-          Theme(
-            data: ThemeData(unselectedWidgetColor: Colors.white),
-            child: Checkbox(
-              value: _rememberMe,
-              checkColor: Colors.blue,
-              activeColor: Colors.white,
-              onChanged: (value) {
-                setState(() {
-                  _rememberMe = value;
-                });
-              },
-            ),
-          ),
-          Text(
-            'Я принимаю условия',
-            style: kLabelStyle,
-          ),
-        ],
       ),
     );
   }
@@ -132,10 +119,11 @@ class _LoginDoctorScreenState extends State<LoginDoctorScreen> {
       width: double.infinity,
       child: RaisedButton(
         elevation: 5.0,
-        onPressed: () {
-          Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (ctx) => HomePageDoctor()));
-        },
+        onPressed: () => login(context),
+        // {
+        //   Navigator.of(context).pushReplacement(
+        //       MaterialPageRoute(builder: (ctx) => HomePagePatient()));
+        // },
         padding: EdgeInsets.all(20.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(14.0),
@@ -189,24 +177,21 @@ class _LoginDoctorScreenState extends State<LoginDoctorScreen> {
                     horizontal: 40.0,
                     vertical: 90.0,
                   ),
-                  child: Consumer<DoctorProvider>(
-                    builder: (_, doctor, child) => Form(
-                      key: _formKey,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Image.asset("assets/images/logo_med.png"),
-                          SizedBox(height: 10.0),
-                          _buildEmailTF(),
-                          SizedBox(
-                            height: 30.0,
-                          ),
-                          _buildPasswordTF(),
-                          _buildRememberMeCheckbox(),
-                          _buildLoginBtn(),
-                          _buildForgotPasswordBtn(),
-                        ],
-                      ),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Image.asset("assets/images/logo_med.png"),
+                        SizedBox(height: 10.0),
+                        _buildPhone(),
+                        SizedBox(
+                          height: 30.0,
+                        ),
+                        _buildPasswordTF(),
+                        _buildLoginBtn(),
+                        _buildForgotPasswordBtn(),
+                      ],
                     ),
                   ),
                 ),
@@ -216,5 +201,53 @@ class _LoginDoctorScreenState extends State<LoginDoctorScreen> {
         ),
       ),
     );
+  }
+
+  Future login(BuildContext context) async {
+    if (_formKey.currentState.validate()) {
+      var phone = phoneController.value.text,
+          password = passwordController.value.text;
+      var status = await Network.enterPassword(phone, password);
+      if (status != null) {
+        var ud = Provider.of<UsersProvider>(context, listen: false);
+        final an = AuthNetwork(status.token);
+
+        ud
+          ..setData(status.token, phone, status.authId)
+          ..doctor = status.doctor ?? await an.createDoctor();
+
+        await ud.saveToPrefs();
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (ctx) => HomePageDoctor()));
+      } else {
+        print("error");
+        // Scaffold.of(context)
+        //   ..removeCurrentSnackBar()
+        //   ..showSnackBar(SnackBar(
+        //     // TODO change to valid error message
+        //     content: Text("Неправильное имя пользователя или пароль"),
+        //   ));
+      }
+    }
+  }
+
+  Future register(BuildContext context) async {
+    if (_formKey.currentState.validate()) {
+      var phone = phoneController.value.text,
+          password = passwordController.value.text;
+      if (await Network.enterPhone(phone))
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (ctx) => PinScreen(
+                  password: password,
+                  phone: phone,
+                )));
+      else
+        print("error");
+      // Scaffold.of(context)
+      //   ..removeCurrentSnackBar()
+      //   ..showSnackBar(SnackBar(
+      //     content: Text("Ошибка при попытки регистрации"),
+      //   ));
+    }
   }
 }

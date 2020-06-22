@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:medical_app/choice.dart';
 import 'package:medical_app/models/users_provider.dart';
+import 'package:medical_app/screens/doctor/home.dart';
 import 'package:medical_app/screens/doctor/login.dart';
 import 'package:medical_app/screens/patient/home.dart';
+import 'package:medical_app/screens/patient/login.dart';
 import 'package:medical_app/utilities/constans.dart';
 import 'package:provider/provider.dart';
 import 'models/data_providers.dart';
@@ -32,9 +34,19 @@ class MyApp extends StatelessWidget {
                       .copyWith(color: Colors.black),
                   primaryTextTheme:
                       TextTheme(headline6: TextStyle(color: Colors.black))),
-              home: Constants.prefs.getBool("type") == true
-                    ? LoginDoctorScreen()
-                    : HomePagePatient(),
+              home: Consumer<UsersProvider>(
+                builder: (_, users, child) =>
+                    Constants.prefs.getBool("type") == true
+                        ? users.authToken == null
+                            ? LoginDoctorScreen()
+                            : HomePageDoctor()
+                        : HomePagePatient(),
+              ),
+              routes: {
+                'doctorLogin': (context) => LoginDoctorScreen(),
+                'userLogin': (context) => LoginPatientScreen(),
+                'choice': (context) => ChoiceScreen(),
+              },
             )
           : MaterialApp(
               title: 'Medical App',
@@ -47,6 +59,11 @@ class MyApp extends StatelessWidget {
                   primaryTextTheme:
                       TextTheme(headline6: TextStyle(color: Colors.black))),
               home: ChoiceScreen(),
+              routes: {
+                'doctorLogin': (context) => LoginDoctorScreen(),
+                'userLogin': (context) => LoginPatientScreen(),
+                'choice': (context) => ChoiceScreen(),
+              },
             ),
     );
   }

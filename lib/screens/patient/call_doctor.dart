@@ -262,7 +262,8 @@ class _CallDoctorScreenState extends State<CallDoctorScreen> {
                     ),
                     Container(
                       alignment: Alignment.center,
-                      height: 40.0,
+                      height: 20.0,
+                      margin: EdgeInsets.only(bottom: 10),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
@@ -286,8 +287,9 @@ class _CallDoctorScreenState extends State<CallDoctorScreen> {
                         ],
                       ),
                     ),
-                    Container(
-                      padding: EdgeInsets.symmetric(vertical: 25.0),
+                    if(_approve) 
+                      Container(
+                      padding: EdgeInsets.symmetric(vertical: 5.0),
                       width: double.infinity,
                       child: RaisedButton(
                         elevation: 5.0,
