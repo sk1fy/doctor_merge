@@ -96,158 +96,143 @@ class _LoginDoctorScreenState extends State<LoginDoctorScreen> {
     );
   }
 
-  Widget _buildForgotPasswordBtn() {
-    return Container(
-      alignment: Alignment.center,
-      child: FlatButton(
-        onPressed: () => register(context)
-        // Navigator.of(context)
-        //     .pushReplacement(MaterialPageRoute(builder: (ctx) => PinScreen()))
-        ,
-        padding: EdgeInsets.only(right: 0.0),
-        child: Text(
-          'Зарегистрироваться?',
-          style: TextStyle(color: Colors.white, fontSize: 16),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildLoginBtn() {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 25.0),
-      width: double.infinity,
-      child: RaisedButton(
-        elevation: 5.0,
-        onPressed: () => login(context),
-        // {
-        //   Navigator.of(context).pushReplacement(
-        //       MaterialPageRoute(builder: (ctx) => HomePagePatient()));
-        // },
-        padding: EdgeInsets.all(20.0),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(14.0),
-        ),
-        color: Color.fromRGBO(104, 169, 196, 1.0),
-        child: Text(
-          'Войти',
-          style: TextStyle(
-            color: Colors.white,
-            letterSpacing: 1.5,
-            fontSize: 18.0,
-            fontWeight: FontWeight.w300,
-            fontFamily: 'OpenSans',
-          ),
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle.light,
-        child: GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(),
-          child: Stack(
-            children: <Widget>[
-              Container(
-                height: double.infinity,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Color(0xFF73AEF5),
-                      Color(0xFF61A4F1),
-                      Color(0xFF478DE0),
-                      Color(0xFF398AE5),
+      body: Builder(
+        builder: (context) => Stack(
+          children: <Widget>[
+            Container(
+              height: double.infinity,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Color(0xFF73AEF5),
+                    Color(0xFF61A4F1),
+                    Color(0xFF478DE0),
+                    Color(0xFF398AE5),
+                  ],
+                  stops: [0.1, 0.4, 0.7, 0.9],
+                ),
+              ),
+            ),
+            Container(
+              height: double.infinity,
+              child: SingleChildScrollView(
+                physics: AlwaysScrollableScrollPhysics(),
+                padding: EdgeInsets.symmetric(
+                  horizontal: 40.0,
+                  vertical: 90.0,
+                ),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Image.asset("assets/images/logo_med.png"),
+                      SizedBox(height: 10.0),
+                      _buildPhone(),
+                      SizedBox(
+                        height: 30.0,
+                      ),
+                      _buildPasswordTF(),
+                      Container(
+                        padding: EdgeInsets.symmetric(vertical: 25.0),
+                        width: double.infinity,
+                        child: RaisedButton(
+                          elevation: 5.0,
+                          onPressed: () async {
+                            if (_formKey.currentState.validate()) {
+                              var phone = phoneController.value.text,
+                                  password = passwordController.value.text;
+                              var status =
+                                  await Network.enterPassword(phone, password);
+                              if (status != null) {
+                                var ud = Provider.of<UsersProvider>(context,
+                                    listen: false);
+                                final an = AuthNetwork(status.token);
+
+                                ud
+                                  ..setData(status.token, phone, status.authId)
+                                  ..doctor =
+                                      status.doctor ?? await an.createDoctor();
+
+                                await ud.saveToPrefs();
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (ctx) => HomePageDoctor()));
+                              } else {
+                                print("error");
+                                Scaffold.of(context)
+                                  ..removeCurrentSnackBar()
+                                  ..showSnackBar(SnackBar(
+                                    // TODO change to valid error message
+                                    content:
+                                        Text("Неправильные телефон или пароль"),
+                                  ));
+                              }
+                            }
+                          },
+                          padding: EdgeInsets.all(20.0),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14.0),
+                          ),
+                          color: Color.fromRGBO(104, 169, 196, 1.0),
+                          child: Text(
+                            'Войти',
+                            style: TextStyle(
+                              color: Colors.white,
+                              letterSpacing: 1.5,
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.w300,
+                              fontFamily: 'OpenSans',
+                            ),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        alignment: Alignment.center,
+                        child: FlatButton(
+                          onPressed: () async {
+                            if (_formKey.currentState.validate()) {
+                              var phone = phoneController.value.text,
+                                  password = passwordController.value.text;
+                              if (await Network.enterPhone(phone))
+                                Navigator.of(context)
+                                    .pushReplacement(MaterialPageRoute(
+                                        builder: (ctx) => PinScreen(
+                                              password: password,
+                                              phone: phone,
+                                            )));
+                              else
+                                print("error");
+                              Scaffold.of(context)
+                                ..removeCurrentSnackBar()
+                                ..showSnackBar(SnackBar(
+                                  content:
+                                      Text("Ошибка при попытки регистрации"),
+                                ));
+                            }
+                          },
+                          padding: EdgeInsets.only(right: 0.0),
+                          child: Text(
+                            'Зарегистрироваться?',
+                            style: TextStyle(color: Colors.white, fontSize: 16),
+                          ),
+                        ),
+                      ),
                     ],
-                    stops: [0.1, 0.4, 0.7, 0.9],
                   ),
                 ),
               ),
-              Container(
-                height: double.infinity,
-                child: SingleChildScrollView(
-                  physics: AlwaysScrollableScrollPhysics(),
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 40.0,
-                    vertical: 90.0,
-                  ),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Image.asset("assets/images/logo_med.png"),
-                        SizedBox(height: 10.0),
-                        _buildPhone(),
-                        SizedBox(
-                          height: 30.0,
-                        ),
-                        _buildPasswordTF(),
-                        _buildLoginBtn(),
-                        _buildForgotPasswordBtn(),
-                      ],
-                    ),
-                  ),
-                ),
-              )
-            ],
-          ),
+            )
+          ],
         ),
       ),
     );
-  }
-
-  Future login(BuildContext context) async {
-    if (_formKey.currentState.validate()) {
-      var phone = phoneController.value.text,
-          password = passwordController.value.text;
-      var status = await Network.enterPassword(phone, password);
-      if (status != null) {
-        var ud = Provider.of<UsersProvider>(context, listen: false);
-        final an = AuthNetwork(status.token);
-
-        ud
-          ..setData(status.token, phone, status.authId)
-          ..doctor = status.doctor ?? await an.createDoctor();
-
-        await ud.saveToPrefs();
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (ctx) => HomePageDoctor()));
-      } else {
-        print("error");
-        // Scaffold.of(context)
-        //   ..removeCurrentSnackBar()
-        //   ..showSnackBar(SnackBar(
-        //     // TODO change to valid error message
-        //     content: Text("Неправильное имя пользователя или пароль"),
-        //   ));
-      }
-    }
-  }
-
-  Future register(BuildContext context) async {
-    if (_formKey.currentState.validate()) {
-      var phone = phoneController.value.text,
-          password = passwordController.value.text;
-      if (await Network.enterPhone(phone))
-        Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (ctx) => PinScreen(
-                  password: password,
-                  phone: phone,
-                )));
-      else
-        print("error");
-      // Scaffold.of(context)
-      //   ..removeCurrentSnackBar()
-      //   ..showSnackBar(SnackBar(
-      //     content: Text("Ошибка при попытки регистрации"),
-      //   ));
-    }
   }
 }
