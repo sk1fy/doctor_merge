@@ -155,7 +155,6 @@ class _LoginPatientScreenState extends State<LoginPatientScreen> {
                                 var ud = Provider.of<UsersProvider>(context,
                                     listen: false);
                                 final an = AuthNetwork(status.token);
-
                                 ud
                                   ..setData(status.token, phone, status.authId)
                                   ..user = status.user ?? await an.createUser();

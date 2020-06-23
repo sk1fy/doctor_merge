@@ -194,30 +194,32 @@ class _CallDoctorScreenState extends State<CallDoctorScreen> {
                             height: 10,
                           ),
                           Container(
-                              color: Color.fromRGBO(228, 239, 243, 1.0),
-                              height: 50,
-                              child: FlatButton(
-                                  onPressed: () async {
-                                    final dtPick = await showDatePicker(
-                                        context: context,
-                                        initialDate: new DateTime.now(),
-                                        firstDate: new DateTime.now(),
-                                        lastDate: new DateTime(2022));
+                            color: Color.fromRGBO(228, 239, 243, 1.0),
+                            height: 50,
+                            child: FlatButton(
+                              onPressed: () async {
+                                final dtPick = await showDatePicker(
+                                    context: context,
+                                    initialDate: new DateTime.now(),
+                                    firstDate: new DateTime.now(),
+                                    lastDate: new DateTime(2022));
 
-                                    if (dtPick != null && dtPick != _dataInfo) {
-                                      setState(() {
-                                        _dataInfo = dtPick;
-                                      });
-                                    }
-                                  },
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      Text('${_dataInfo}'),
-                                      Icon(Icons.calendar_today),
-                                    ],
-                                  ))),
+                                if (dtPick != null && dtPick != _dataInfo) {
+                                  setState(() {
+                                    _dataInfo = dtPick;
+                                  });
+                                }
+                              },
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text('${_dataInfo}'),
+                                  Icon(Icons.calendar_today),
+                                ],
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -268,8 +270,8 @@ class _CallDoctorScreenState extends State<CallDoctorScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Theme(
-                            data:
-                                ThemeData(unselectedWidgetColor: Colors.grey[400]),
+                            data: ThemeData(
+                                unselectedWidgetColor: Colors.grey[400]),
                             child: Checkbox(
                               value: _approve,
                               checkColor: Colors.blue,
@@ -287,37 +289,37 @@ class _CallDoctorScreenState extends State<CallDoctorScreen> {
                         ],
                       ),
                     ),
-                    if(_approve) 
+                    if (_approve)
                       Container(
-                      padding: EdgeInsets.symmetric(vertical: 5.0),
-                      width: double.infinity,
-                      child: RaisedButton(
-                        elevation: 5.0,
-                        padding: EdgeInsets.all(20.0),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(14.0),
-                        ),
-                        color: Color.fromRGBO(104, 169, 196, 1.0),
-                        child: Text(
-                          'Сделать заказ',
-                          style: TextStyle(
-                            color: Colors.white,
-                            letterSpacing: 1.5,
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.w300,
+                        padding: EdgeInsets.symmetric(vertical: 5.0),
+                        width: double.infinity,
+                        child: RaisedButton(
+                          elevation: 5.0,
+                          padding: EdgeInsets.all(20.0),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14.0),
                           ),
+                          color: Color.fromRGBO(104, 169, 196, 1.0),
+                          child: Text(
+                            'Сделать заказ',
+                            style: TextStyle(
+                              color: Colors.white,
+                              letterSpacing: 1.5,
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.w300,
+                            ),
+                          ),
+                          onPressed: () {
+                            if (!_formKey.currentState.validate()) {
+                              return;
+                            }
+
+                            _formKey.currentState.save();
+
+                            //Send to API
+                          },
                         ),
-                        onPressed: () {
-                          if (!_formKey.currentState.validate()) {
-                            return;
-                          }
-
-                          _formKey.currentState.save();
-
-                          //Send to API
-                        },
                       ),
-                    ),
                   ],
                 ),
               ),
