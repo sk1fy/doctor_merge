@@ -11,10 +11,12 @@ User _$UserFromJson(Map<String, dynamic> json) {
     name: json['name'] as String,
     gender: json['gender'] as String,
     pushToken: json['pushToken'] as String,
-    address: json['address'] as String,
+    address: json['address'] == null
+        ? null
+        : Address.fromJson(json['address'] as Map<String, dynamic>),
     password: json['password'] as String,
     pin: json['pin'] as String,
-    dateBirthday: json['date'] == null ? null : DateTime.parse(json['date'] as String),
+    birthdate: json['date'] == null ? null : DateTime.parse(json['date'] as String),
     id: json['_id'] as String,
   );
 }
@@ -22,9 +24,10 @@ User _$UserFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'name': instance.name,
       'gender': instance.gender,
+      'address': instance.address?.toJson(),
       'pushToken': instance.pushToken,
       'password': instance.password,
       'pin': instance.pin,
-      'date': instance.dateBirthday?.toIso8601String(),
+      'date': instance.birthdate?.toIso8601String(),
       '_id': instance.id,
     };

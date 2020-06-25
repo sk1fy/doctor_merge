@@ -1,7 +1,8 @@
+import 'package:date_text_masked/date_text_masked.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:medical_app/models/data_providers.dart';
 import 'package:medical_app/models/network.dart';
-import 'package:medical_app/models/user.dart';
 import 'package:medical_app/models/users_provider.dart';
 import 'package:medical_app/screens/patient/login.dart';
 import 'package:provider/provider.dart';
@@ -11,16 +12,17 @@ class ProfilePage extends StatefulWidget {
   _ProfilePageState createState() => _ProfilePageState();
 }
 
+var dateController = MaskedTextController(mask: "0000-00-00");
 var fioController = TextEditingController();
 var addressController = TextEditingController();
 String _dropdownValue = 'Мужчина';
-DateTime _dataInfo;
 bool notification = false;
 
 class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+    final u = Provider.of<UsersProvider>(context, listen: false);
     return Consumer<UsersProvider>(
       builder: (_, users, child) => SafeArea(
           child: users.authToken != null
@@ -41,7 +43,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               decoration: InputDecoration(
                                 filled: true,
                                 icon: Icon(Icons.person),
-                                hintText: 'Иванов Иван Иванович',
+                                hintText: users.user.name,
                                 labelText: 'ФИО',
                                 labelStyle: TextStyle(color: Colors.black),
                                 fillColor: Color.fromRGBO(228, 239, 243, 1.0),
@@ -54,6 +56,25 @@ class _ProfilePageState extends State<ProfilePage> {
                               },
                               onSaved: (String value) {
                                 // _name = value;
+                              },
+                            ),
+                            SizedBox(height: 30.0),
+                            TextFormField(
+                              controller: dateController,
+                              textCapitalization: TextCapitalization.words,
+                              decoration: InputDecoration(
+                                filled: true,
+                                icon: Icon(Icons.calendar_today),
+                                hintText: '1990-01-10',
+                                labelText: 'Дата рождения',
+                                labelStyle: TextStyle(color: Colors.black),
+                                fillColor: Color.fromRGBO(228, 239, 243, 1.0),
+                              ),
+                              validator: (String value) {
+                                if (value.isEmpty) {
+                                  return 'Пожадуйста введите правильную дату';
+                                }
+                                return null;
                               },
                             ),
                             SizedBox(height: 30.0),
@@ -73,7 +94,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 'Женщина'
                               ].map<DropdownMenuItem<String>>((String value) {
                                 return DropdownMenuItem<String>(
-                                  value: value,
+                                  value: value, 
                                   child: Text(value),
                                 );
                               }).toList(),
@@ -98,37 +119,6 @@ class _ProfilePageState extends State<ProfilePage> {
                               },
                             ),
                             SizedBox(height: 30.0),
-                            Container(
-                              color: Color.fromRGBO(228, 239, 243, 1.0),
-                              height: 50,
-                              child: FlatButton(
-                                onPressed: () async {
-                                  final dtPick = await showDatePicker(
-                                      context: context,
-                                      initialDate: new DateTime(1970),
-                                      firstDate: new DateTime(1970),
-                                      lastDate: new DateTime.now());
-
-                                  if (dtPick != null && dtPick != _dataInfo) {
-                                    setState(() {
-                                      _dataInfo = dtPick;
-                                    });
-                                  }
-                                },
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Icon(
-                                      Icons.calendar_today,
-                                      color: Colors.grey,
-                                    ),
-                                    Text('${_dataInfo}'),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: 30.0),
                             SwitchListTile(
                               onChanged: (_) {
                                 setState(() {
@@ -145,8 +135,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                 style:
                                     TextStyle(color: Colors.blue, fontSize: 16),
                               ),
-                              onPressed: () => saveUser(context),
+                              onPressed: () => {
+                                // if (_formKey.currentState.validate())
+                                  {saveUser(context)}
+                              },
                             ),
+                            SizedBox(height: 20),
                           ],
                         ),
                       ),
@@ -187,24 +181,31 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future saveUser(context) async {
+    var dateConvert = '2020-06-19T07:26:37.314Z';
+    // dateController.text + ' ' + '00:00:00.000';
     final name = fioController.text;
-    final address = addressController.text;
+    final address = (addressController.value.text);
     final gender = _dropdownValue;
-    final date = _dataInfo;
-    final users =  Provider.of<UsersProvider>(context, listen: false);
-    try {
-      await AuthNetwork.of(context).updateUser(users.user
-        ..name = name
-        ..address = address
-        ..gender = gender
-        ..dateBirthday = date);
-      Scaffold.of(context)
-        ..removeCurrentSnackBar()
-        ..showSnackBar(SnackBar(
-          content: Text("Сохраненно"),
-        ));
-    } catch (err) {
-      print(err);
-    }
+    final date = DateTime.parse(dateConvert);
+    final users = Provider.of<UsersProvider>(context, listen: false);
+    print(name);
+    print(address.toString());
+    print(date);
+    print(users.user.birthdate);
+    print(users.user.name);
+    // try {
+    //   await AuthNetwork.of(context).updateUser(users.user
+    //     ..name = name
+    //     // ..address = addressController.value.text
+    //     ..gender = gender
+    //     ..birthdate = date);
+    //   Scaffold.of(context)
+    //     ..removeCurrentSnackBar()
+    //     ..showSnackBar(SnackBar(
+    //       content: Text("Сохраненно"),
+    //     ));
+    // } catch (err) {
+    //   print(err);
+    // }
   }
 }

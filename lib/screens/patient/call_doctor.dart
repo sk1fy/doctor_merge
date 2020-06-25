@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:medical_app/models/data_providers.dart';
+import 'package:medical_app/models/users_provider.dart';
 import 'package:provider/provider.dart';
 
 class CallDoctorScreen extends StatefulWidget {
@@ -12,6 +13,7 @@ class _CallDoctorScreenState extends State<CallDoctorScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String select = 'Выберите врача..';
   bool _approve = false;
+  bool switcher = false;
   DateTime _dataInfo;
 
   @override
@@ -48,9 +50,9 @@ class _CallDoctorScreenState extends State<CallDoctorScreen> {
                             textCapitalization: TextCapitalization.words,
                             decoration: InputDecoration(
                               filled: true,
-                              labelText: "Номер телефона",
-                              labelStyle: TextStyle(color: Colors.black),
-                              hintText: '+7(000)0000000',
+                              // labelText: "Адрес",
+                              // labelStyle: TextStyle(color: Colors.black),
+                              hintText: 'г.Удан-Удэ,ул.Байкальская 1',
                               fillColor: Color.fromRGBO(228, 239, 243, 1.0),
                             ),
                             validator: (String value) {
@@ -69,160 +71,170 @@ class _CallDoctorScreenState extends State<CallDoctorScreen> {
                         alignment: WrapAlignment.center,
                         children: <Widget>[
                           Text(
-                              "Выберите нужного специалиста. В случае если вы выбираете конктрентного специалиста, время назначает сам врач!",
+                              "В случае если вы выбираете конктрентного специалиста, время назначает сам врач!",
+                              textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontStyle: FontStyle.italic, fontSize: 13.5)),
                         ],
                       ),
                     ),
-                    Container(
-                      child: Column(
-                        children: <Widget>[
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                "Врач:",
-                                style: TextStyle(fontSize: 16.0),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          ExpansionTile(
-                              key: _globalKey,
-                              title: new Text(
-                                this.select,
-                                style: TextStyle(color: Colors.grey[800]),
-                              ),
-                              children: <Widget>[
-                                Container(
-                                  height: 190,
-                                  color: Color.fromRGBO(228, 239, 243, 1.0),
-                                  child: ListView(
-                                    children: <Widget>[
-                                      new ListTile(
-                                        title:
-                                            const Text('Иванов Иван Иванович'),
-                                        onTap: () {
-                                          setState(() {
-                                            this.select =
-                                                'Иванов Иван Иванович';
-                                            _globalKey = GlobalKey();
-                                          });
-                                        },
-                                      ),
-                                      new ListTile(
-                                        title: const Text(
-                                            'Сидоров Павел Сергеевич'),
-                                        onTap: () {
-                                          setState(() {
-                                            this.select =
-                                                'Сидоров Павел Сергеевич';
-                                            _globalKey = GlobalKey();
-                                          });
-                                        },
-                                      ),
-                                      new ListTile(
-                                        title:
-                                            const Text('Петров Петр Петрович'),
-                                        onTap: () {
-                                          setState(() {
-                                            this.select =
-                                                'Петров Петр Петрович';
-                                            _globalKey = GlobalKey();
-                                          });
-                                        },
-                                      ),
-                                      new ListTile(
-                                        title: const Text(
-                                            'Петров Александр Петрович'),
-                                        onTap: () {
-                                          setState(() {
-                                            this.select =
-                                                'Петров Александр Петрович';
-                                            _globalKey = GlobalKey();
-                                          });
-                                        },
-                                      ),
-                                      new ListTile(
-                                        title: const Text(
-                                            'Петров Евгений Петрович'),
-                                        onTap: () {
-                                          setState(() {
-                                            this.select =
-                                                'Петров Евгений Петрович';
-                                            _globalKey = GlobalKey();
-                                          });
-                                        },
-                                      ),
-                                      new ListTile(
-                                        title:
-                                            const Text('Петров Илья Петрович'),
-                                        onTap: () {
-                                          setState(() {
-                                            this.select =
-                                                'Петров Илья Петрович';
-                                            _globalKey = GlobalKey();
-                                          });
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ]),
-                        ],
-                      ),
+                    SwitchListTile(
+                      onChanged: (_) {
+                        setState(() {
+                          switcher = _;
+                        });
+                      },
+                      value: switcher,
+                      title: Text("Выбрать врача"),
                     ),
                     SizedBox(
-                      height: 20,
+                      height: 10,
                     ),
-                    Container(
-                      child: Column(
-                        children: <Widget>[
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                "Время и дата:",
-                                style: TextStyle(fontSize: 16.0),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Container(
-                            color: Color.fromRGBO(228, 239, 243, 1.0),
-                            height: 50,
-                            child: FlatButton(
-                              onPressed: () async {
-                                final dtPick = await showDatePicker(
-                                    context: context,
-                                    initialDate: new DateTime.now(),
-                                    firstDate: new DateTime.now(),
-                                    lastDate: new DateTime(2022));
+                    switcher == true
+                        ? Container(
+                            child: Column(
+                              children: <Widget>[
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(
+                                      "Врач:",
+                                      style: TextStyle(fontSize: 16.0),
+                                    ),
+                                  ],
+                                ),
+                                ExpansionTile(
+                                  key: _globalKey,
+                                  title: new Text(
+                                    this.select,
+                                    style: TextStyle(color: Colors.grey[800]),
+                                  ),
+                                  children: <Widget>[
+                                    Container(
+                                      height: 190,
+                                      color: Color.fromRGBO(228, 239, 243, 1.0),
+                                      child: ListView(
+                                        children: <Widget>[
+                                          new ListTile(
+                                            title: const Text(
+                                                'Иванов Иван Иванович'),
+                                            onTap: () {
+                                              setState(() {
+                                                this.select =
+                                                    'Иванов Иван Иванович';
+                                                _globalKey = GlobalKey();
+                                              });
+                                            },
+                                          ),
+                                          new ListTile(
+                                            title: const Text(
+                                                'Сидоров Павел Сергеевич'),
+                                            onTap: () {
+                                              setState(() {
+                                                this.select =
+                                                    'Сидоров Павел Сергеевич';
+                                                _globalKey = GlobalKey();
+                                              });
+                                            },
+                                          ),
+                                          new ListTile(
+                                            title: const Text(
+                                                'Петров Петр Петрович'),
+                                            onTap: () {
+                                              setState(() {
+                                                this.select =
+                                                    'Петров Петр Петрович';
+                                                _globalKey = GlobalKey();
+                                              });
+                                            },
+                                          ),
+                                          new ListTile(
+                                            title: const Text(
+                                                'Петров Александр Петрович'),
+                                            onTap: () {
+                                              setState(() {
+                                                this.select =
+                                                    'Петров Александр Петрович';
+                                                _globalKey = GlobalKey();
+                                              });
+                                            },
+                                          ),
+                                          new ListTile(
+                                            title: const Text(
+                                                'Петров Евгений Петрович'),
+                                            onTap: () {
+                                              setState(() {
+                                                this.select =
+                                                    'Петров Евгений Петрович';
+                                                _globalKey = GlobalKey();
+                                              });
+                                            },
+                                          ),
+                                          new ListTile(
+                                            title: const Text(
+                                                'Петров Илья Петрович'),
+                                            onTap: () {
+                                              setState(() {
+                                                this.select =
+                                                    'Петров Илья Петрович';
+                                                _globalKey = GlobalKey();
+                                              });
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          )
+                        : Container(
+                            child: Column(
+                              children: <Widget>[
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(
+                                      "Время и дата:",
+                                      style: TextStyle(fontSize: 16.0),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Container(
+                                  color: Color.fromRGBO(228, 239, 243, 1.0),
+                                  height: 50,
+                                  child: FlatButton(
+                                    onPressed: () async {
+                                      final dtPick = await showDatePicker(
+                                          context: context,
+                                          initialDate: new DateTime.now(),
+                                          firstDate: new DateTime.now(),
+                                          lastDate: new DateTime(2022));
 
-                                if (dtPick != null && dtPick != _dataInfo) {
-                                  setState(() {
-                                    _dataInfo = dtPick;
-                                  });
-                                }
-                              },
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Text('${_dataInfo}'),
-                                  Icon(Icons.calendar_today),
-                                ],
-                              ),
+                                      if (dtPick != null &&
+                                          dtPick != _dataInfo) {
+                                        setState(() {
+                                          _dataInfo = dtPick;
+                                        });
+                                      }
+                                    },
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Text('${_dataInfo}'),
+                                        Icon(Icons.calendar_today),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
-                      ),
-                    ),
                     SizedBox(
                       height: 20,
                     ),
@@ -311,9 +323,24 @@ class _CallDoctorScreenState extends State<CallDoctorScreen> {
                           ),
                           onPressed: () {
                             if (!_formKey.currentState.validate()) {
-                              return;
-                            }
-
+                              if (switcher == true || select != '') {
+                                print(select);
+                              } else {
+                                showDialog<String>(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      AlertDialog(
+                                          title: const Text('Выберите врача'),
+                                          actions: <Widget>[
+                                        FlatButton(
+                                          child: Text('Закрыть'),
+                                          onPressed: () =>
+                                              Navigator.pop(context),
+                                        ),
+                                      ]),
+                                );
+                              }
+                            } 
                             _formKey.currentState.save();
 
                             //Send to API
