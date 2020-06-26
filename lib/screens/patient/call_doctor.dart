@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:medical_app/models/data_providers.dart';
 import 'package:medical_app/models/users_provider.dart';
 import 'package:provider/provider.dart';
@@ -209,27 +210,63 @@ class _CallDoctorScreenState extends State<CallDoctorScreen> {
                                   height: 50,
                                   child: FlatButton(
                                     onPressed: () async {
-                                      final dtPick = await showDatePicker(
-                                          context: context,
-                                          initialDate: new DateTime.now(),
-                                          firstDate: new DateTime.now(),
-                                          lastDate: new DateTime(2022));
+                                      DatePicker.showDateTimePicker(context,
+                                          showTitleActions: true,
+                                          onChanged: (date) {
+                                        print('change $date in time zone ' +
+                                            date.timeZoneOffset.inHours
+                                                .toString());
+                                      }, onConfirm: (date) {
+                                        print('confirm $date');
+                                        _dataInfo = date;
+                                        setState(() {});
+                                      },
+                                          currentTime: DateTime.now(),
+                                          locale: LocaleType.ru);
+                                      // final dtPick = await showDatePicker(
+                                      //     context: context,
+                                      //     initialDate: new DateTime.now(),
+                                      //     firstDate: new DateTime.now(),
+                                      //     lastDate: new DateTime(2022));
 
-                                      if (dtPick != null &&
-                                          dtPick != _dataInfo) {
-                                        setState(() {
-                                          _dataInfo = dtPick;
-                                        });
-                                      }
+                                      // if (dtPick != null &&
+                                      //     dtPick != _dataInfo) {
+                                      //   setState(() {
+                                      //     _dataInfo = dtPick;
+                                      //   });
+                                      // }
                                     },
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment: _dataInfo == null
+                                          ? MainAxisAlignment.spaceBetween
+                                          : MainAxisAlignment.center,
                                       children: <Widget>[
-                                        Text('${_dataInfo}'),
-                                        Icon(Icons.calendar_today),
+                                        _dataInfo == null
+                                            ? Icon(
+                                                Icons.calendar_today,
+                                                color: Colors.grey,
+                                              )
+                                            : Container(),
+                                        Text(
+                                          '${_dataInfo == null ? 'Нажмите для выбора даты и времени' : _dataInfo.toString().substring(0, 19)}',
+                                          textAlign: TextAlign.center,
+                                        ),
                                       ],
                                     ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Wrap(
+                                    alignment: WrapAlignment.center,
+                                    children: <Widget>[
+                                      Text(
+                                          "Для продолжения нужно поставить галочку",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontStyle: FontStyle.italic,
+                                              fontSize: 13.5)),
+                                    ],
                                   ),
                                 ),
                               ],
@@ -302,51 +339,80 @@ class _CallDoctorScreenState extends State<CallDoctorScreen> {
                       ),
                     ),
                     if (_approve)
-                      Container(
-                        padding: EdgeInsets.symmetric(vertical: 5.0),
-                        width: double.infinity,
-                        child: RaisedButton(
-                          elevation: 5.0,
-                          padding: EdgeInsets.all(20.0),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(14.0),
-                          ),
-                          color: Color.fromRGBO(104, 169, 196, 1.0),
-                          child: Text(
-                            'Сделать заказ',
-                            style: TextStyle(
-                              color: Colors.white,
-                              letterSpacing: 1.5,
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.w300,
-                            ),
-                          ),
-                          onPressed: () {
-                            if (!_formKey.currentState.validate()) {
-                              if (switcher == true || select != '') {
-                                print(select);
-                              } else {
-                                showDialog<String>(
-                                  context: context,
-                                  builder: (BuildContext context) =>
-                                      AlertDialog(
+                      switcher == false
+                          ? Container(
+                              padding: EdgeInsets.symmetric(vertical: 5.0),
+                              width: double.infinity,
+                              child: RaisedButton(
+                                elevation: 5.0,
+                                padding: EdgeInsets.all(20.0),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(14.0),
+                                ),
+                                color: Color.fromRGBO(104, 169, 196, 1.0),
+                                child: Text(
+                                  'Сделать заказ',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    letterSpacing: 1.5,
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.w300,
+                                  ),
+                                ),
+                                onPressed: () {
+                                  if (_formKey.currentState.validate()) {
+                                    print(_dataInfo);
+                                  }
+                                  _formKey.currentState.save();
+                                  //Send to API
+                                },
+                              ),
+                            )
+                          : Container(
+                              padding: EdgeInsets.symmetric(vertical: 5.0),
+                              width: double.infinity,
+                              child: RaisedButton(
+                                elevation: 5.0,
+                                padding: EdgeInsets.all(20.0),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(14.0),
+                                ),
+                                color: Color.fromRGBO(104, 169, 196, 1.0),
+                                child: Text(
+                                  'Сделать заказ',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    letterSpacing: 1.5,
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.w300,
+                                  ),
+                                ),
+                                onPressed: () {
+                                  if (_formKey.currentState.validate()) {
+                                    if (select == 'Выберите врача..') {
+                                      showDialog<String>(
+                                        context: context,
+                                        builder: (BuildContext context) =>
+                                            AlertDialog(
                                           title: const Text('Выберите врача'),
                                           actions: <Widget>[
-                                        FlatButton(
-                                          child: Text('Закрыть'),
-                                          onPressed: () =>
-                                              Navigator.pop(context),
+                                            FlatButton(
+                                              child: Text('Закрыть'),
+                                              onPressed: () =>
+                                                  Navigator.pop(context),
+                                            ),
+                                          ],
                                         ),
-                                      ]),
-                                );
-                              }
-                            } 
-                            _formKey.currentState.save();
-
-                            //Send to API
-                          },
-                        ),
-                      ),
+                                      );
+                                    } else {
+                                      print(select);
+                                    }
+                                  }
+                                  _formKey.currentState.save();
+                                  //Send to API
+                                },
+                              ),
+                            )
                   ],
                 ),
               ),

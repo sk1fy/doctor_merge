@@ -1,4 +1,3 @@
-import 'package:date_text_masked/date_text_masked.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:medical_app/models/data_providers.dart';
@@ -12,9 +11,9 @@ class ProfilePage extends StatefulWidget {
   _ProfilePageState createState() => _ProfilePageState();
 }
 
-var dateController = MaskedTextController(mask: "0000-00-00");
-var fioController = TextEditingController();
-var addressController = TextEditingController();
+final _dateController = MaskedTextController(mask: "0000-00-00");
+final TextEditingController _fioController = TextEditingController();
+final TextEditingController _addressController = TextEditingController();
 String _dropdownValue = 'Мужчина';
 bool notification = false;
 
@@ -22,7 +21,6 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-    final u = Provider.of<UsersProvider>(context, listen: false);
     return Consumer<UsersProvider>(
       builder: (_, users, child) => SafeArea(
           child: users.authToken != null
@@ -38,7 +36,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           children: <Widget>[
                             SizedBox(height: 30.0),
                             TextFormField(
-                              controller: fioController,
+                              controller: _fioController,
                               textCapitalization: TextCapitalization.words,
                               decoration: InputDecoration(
                                 filled: true,
@@ -60,12 +58,13 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                             SizedBox(height: 30.0),
                             TextFormField(
-                              controller: dateController,
+                              controller: _dateController,
                               textCapitalization: TextCapitalization.words,
                               decoration: InputDecoration(
                                 filled: true,
                                 icon: Icon(Icons.calendar_today),
-                                hintText: '1990-01-10',
+                                hintText:
+                                    '${users.user.birthdate == null ? "1990-01-10" : users.user.birthdate.substring(0, 10)}',
                                 labelText: 'Дата рождения',
                                 labelStyle: TextStyle(color: Colors.black),
                                 fillColor: Color.fromRGBO(228, 239, 243, 1.0),
@@ -94,14 +93,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                 'Женщина'
                               ].map<DropdownMenuItem<String>>((String value) {
                                 return DropdownMenuItem<String>(
-                                  value: value, 
+                                  value: value,
                                   child: Text(value),
                                 );
                               }).toList(),
                             ),
                             SizedBox(height: 30.0),
                             TextFormField(
-                              controller: addressController,
+                              controller: _addressController,
                               textCapitalization: TextCapitalization.words,
                               decoration: InputDecoration(
                                 filled: true,
@@ -136,7 +135,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     TextStyle(color: Colors.blue, fontSize: 16),
                               ),
                               onPressed: () => {
-                                // if (_formKey.currentState.validate())
+                                if (_formKey.currentState.validate())
                                   {saveUser(context)}
                               },
                             ),
@@ -181,31 +180,30 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future saveUser(context) async {
-    var dateConvert = '2020-06-19T07:26:37.314Z';
-    // dateController.text + ' ' + '00:00:00.000';
-    final name = fioController.text;
-    final address = (addressController.value.text);
+    final name = _fioController.text;
+    final address = _addressController.value.text ?? '';
     final gender = _dropdownValue;
-    final date = DateTime.parse(dateConvert);
+    final date = _dateController.text;
     final users = Provider.of<UsersProvider>(context, listen: false);
-    print(name);
-    print(address.toString());
-    print(date);
-    print(users.user.birthdate);
-    print(users.user.name);
-    // try {
-    //   await AuthNetwork.of(context).updateUser(users.user
-    //     ..name = name
-    //     // ..address = addressController.value.text
-    //     ..gender = gender
-    //     ..birthdate = date);
-    //   Scaffold.of(context)
-    //     ..removeCurrentSnackBar()
-    //     ..showSnackBar(SnackBar(
-    //       content: Text("Сохраненно"),
-    //     ));
-    // } catch (err) {
-    //   print(err);
-    // }
+
+    // print(name);
+    // print(date);
+    // print(gender);
+    // print(users.user.name);
+    // print(address);
+    try {
+      await AuthNetwork.of(context).updateUser(users.user
+        // ..name = name
+        ..birthdate = date
+        // ..address.address = address
+        ..gender = gender);
+      Scaffold.of(context)
+        ..removeCurrentSnackBar()
+        ..showSnackBar(SnackBar(
+          content: Text("Сохраненно"),
+        ));
+    } catch (err) {
+      print(err);
+    }
   }
 }

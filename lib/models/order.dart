@@ -10,7 +10,7 @@ class Order {
   User user;
   Doctor doctor;
   String status, address, userComment, doctorComment;
-  DateTime date;
+  String date;
   List<ChatMessage> chat;
   List<Call> connectedCalls;
 
@@ -32,7 +32,7 @@ class Order {
   factory Order.rand() {
     return Order(
         status: "Активный",
-        date: DateTime.now(),
+        date: '1990-12-12',
         address: "ул.Байкальская 5",
         userComment:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",

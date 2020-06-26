@@ -6,7 +6,7 @@ part 'user.g.dart';
 class User {
   String name, gender, pushToken, password, pin;
   Address address;
-  DateTime birthdate;
+  String birthdate;
 
   @JsonKey(name: "_id")
   final String id;
@@ -28,7 +28,7 @@ class User {
       gender: "Мужчина",
       pushToken: "03df25c845d460bcdad7802d2vf6fc1dfde97283bf75cc993eb6dca835ea2e2f",
       id: "123123",
-      birthdate: DateTime.now()
+      birthdate: '2002-12-09'
     );}
 
   factory User.fromJson(Map<String, dynamic> data) => _$UserFromJson(data);

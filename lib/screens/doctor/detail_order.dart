@@ -8,9 +8,8 @@ class DetailOrderScreen extends StatefulWidget {
   _DetailOrderScreenState createState() => _DetailOrderScreenState();
 }
 
-Widget _buildMessageFrom({DateTime toDate}) {
-  var result =
-      "${toDate.day}.${toDate.month}.${toDate.year} ${toDate.hour}:${toDate.minute}:${toDate.second}";
+Widget _buildMessageFrom({String toDate}) {
+  var result ='';
 
   return Row(
     mainAxisAlignment: MainAxisAlignment.end,
@@ -37,7 +36,7 @@ Widget _buildMessageFrom({DateTime toDate}) {
               padding: const EdgeInsets.all(5.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[Text(result)],
+                children: <Widget>[Text(toDate)],
               ),
             )
           ],
@@ -47,11 +46,11 @@ Widget _buildMessageFrom({DateTime toDate}) {
   );
 }
 
-Widget _buildMessageTo({DateTime toDate, bool user}) {
-  String modifed = DateTime(toDate.year, toDate.month, toDate.day, toDate.hour,
-          toDate.minute, toDate.second)
-      .toString()
-      ?.replaceFirst(RegExp(r"\.[^]*"), '');
+Widget _buildMessageTo({String toDate, bool user}) {
+  // String modifed = DateTime(toDate.year, toDate.month, toDate.day, toDate.hour,
+  //         toDate.minute, toDate.second)
+  //     .toString()
+  //     ?.replaceFirst(RegExp(r"\.[^]*"), '');
 
   return Row(
     mainAxisAlignment:
@@ -79,7 +78,7 @@ Widget _buildMessageTo({DateTime toDate, bool user}) {
               padding: const EdgeInsets.all(5.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[Text(modifed)],
+                children: <Widget>[Text(toDate)],
               ),
             )
           ],
