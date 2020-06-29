@@ -109,18 +109,18 @@ class AuthNetwork extends Network {
     return User.fromJson(jsonDecode(ans.body));
   }
 
-  Future<FormData> _prepUserData(User user) async {
-    print(user.toJson());
-    return FormData.fromMap({
-      ...Map.fromEntries(
-          user.toJson().entries.where((e) => !e.key.startsWith("user"))),
-      "user": user?.id ?? "",
-    });
-  }
+  // Future<FormData> _prepUserData(User user) async {
+  //   print(user.toJson());
+  //   return FormData.fromMap({
+  //     ...Map.fromEntries(
+  //         user.toJson().entries.where((e) => !e.key.startsWith("user"))),
+  //     "user": user?.id ?? "",
+  //   });
+  // }
 
   Future updateUser(User user) async {
-    final fd = await _prepUserData(user);
-    final ans = await _dio.patch("/crud/user", data: fd);
+    // final fd = await _prepUserData(user);
+    final ans = await _dio.patch("/crud/user", data: user.toJson());
     if (ans.statusCode != 200) throw Exception(ans.data);
   }
 
@@ -145,23 +145,23 @@ class AuthNetwork extends Network {
     if (ans.statusCode != 200) throw Exception(ans.data);
   }
 
-  Future<FormData> _prepOrderData(Order order) async {
-    return FormData.fromMap({
-      ...Map.fromEntries(
-          order.toJson().entries.where((e) => !e.key.startsWith("order"))),
-      "order": order?.id ?? "",
-    });
-  }
+  // Future<FormData> _prepOrderData(Order order) async {
+  //   return FormData.fromMap({
+  //     ...Map.fromEntries(
+  //         order.toJson().entries.where((e) => !e.key.startsWith("order"))),
+  //     "order": order?.id ?? "",
+  //   });
+  // }
 
   Future createOrder(Order order) async {
-    final fd = await _prepOrderData(order);
-    var ans = await _dio.post("/crud/order", data: fd);
+    // final fd = await _prepOrderData(order);
+    var ans = await _dio.post("/crud/order", data: order.toJson());
     if (ans.statusCode != 200) throw Exception(ans.data);
   }
 
   Future updateOrder(Order order) async {
-    final fd = await _prepOrderData(order);
-    var ans = await _dio.patch("/crud/order", data: fd);
+    // final fd = await _prepOrderData(order);
+    var ans = await _dio.patch("/crud/order", data: order.toJson());
     if (ans.statusCode != 200) throw Exception(ans.data);
   }
 }

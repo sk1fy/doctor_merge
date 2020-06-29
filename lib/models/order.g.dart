@@ -8,12 +8,12 @@ part of 'order.dart';
 
 Order _$OrderFromJson(Map<String, dynamic> json) {
   return Order(
-    user: json['user'] == null
+    client: json['client'] == null
         ? null
-        : User.fromJson(json['user'] as Map<String, dynamic>),
-    doctor: json['doctor'] == null
+        : User.fromJson(json['client'] as Map<String, dynamic>),
+    medic: json['medic'] == null
         ? null
-        : Doctor.fromJson(json['doctor'] as Map<String, dynamic>),
+        : Doctor.fromJson(json['medic'] as Map<String, dynamic>),
     status: json['status'] as String,
     address: json['address'] as String,
     userComment: json['userComment'] as String,
@@ -33,8 +33,8 @@ Order _$OrderFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$OrderToJson(Order instance) => <String, dynamic>{
-      'user': instance.user?.toJson(),
-      'doctor': instance.doctor?.toJson(),
+      'client': instance.client?.toJson(),
+      'medic': instance.medic?.toJson(),
       'status': instance.status,
       'address': instance.address,
       'userComment': instance.userComment,

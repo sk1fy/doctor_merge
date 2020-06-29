@@ -20,6 +20,13 @@ class HomePagePatient extends StatefulWidget {
 }
 
 class _HomePagePatientState extends State<HomePagePatient> {
+  final docSpeciality = [
+    'Педиатр',
+    'Терапевт',
+    'Хирург',
+    'Фармаколог',
+    'Онколог'
+  ];
   int currentTabIndex = 0;
 
   Widget _buildFloatingActionButton() {
@@ -108,55 +115,59 @@ class _HomePagePatientState extends State<HomePagePatient> {
     );
   }
 
-  Widget _buildSheetButton() {
-    return RaisedButton(
-      child:
-          Text('Педиатр', style: TextStyle(color: Colors.white, fontSize: 18)),
-      color: Color.fromRGBO(33, 153, 252, 1.0),
-      onPressed: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (ctx) => CallDoctorScreen()));
-      },
-      padding: EdgeInsets.all(17.0),
-    );
-  }
-
   Container _buildBottomSheet(BuildContext context) {
     return Container(
       height: 300,
       padding: EdgeInsets.all(15.0),
-      child: ListView(
+      child: Column(
         children: <Widget>[
-          SizedBox(
-            height: 40,
-            child: ListTile(
-                title: Text(
-              'Вызвать врача',
-              style: TextStyle(
-                // color: Colors.white,
-                fontSize: 20,
-              ),
-            )),
-          ),
-          Divider(
-            height: 15,
-            // color: Colors.white,
-            thickness: 2,
-            indent: 70,
-            endIndent: 20,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 15, 20, 5),
-            child: Wrap(
-              direction: Axis.horizontal,
-              alignment: WrapAlignment.spaceAround,
-              spacing: 8.0,
-              runSpacing: 8.0,
+          Expanded(
+            flex: 1,
+            child: Column(
               children: <Widget>[
-                _buildSheetButton(),
-                _buildSheetButton(),
-                _buildSheetButton(),
+                SizedBox(
+                  height: 40,
+                  child: ListTile(
+                      title: Text(
+                    'Вызвать врача',
+                    style: TextStyle(
+                      // color: Colors.white,
+                      fontSize: 20,
+                    ),
+                  )),
+                ),
+                Divider(
+                  height: 15,
+                  // color: Colors.white,
+                  thickness: 2,
+                  indent: 70,
+                  endIndent: 20,
+                ),
               ],
+            ),
+          ),
+          Expanded(
+            flex: 3,
+            child: ListView.builder(
+              itemCount: docSpeciality.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Container(
+                  margin: EdgeInsets.symmetric(vertical: 5),
+                  child: RaisedButton(
+                    child: Text(docSpeciality[index],
+                        style: TextStyle(color: Colors.white, fontSize: 17)),
+                    color: Color.fromRGBO(33, 153, 252, 1.0),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (ctx) => CallDoctorScreen(
+                                  title: docSpeciality[index])));
+                    },
+                    padding: EdgeInsets.all(15.0),
+                  ),
+                );
+              },
             ),
           ),
         ],

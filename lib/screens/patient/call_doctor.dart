@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:medical_app/models/data_providers.dart';
+import 'package:medical_app/models/network.dart';
 import 'package:medical_app/models/users_provider.dart';
 import 'package:provider/provider.dart';
 
 class CallDoctorScreen extends StatefulWidget {
+  final String title;
+  CallDoctorScreen({Key key, @required this.title}) : super(key: key);
   @override
   _CallDoctorScreenState createState() => _CallDoctorScreenState();
 }
 
+final TextEditingController _addressController = TextEditingController();
+final TextEditingController _commentController = TextEditingController();
+
 class _CallDoctorScreenState extends State<CallDoctorScreen> {
+   
   GlobalKey _globalKey = GlobalKey();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String select = 'Выберите врача..';
@@ -22,7 +29,7 @@ class _CallDoctorScreenState extends State<CallDoctorScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Вызов педиатра"),
+          title: Text('Вызов ${widget.title}a'),
         ),
         body: SingleChildScrollView(
           child: Consumer<OrderProvider>(
@@ -48,6 +55,7 @@ class _CallDoctorScreenState extends State<CallDoctorScreen> {
                             height: 10,
                           ),
                           TextFormField(
+                            controller: _addressController,
                             textCapitalization: TextCapitalization.words,
                             decoration: InputDecoration(
                               filled: true,
@@ -255,20 +263,6 @@ class _CallDoctorScreenState extends State<CallDoctorScreen> {
                                     ),
                                   ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Wrap(
-                                    alignment: WrapAlignment.center,
-                                    children: <Widget>[
-                                      Text(
-                                          "Для продолжения нужно поставить галочку",
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              fontStyle: FontStyle.italic,
-                                              fontSize: 13.5)),
-                                    ],
-                                  ),
-                                ),
                               ],
                             ),
                           ),
@@ -291,6 +285,7 @@ class _CallDoctorScreenState extends State<CallDoctorScreen> {
                             height: 10,
                           ),
                           TextFormField(
+                            controller: _commentController,
                             maxLines: 10,
                             textCapitalization: TextCapitalization.sentences,
                             decoration: InputDecoration(
@@ -362,6 +357,7 @@ class _CallDoctorScreenState extends State<CallDoctorScreen> {
                                 onPressed: () {
                                   if (_formKey.currentState.validate()) {
                                     print(_dataInfo);
+                                    sendOrder(context);
                                   }
                                   _formKey.currentState.save();
                                   //Send to API
@@ -405,7 +401,10 @@ class _CallDoctorScreenState extends State<CallDoctorScreen> {
                                         ),
                                       );
                                     } else {
+                                      print(widget.title);
                                       print(select);
+                                      _addressController.clear();
+                                      _commentController.clear();
                                     }
                                   }
                                   _formKey.currentState.save();
@@ -421,5 +420,32 @@ class _CallDoctorScreenState extends State<CallDoctorScreen> {
         ),
       ),
     );
+  }
+
+    Future sendOrder(context) async {
+    // final name = _fioController.text;
+    final title = widget.title;
+    final address = _addressController.value.text ?? '';
+    final doctor = select;
+    final comments = _commentController.value.text;
+    // final date = _dateController.text;
+    final order = Provider.of<OrderProvider>(context, listen: false);
+    final client = Provider.of<UsersProvider>(context, listen: false);
+    print(client.user.id);
+    // try {
+    //   await AuthNetwork.of(context).createOrder(order.order
+    //   // ..medic.name = doctor
+    //   // ..medic.specialty = title
+    //   // ..client = client.user.id
+    //   ..userComment = comments
+    //   ..address = address);
+    //   Scaffold.of(context)
+    //     ..removeCurrentSnackBar()
+    //     ..showSnackBar(SnackBar(
+    //       content: Text("Отправленно"),
+    //     ));
+    // } catch (err) {
+    //   print(err);
+    // }
   }
 }

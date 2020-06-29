@@ -193,10 +193,11 @@ class _ProfilePageState extends State<ProfilePage> {
     // print(address);
     try {
       await AuthNetwork.of(context).updateUser(users.user
-        // ..name = name
+        ..name = name
         ..birthdate = date
-        // ..address.address = address
+        ..address = address
         ..gender = gender);
+      await users.saveToPrefs();  
       Scaffold.of(context)
         ..removeCurrentSnackBar()
         ..showSnackBar(SnackBar(

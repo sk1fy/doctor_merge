@@ -11,9 +11,7 @@ User _$UserFromJson(Map<String, dynamic> json) {
     name: json['name'] as String,
     gender: json['gender'] as String,
     pushToken: json['pushToken'] as String,
-    address: json['address'] == null
-        ? null
-        : Address.fromJson(json['address'] as Map<String, dynamic>),
+    address: json['address'] as String,
     password: json['password'] as String,
     pin: json['pin'] as String,
     birthdate: json['birthdate'] as String,
@@ -25,7 +23,7 @@ User _$UserFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'name': instance.name,
       'gender': instance.gender,
-      'address': instance.address?.toJson(),
+      'address': instance.address,
       'pushToken': instance.pushToken,
       'password': instance.password,
       'pin': instance.pin,

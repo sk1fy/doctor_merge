@@ -1,11 +1,9 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:medical_app/models/address.dart';
 part 'user.g.dart';
 
 @JsonSerializable()
 class User {
-  String name, gender, pushToken, password, pin;
-  Address address;
+  String name, gender, pushToken, password, pin, address;
   String birthdate;
 
   @JsonKey(name: "_id")

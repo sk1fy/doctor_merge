@@ -4,11 +4,18 @@ import 'package:medical_app/models/data_providers.dart';
 import 'package:medical_app/screens/patient/test.dart';
 import 'package:provider/provider.dart';
 
-
 class DoctorPage extends StatefulWidget {
   @override
   _DoctorPageState createState() => _DoctorPageState();
 }
+
+final docSpeciality = [
+  'Педиатр',
+  'Терапевт',
+  'Хирург',
+  'Фармаколог',
+  'Онколог'
+];
 
 Widget _buildCategoryButton() {
   return Container(
@@ -34,7 +41,8 @@ class _DoctorPageState extends State<DoctorPage> {
   List filteredDoctors = [];
 
   getDoctors() async {
-    var response = await Dio().get('https://jsonplaceholder.typicode.com/users');
+    var response =
+        await Dio().get('https://jsonplaceholder.typicode.com/users');
     return response.data;
   }
 
@@ -104,16 +112,19 @@ class _DoctorPageState extends State<DoctorPage> {
                 Container(
                   margin: EdgeInsets.symmetric(vertical: 10.0),
                   height: 78.0,
-                  child: ListView(
+                  child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    children: <Widget>[
-                      Container(
+                    itemCount: docSpeciality.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Container(
                         margin: EdgeInsets.symmetric(horizontal: 4.0),
                         child: RaisedButton(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(6.0),
                           ),
-                          onPressed: () => null,
+                          onPressed: () => {
+                            print(docSpeciality[index])
+                          },
                           color: Color.fromRGBO(33, 153, 252, 1.0),
                           textColor: Colors.white,
                           padding: EdgeInsets.all(18),
@@ -121,31 +132,12 @@ class _DoctorPageState extends State<DoctorPage> {
                             // Replace with a Row for horizontal icon + text
                             children: <Widget>[
                               Icon(Icons.person_outline),
-                              Text("Педиатр")
+                              Text(docSpeciality[index])
                             ],
                           ),
                         ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.symmetric(horizontal: 4.0),
-                        child: RaisedButton(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6.0),
-                          ),
-                          onPressed: () => null,
-                          color: Color.fromRGBO(33, 153, 252, 1.0),
-                          textColor: Colors.white,
-                          padding: EdgeInsets.all(18),
-                          child: Column(
-                            // Replace with a Row for horizontal icon + text
-                            children: <Widget>[
-                              Icon(Icons.person_outline),
-                              Text("Педиатр")
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
+                      );
+                    },
                   ),
                 ),
               ],
@@ -163,8 +155,8 @@ class _DoctorPageState extends State<DoctorPage> {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    topRight: Radius.circular(10),
+                  topLeft: Radius.circular(10),
+                  topRight: Radius.circular(10),
                 ),
                 boxShadow: [
                   BoxShadow(
@@ -184,9 +176,9 @@ class _DoctorPageState extends State<DoctorPage> {
                           return GestureDetector(
                             onTap: () {
                               Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (ctx) => TestScreen()));
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (ctx) => TestScreen()));
                             },
                             child: Card(
                               elevation: 5,
