@@ -7,7 +7,6 @@ import 'package:medical_app/models/user.dart';
 import 'package:medical_app/models/users_provider.dart';
 import 'package:provider/provider.dart';
 
-
 const baseUrlApi = "http://medic.bw2api.ru/api/v1";
 const baseUrlImage = "http://vp.bw2api.ru/";
 
@@ -145,17 +144,13 @@ class AuthNetwork extends Network {
     if (ans.statusCode != 200) throw Exception(ans.data);
   }
 
-  // Future<FormData> _prepOrderData(Order order) async {
-  //   return FormData.fromMap({
-  //     ...Map.fromEntries(
-  //         order.toJson().entries.where((e) => !e.key.startsWith("order"))),
-  //     "order": order?.id ?? "",
-  //   });
-  // }
-
-  Future createOrder(Order order) async {
-    // final fd = await _prepOrderData(order);
-    var ans = await _dio.post("/crud/order", data: order.toJson());
+  Future createOrder(String client, String date, String address, String comments) async {
+    var ans = await _dio.post("/crud/order", data: {
+      "client": client,
+      "date": date,
+      "address": address,
+      "clientComment": comments
+    });
     if (ans.statusCode != 200) throw Exception(ans.data);
   }
 

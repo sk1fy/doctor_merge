@@ -356,8 +356,27 @@ class _CallDoctorScreenState extends State<CallDoctorScreen> {
                                 ),
                                 onPressed: () {
                                   if (_formKey.currentState.validate()) {
+                                    if (_dataInfo == null) {
+                                      showDialog<String>(
+                                        context: context,
+                                        builder: (BuildContext context) =>
+                                            AlertDialog(
+                                          title: const Text('Выберите дату и время'),
+                                          actions: <Widget>[
+                                            FlatButton(
+                                              child: Text('Закрыть'),
+                                              onPressed: () =>
+                                                  Navigator.pop(context),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    } else {
                                     print(_dataInfo);
                                     sendOrder(context);
+                                      _addressController.clear();
+                                      _commentController.clear();
+                                    }
                                   }
                                   _formKey.currentState.save();
                                   //Send to API
@@ -401,8 +420,8 @@ class _CallDoctorScreenState extends State<CallDoctorScreen> {
                                         ),
                                       );
                                     } else {
-                                      print(widget.title);
-                                      print(select);
+                                      // print(widget.title);
+                                      // print(select);
                                       _addressController.clear();
                                       _commentController.clear();
                                     }
@@ -423,29 +442,18 @@ class _CallDoctorScreenState extends State<CallDoctorScreen> {
   }
 
     Future sendOrder(context) async {
-    // final name = _fioController.text;
-    final title = widget.title;
-    final address = _addressController.value.text ?? '';
-    final doctor = select;
+    final clients = Provider.of<UsersProvider>(context, listen: false);
+    // final orders = Provider.of<OrderProvider>(context, listen: false);
+    final address = _addressController.value.text;
+    // final medic = switcher != false ? select : widget.title;
     final comments = _commentController.value.text;
-    // final date = _dateController.text;
-    final order = Provider.of<OrderProvider>(context, listen: false);
-    final client = Provider.of<UsersProvider>(context, listen: false);
-    print(client.user.id);
-    // try {
-    //   await AuthNetwork.of(context).createOrder(order.order
-    //   // ..medic.name = doctor
-    //   // ..medic.specialty = title
-    //   // ..client = client.user.id
-    //   ..userComment = comments
-    //   ..address = address);
-    //   Scaffold.of(context)
-    //     ..removeCurrentSnackBar()
-    //     ..showSnackBar(SnackBar(
-    //       content: Text("Отправленно"),
-    //     ));
-    // } catch (err) {
-    //   print(err);
-    // }
+    final client = clients.user.id;
+    final date = _dataInfo.toString();
+
+    try {
+      await AuthNetwork.of(context).createOrder(client, date, address, comments);
+    } catch (err) {
+      print(err);
+    }
   }
 }

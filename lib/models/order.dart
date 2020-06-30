@@ -7,8 +7,8 @@ part 'order.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Order {
-  User client;
-  Doctor medic;
+  User user;
+  Doctor doctor;
   String status, address, userComment, doctorComment;
   String date;
   List<ChatMessage> chat;
@@ -18,8 +18,8 @@ class Order {
   final String id;
 
   Order(
-      {this.client,
-      this.medic,
+      {this.user,
+      this.doctor,
       this.status,
       this.address,
       this.userComment,
