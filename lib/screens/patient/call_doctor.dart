@@ -286,7 +286,7 @@ class _CallDoctorScreenState extends State<CallDoctorScreen> {
                           ),
                           TextFormField(
                             controller: _commentController,
-                            maxLines: 10,
+                            maxLines: 5,
                             textCapitalization: TextCapitalization.sentences,
                             decoration: InputDecoration(
                               hintText: '...',

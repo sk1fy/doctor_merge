@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:medical_app/screens/doctor/detail_note.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:medical_app/models/note.dart';
+import 'package:medical_app/screens/doctor/add_note.dart';
+import 'package:medical_app/utilities/hive_box.dart';
 
 class NotesDoctor extends StatefulWidget {
   @override
@@ -19,7 +23,7 @@ class _NotesDoctorState extends State<NotesDoctor> {
             child: InkWell(
               onTap: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (ctx) => DetailNoteScreen()));
+                    MaterialPageRoute(builder: (ctx) => AddNoteScreen()));
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -67,35 +71,49 @@ class _NotesDoctorState extends State<NotesDoctor> {
                 ],
               ),
               child: Container(
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
-                  child: ListView.builder(
-                    itemCount: items.length,
-                    itemBuilder: (context, position) {
-                      final item = items[position];
-                      return Dismissible(
-                        // Show a red background as the item is swiped away.
-                        background: Container(color: Colors.red),
-                        key: Key(item),
-                        onDismissed: (direction) {
-                          setState(() {
-                            items.removeAt(position);
-                          });
-
-                          Scaffold.of(context).showSnackBar(
-                              SnackBar(content: Text("Удалён")));
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: Color.fromRGBO(228, 239, 243, 1.0),
-                              border: Border(
-                                bottom:
-                                    BorderSide(width: 1.0, color: Colors.grey),
-                              )),
+                padding: EdgeInsets.only(top: 12),
+                child: ValueListenableBuilder(
+                  valueListenable: Hive.box<Note>(HiveBoxes.note).listenable(),
+                  builder: (context, Box<Note> box, _) {
+                    if (box.values.isEmpty)
+                      return Center(
+                        child: Text("Note list is empty"),
+                      );
+                    return ListView.builder(
+                      itemCount: box.values.length,
+                      itemBuilder: (context, index) {
+                        Note res = box.getAt(index);
+                        return Dismissible(
+                          background: Container(
+                            color: Colors.red,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Icon(Icons.delete),
+                                Icon(Icons.delete),
+                              ],
+                            ),
+                          ),
+                          key: UniqueKey(),
+                          onDismissed: (direction) {
+                            res.delete();
+                            Scaffold.of(context).showSnackBar(SnackBar(
+                                content: Text("Заметка ${res.title} удалена")));
+                          },
                           child: ExpansionTile(
-                            title: Text("Купить маску"),
-                            trailing: Text("12.12.4444"),
+                            leading: Container(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 10),
+                              child: Text(
+                                (index + 1).toString(),
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 18),
+                              ),
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle, color: Colors.blue),
+                            ),
+                            title: Text(res.title == null ? '' : res.title,
+                                style: TextStyle(fontSize: 16)),
                             children: <Widget>[
                               Container(
                                 child: Column(
@@ -105,11 +123,11 @@ class _NotesDoctorState extends State<NotesDoctor> {
                                       child: Column(
                                         children: <Widget>[
                                           Container(
-                                            width: double.infinity,
-                                            padding: EdgeInsets.all(24.0),
-                                            child: Text(
-                                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ac ultrices blandit elit nisl nisi quam. Potenti egestas purus mattis in. Duis erat purus eget risus velit feugiat risus amet. Lacus nisi, accumsan egestas massa eget odio mi penatibus. Lectus semper dui lectus habitant sit quis elementum suspendisse. Auctor vitae feugiat dignissim ipsum vivamus."),
-                                          ),
+                                              width: double.infinity,
+                                              padding: EdgeInsets.all(24.0),
+                                              child: Text(res.note == null
+                                                  ? ''
+                                                  : res.note)),
                                         ],
                                       ),
                                     ),
@@ -118,10 +136,10 @@ class _NotesDoctorState extends State<NotesDoctor> {
                               )
                             ],
                           ),
-                        ),
-                      );
-                    },
-                  ),
+                        );
+                      },
+                    );
+                  },
                 ),
               ),
             ),
