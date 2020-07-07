@@ -7,8 +7,6 @@ import 'package:medical_app/screens/doctor/home_pages/notes.dart';
 import 'package:medical_app/screens/doctor/home_pages/orders.dart';
 import 'package:medical_app/screens/doctor/home_pages/profile.dart';
 import 'package:medical_app/screens/doctor/home_pages/stocks.dart';
-import 'package:medical_app/screens/doctor/login.dart';
-import 'package:medical_app/utilities/constans.dart';
 import 'package:provider/provider.dart';
 
 class HomePageDoctor extends StatefulWidget {

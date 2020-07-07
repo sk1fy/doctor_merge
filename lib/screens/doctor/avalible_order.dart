@@ -42,7 +42,7 @@ class _AvalibleOrderScreenState extends State<AvalibleOrderScreen> {
                                   ),
                                   SizedBox(width: 10),
                                   Text(
-                                    "Педиатр",
+                                    order.order.specialization == null ? 'Врач не выбран' : order.order.specialization,
                                     style: TextStyle(fontSize: 16),
                                   )
                                 ],
@@ -59,7 +59,7 @@ class _AvalibleOrderScreenState extends State<AvalibleOrderScreen> {
                                   ),
                                   SizedBox(width: 10),
                                   Text(
-                                    "ул.Байкальская 10",
+                                    order.order.address,
                                     style: TextStyle(fontSize: 16),
                                   )
                                 ],
@@ -76,7 +76,7 @@ class _AvalibleOrderScreenState extends State<AvalibleOrderScreen> {
                                   ),
                                   SizedBox(width: 10),
                                   Text(
-                                    '${order.order.date}',
+                                    order.order.date,
                                     style: TextStyle(fontSize: 16),
                                   )
                                 ],

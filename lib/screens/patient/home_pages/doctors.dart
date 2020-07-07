@@ -2,20 +2,14 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:medical_app/models/data_providers.dart';
 import 'package:medical_app/screens/patient/test.dart';
+import 'package:medical_app/utilities/medics.dart';
 import 'package:provider/provider.dart';
 
 class DoctorPage extends StatefulWidget {
   @override
   _DoctorPageState createState() => _DoctorPageState();
 }
-
-final docSpeciality = [
-  'Педиатр',
-  'Терапевт',
-  'Хирург',
-  'Фармаколог',
-  'Онколог'
-];
+final medics =  MedicList.docSpeciality; 
 
 Widget _buildCategoryButton() {
   return Container(
@@ -114,7 +108,7 @@ class _DoctorPageState extends State<DoctorPage> {
                   height: 78.0,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: docSpeciality.length,
+                    itemCount: medics.length,
                     itemBuilder: (BuildContext context, int index) {
                       return Container(
                         margin: EdgeInsets.symmetric(horizontal: 4.0),
@@ -123,7 +117,7 @@ class _DoctorPageState extends State<DoctorPage> {
                             borderRadius: BorderRadius.circular(6.0),
                           ),
                           onPressed: () => {
-                            print(docSpeciality[index])
+                            print(medics[index])
                           },
                           color: Color.fromRGBO(33, 153, 252, 1.0),
                           textColor: Colors.white,
@@ -132,7 +126,7 @@ class _DoctorPageState extends State<DoctorPage> {
                             // Replace with a Row for horizontal icon + text
                             children: <Widget>[
                               Icon(Icons.person_outline),
-                              Text(docSpeciality[index])
+                              Text(medics[index])
                             ],
                           ),
                         ),

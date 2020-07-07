@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:medical_app/models/data_providers.dart';
 import 'package:medical_app/models/network.dart';
 import 'package:medical_app/models/users_provider.dart';
@@ -231,18 +232,6 @@ class _CallDoctorScreenState extends State<CallDoctorScreen> {
                                       },
                                           currentTime: DateTime.now(),
                                           locale: LocaleType.ru);
-                                      // final dtPick = await showDatePicker(
-                                      //     context: context,
-                                      //     initialDate: new DateTime.now(),
-                                      //     firstDate: new DateTime.now(),
-                                      //     lastDate: new DateTime(2022));
-
-                                      // if (dtPick != null &&
-                                      //     dtPick != _dataInfo) {
-                                      //   setState(() {
-                                      //     _dataInfo = dtPick;
-                                      //   });
-                                      // }
                                     },
                                     child: Row(
                                       mainAxisAlignment: _dataInfo == null
@@ -256,7 +245,8 @@ class _CallDoctorScreenState extends State<CallDoctorScreen> {
                                               )
                                             : Container(),
                                         Text(
-                                          '${_dataInfo == null ? 'Нажмите для выбора даты и времени' : _dataInfo.toString().substring(0, 19)}',
+                                          // '${_dataInfo == null ? 'Нажмите для выбора даты и времени' : _dataInfo.toString().substring(0, 19)}',
+                                          '${_dataInfo == null ? 'Нажмите для выбора даты и времени' : DateFormat('dd.MM.yy hh:mm:ss', 'en_US').format(_dataInfo)}',
                                           textAlign: TextAlign.center,
                                         ),
                                       ],
@@ -449,9 +439,9 @@ class _CallDoctorScreenState extends State<CallDoctorScreen> {
     final comments = _commentController.value.text;
     final client = clients.user.id;
     final date = _dataInfo.toString();
-
+    final specialization = widget.title;
     try {
-      await AuthNetwork.of(context).createOrder(client, date, address, comments);
+      await AuthNetwork.of(context).createOrder(client, date, specialization, address, comments);
     } catch (err) {
       print(err);
     }

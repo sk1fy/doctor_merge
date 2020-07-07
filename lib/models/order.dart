@@ -11,6 +11,7 @@ class Order {
   Doctor doctor;
   String status, address, userComment, doctorComment;
   String date;
+  String specialization;
   List<ChatMessage> chat;
   List<Call> connectedCalls;
 
@@ -26,6 +27,7 @@ class Order {
       this.doctorComment,
       this.id,
       this.date,
+      this.specialization,
       this.connectedCalls,
       this.chat});
 

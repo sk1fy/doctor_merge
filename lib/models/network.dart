@@ -129,25 +129,26 @@ class AuthNetwork extends Network {
     return Doctor.fromJson(ans.data);
   }
 
-  Future<FormData> _prepDoctorData(Doctor doctor) async {
-    print(doctor.toJson());
-    return FormData.fromMap({
-      ...Map.fromEntries(
-          doctor.toJson().entries.where((e) => !e.key.startsWith("doctor"))),
-      "doctor": doctor?.id ?? "",
-    });
-  }
+  // Future<FormData> _prepDoctorData(Doctor doctor) async {
+  //   print(doctor.toJson());
+  //   return FormData.fromMap({
+  //     ...Map.fromEntries(
+  //         doctor.toJson().entries.where((e) => !e.key.startsWith("doctor"))),
+  //     "doctor": doctor?.id ?? "",
+  //   });
+  // }
 
   Future updateDoctor(Doctor doctor) async {
-    final fd = await _prepDoctorData(doctor);
-    final ans = await _dio.patch("/crud/doctor", data: fd);
+    // final fd = await _prepDoctorData(doctor);
+    final ans = await _dio.patch("/crud/doctor", data: doctor.toJson());
     if (ans.statusCode != 200) throw Exception(ans.data);
   }
 
-  Future createOrder(String client, String date, String address, String comments) async {
+  Future createOrder(String client, String date, String specialization, String address, String comments) async {
     var ans = await _dio.post("/crud/order", data: {
       "client": client,
       "date": date,
+      "specialization": specialization, 
       "address": address,
       "clientComment": comments
     });

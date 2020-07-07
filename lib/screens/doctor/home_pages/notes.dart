@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:medical_app/models/note.dart';
 import 'package:medical_app/screens/doctor/add_note.dart';
 import 'package:medical_app/utilities/hive_box.dart';
+
 
 class NotesDoctor extends StatefulWidget {
   @override
@@ -11,10 +13,10 @@ class NotesDoctor extends StatefulWidget {
 }
 
 class _NotesDoctorState extends State<NotesDoctor> {
-  final items = List<String>.generate(20, (i) => "Item ${i + 1}");
 
   @override
   Widget build(BuildContext context) {
+    Intl.defaultLocale = 'ru_RU';
     return Column(
       children: <Widget>[
         Container(
@@ -41,7 +43,7 @@ class _NotesDoctorState extends State<NotesDoctor> {
                   ),
                   SizedBox(width: 15),
                   const Text(
-                    "Сделать заметку",
+                    "Создать заметку",
                     style: TextStyle(fontSize: 18),
                   ),
                 ],
@@ -77,7 +79,7 @@ class _NotesDoctorState extends State<NotesDoctor> {
                   builder: (context, Box<Note> box, _) {
                     if (box.values.isEmpty)
                       return Center(
-                        child: Text("Note list is empty"),
+                        child: Text("Список заметок пуст"),
                       );
                     return ListView.builder(
                       itemCount: box.values.length,
@@ -114,6 +116,7 @@ class _NotesDoctorState extends State<NotesDoctor> {
                             ),
                             title: Text(res.title == null ? '' : res.title,
                                 style: TextStyle(fontSize: 16)),
+                                subtitle: Text(DateFormat('dd.MM.yyyy hh:mm:ss', 'en_US').format(res.createdAt).toString()),
                             children: <Widget>[
                               Container(
                                 child: Column(

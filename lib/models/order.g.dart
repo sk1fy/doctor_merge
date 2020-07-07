@@ -20,6 +20,7 @@ Order _$OrderFromJson(Map<String, dynamic> json) {
     doctorComment: json['doctorComment'] as String,
     id: json['_id'] as String,
     date: json['date'] as String,
+    specialization: json['specialization'] as String,
     connectedCalls: (json['connectedCalls'] as List)
         ?.map(
             (e) => e == null ? null : Call.fromJson(e as Map<String, dynamic>))
@@ -39,6 +40,7 @@ Map<String, dynamic> _$OrderToJson(Order instance) => <String, dynamic>{
       'userComment': instance.userComment,
       'doctorComment': instance.doctorComment,
       'date': instance.date,
+      'specialization': instance.specialization,
       'chat': instance.chat?.map((e) => e?.toJson())?.toList(),
       'connectedCalls':
           instance.connectedCalls?.map((e) => e?.toJson())?.toList(),

@@ -76,7 +76,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                     ),
                     color: Color.fromRGBO(104, 169, 196, 1.0),
                     child: Text(
-                      'Сделать заказ',
+                      'Создать',
                       style: TextStyle(
                         color: Colors.white,
                         letterSpacing: 1.5,
@@ -86,6 +86,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                     ),
                     onPressed: _validateAndSave,
                   ),
+                  SizedBox(height: 20.0),
                 ],
               ),
             ),

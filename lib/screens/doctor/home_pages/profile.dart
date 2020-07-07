@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:medical_app/models/data_providers.dart';
+import 'package:medical_app/models/network.dart';
+import 'package:medical_app/models/users_provider.dart';
+import 'package:medical_app/utilities/medics.dart';
 import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -7,6 +10,8 @@ class ProfilePage extends StatefulWidget {
   _ProfilePageState createState() => _ProfilePageState();
 }
 
+final TextEditingController _fioController = TextEditingController();
+final medics = MedicList.docSpeciality;
 String _dropdownValue = 'Педиатр';
 bool notification = false;
 
@@ -15,8 +20,8 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
     return SingleChildScrollView(
-      child: Consumer<DoctorProvider>(
-        builder: (_, doctor, child) => Padding(
+      child: Consumer2<UsersProvider, DoctorProvider>(
+        builder: (_, users, doctor, child) => Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12),
           child: Form(
             key: _formKey,
@@ -26,11 +31,12 @@ class _ProfilePageState extends State<ProfilePage> {
               children: <Widget>[
                 SizedBox(height: 30.0),
                 TextFormField(
+                  controller: _fioController,
                   textCapitalization: TextCapitalization.words,
                   decoration: InputDecoration(
                     filled: true,
                     icon: Icon(Icons.person),
-                    hintText: 'Иванов Иван Иванович',
+                    hintText: doctor.doctor.name,
                     labelText: 'ФИО',
                     labelStyle: TextStyle(color: Colors.black),
                     fillColor: Color.fromRGBO(228, 239, 243, 1.0),
@@ -57,8 +63,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   decoration: InputDecoration(
                     icon: Icon(Icons.supervised_user_circle),
                   ),
-                  items: <String>['Педиатр', 'Терапевт']
-                      .map<DropdownMenuItem<String>>((String value) {
+                  items: medics.map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
                       child: Text(value),
@@ -115,25 +120,46 @@ class _ProfilePageState extends State<ProfilePage> {
                   title: Text("Получать рекламные push"),
                 ),
                 SizedBox(height: 20),
-                RaisedButton(
-                  child: Text(
-                    'Сохранить',
-                    style: TextStyle(color: Colors.blue, fontSize: 16),
+                SizedBox(
+                  height: 50,
+                  child: RaisedButton(
+                    child: Text(
+                      'Сохранить',
+                      style: TextStyle(color: Colors.blue, fontSize: 16),
+                    ),
+                    onPressed: () {
+                      if (_formKey.currentState.validate()) {
+                        saveDoctor(context);
+                      }
+                    },
                   ),
-                  onPressed: () {
-                    if (!_formKey.currentState.validate()) {
-                      return;
-                    }
-
-                    _formKey.currentState.save();
-                    //Send to API
-                  },
-                )
+                ),
               ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  Future saveDoctor(context) async {
+    final name = _fioController.text;
+    final specialization = _dropdownValue;
+    final users = Provider.of<UsersProvider>(context, listen: false);
+    // print(name);
+    // print(specialization);
+    try {
+      await AuthNetwork.of(context).updateDoctor(users.doctor
+        ..name = name
+        ..specialty = specialization);
+      await users.saveToPrefs();
+      Scaffold.of(context)
+        ..removeCurrentSnackBar()
+        ..showSnackBar(SnackBar(
+          content: Text("Сохраненно"),
+        ));
+    } catch (err) {
+      print(err);
+    }
   }
 }

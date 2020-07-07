@@ -21,8 +21,8 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-    return Consumer<UsersProvider>(
-      builder: (_, users, child) => SafeArea(
+    return Consumer2<UsersProvider, UserProvider>(
+      builder: (_, users, client, child) => SafeArea(
           child: users.authToken != null
               ? SingleChildScrollView(
                   child: Consumer<UserProvider>(
@@ -128,16 +128,18 @@ class _ProfilePageState extends State<ProfilePage> {
                               title: Text("Получать рекламные push"),
                             ),
                             SizedBox(height: 20),
-                            RaisedButton(
-                              child: Text(
-                                'Сохранить',
-                                style:
-                                    TextStyle(color: Colors.blue, fontSize: 16),
+                            SizedBox(height: 50,
+                                                          child: RaisedButton(
+                                child: Text(
+                                  'Сохранить',
+                                  style:
+                                      TextStyle(color: Colors.blue, fontSize: 16),
+                                ),
+                                onPressed: () => {
+                                  if (_formKey.currentState.validate())
+                                    {saveUser(context)}
+                                },
                               ),
-                              onPressed: () => {
-                                if (_formKey.currentState.validate())
-                                  {saveUser(context)}
-                              },
                             ),
                             SizedBox(height: 20),
                           ],
@@ -185,12 +187,6 @@ class _ProfilePageState extends State<ProfilePage> {
     final gender = _dropdownValue;
     final date = _dateController.text;
     final users = Provider.of<UsersProvider>(context, listen: false);
-
-    // print(name);
-    // print(date);
-    // print(gender);
-    // print(users.user.name);
-    // print(address);
     try {
       await AuthNetwork.of(context).updateUser(users.user
         ..name = name

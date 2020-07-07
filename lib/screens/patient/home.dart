@@ -9,7 +9,7 @@ import 'package:medical_app/screens/patient/home_pages/orders.dart';
 import 'package:medical_app/screens/patient/home_pages/profile.dart';
 import 'package:medical_app/screens/patient/home_pages/stocks.dart';
 import 'package:medical_app/screens/patient/login.dart';
-import 'package:medical_app/utilities/constans.dart';
+import 'package:medical_app/utilities/medics.dart';
 import 'package:provider/provider.dart';
 
 class HomePagePatient extends StatefulWidget {
@@ -20,13 +20,7 @@ class HomePagePatient extends StatefulWidget {
 }
 
 class _HomePagePatientState extends State<HomePagePatient> {
-  final docSpeciality = [
-    'Педиатр',
-    'Терапевт',
-    'Хирург',
-    'Фармаколог',
-    'Онколог'
-  ];
+  final medics =  MedicList.docSpeciality; 
   int currentTabIndex = 0;
 
   Widget _buildFloatingActionButton() {
@@ -149,12 +143,12 @@ class _HomePagePatientState extends State<HomePagePatient> {
           Expanded(
             flex: 3,
             child: ListView.builder(
-              itemCount: docSpeciality.length,
+              itemCount: medics.length,
               itemBuilder: (BuildContext context, int index) {
                 return Container(
                   margin: EdgeInsets.symmetric(vertical: 5),
                   child: RaisedButton(
-                    child: Text(docSpeciality[index],
+                    child: Text(medics[index],
                         style: TextStyle(color: Colors.white, fontSize: 17)),
                     color: Color.fromRGBO(33, 153, 252, 1.0),
                     onPressed: () {
@@ -162,7 +156,7 @@ class _HomePagePatientState extends State<HomePagePatient> {
                           context,
                           MaterialPageRoute(
                               builder: (ctx) => CallDoctorScreen(
-                                  title: docSpeciality[index])));
+                                  title: medics[index])));
                     },
                     padding: EdgeInsets.all(15.0),
                   ),
