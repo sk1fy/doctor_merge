@@ -187,12 +187,15 @@ class _ProfilePageState extends State<ProfilePage> {
     final gender = _dropdownValue;
     final date = _dateController.text;
     final users = Provider.of<UsersProvider>(context, listen: false);
+    final pushToken = null;
+    // notification == false ? null : users.user.pushToken;
     try {
       await AuthNetwork.of(context).updateUser(users.user
         ..name = name
         ..birthdate = date
         ..address = address
-        ..gender = gender);
+        ..gender = gender
+        ..pushToken = pushToken);
       await users.saveToPrefs();  
       Scaffold.of(context)
         ..removeCurrentSnackBar()

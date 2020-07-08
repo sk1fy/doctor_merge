@@ -8,9 +8,9 @@ import 'package:medical_app/models/users_provider.dart';
 import 'package:provider/provider.dart';
 
 const baseUrlApi = "http://medic.bw2api.ru/api/v1";
-const baseUrlImage = "http://vp.bw2api.ru/";
+// const baseUrlImage = "http://vp.bw2api.ru/";
 
-final getImageUrl = (String path) => path != null ? "$baseUrlImage$path" : "";
+// final getImageUrl = (String path) => path != null ? "$baseUrlImage$path" : "";
 
 class EnterPinStatus {
   String error;
@@ -144,13 +144,23 @@ class AuthNetwork extends Network {
     if (ans.statusCode != 200) throw Exception(ans.data);
   }
 
-  Future createOrder(String client, String date, String specialization, String address, String comments) async {
+  Future createOrder(String client, String date, String medic, String specialization, String address, String comments, String status) async {
     var ans = await _dio.post("/crud/order", data: {
       "client": client,
       "date": date,
+      "medic": medic,
       "specialization": specialization, 
       "address": address,
-      "clientComment": comments
+      "clientComment": comments,
+      "status": status
+    });
+    if (ans.statusCode != 200) throw Exception(ans.data);
+  }
+
+    Future takeOrder(String medic, String status) async {
+    var ans = await _dio.patch("/crud/order", data: {
+      "medic": medic,
+      "status": status
     });
     if (ans.statusCode != 200) throw Exception(ans.data);
   }

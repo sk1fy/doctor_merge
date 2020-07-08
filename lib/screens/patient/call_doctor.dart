@@ -17,7 +17,6 @@ final TextEditingController _addressController = TextEditingController();
 final TextEditingController _commentController = TextEditingController();
 
 class _CallDoctorScreenState extends State<CallDoctorScreen> {
-   
   GlobalKey _globalKey = GlobalKey();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String select = 'Выберите врача..';
@@ -351,7 +350,8 @@ class _CallDoctorScreenState extends State<CallDoctorScreen> {
                                         context: context,
                                         builder: (BuildContext context) =>
                                             AlertDialog(
-                                          title: const Text('Выберите дату и время'),
+                                          title: const Text(
+                                              'Выберите дату и время'),
                                           actions: <Widget>[
                                             FlatButton(
                                               child: Text('Закрыть'),
@@ -362,8 +362,8 @@ class _CallDoctorScreenState extends State<CallDoctorScreen> {
                                         ),
                                       );
                                     } else {
-                                    print(_dataInfo);
-                                    sendOrder(context);
+                                      print(_dataInfo);
+                                      sendOrder(context);
                                       _addressController.clear();
                                       _commentController.clear();
                                     }
@@ -410,8 +410,7 @@ class _CallDoctorScreenState extends State<CallDoctorScreen> {
                                         ),
                                       );
                                     } else {
-                                      // print(widget.title);
-                                      // print(select);
+                                      sendOrder(context);
                                       _addressController.clear();
                                       _commentController.clear();
                                     }
@@ -431,17 +430,20 @@ class _CallDoctorScreenState extends State<CallDoctorScreen> {
     );
   }
 
-    Future sendOrder(context) async {
+  Future sendOrder(context) async {
     final clients = Provider.of<UsersProvider>(context, listen: false);
-    // final orders = Provider.of<OrderProvider>(context, listen: false);
     final address = _addressController.value.text;
-    // final medic = switcher != false ? select : widget.title;
     final comments = _commentController.value.text;
     final client = clients.user.id;
-    final date = _dataInfo.toString();
+    final date =
+        _dataInfo == null ? DateTime.now().toString() : _dataInfo.toString();
     final specialization = widget.title;
+    final medic = null;
+    // select == 'Выберите врача..' ? null : select;
+    final status = 'New';
     try {
-      await AuthNetwork.of(context).createOrder(client, date, specialization, address, comments);
+      await AuthNetwork.of(context).createOrder(
+          client, date, medic, specialization, address, comments, status);
     } catch (err) {
       print(err);
     }

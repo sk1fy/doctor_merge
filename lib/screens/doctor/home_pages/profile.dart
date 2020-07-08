@@ -145,13 +145,15 @@ class _ProfilePageState extends State<ProfilePage> {
   Future saveDoctor(context) async {
     final name = _fioController.text;
     final specialization = _dropdownValue;
+    
     final users = Provider.of<UsersProvider>(context, listen: false);
-    // print(name);
-    // print(specialization);
+    final pushToken = null;
+    // notification == false ? null : users.doctor.pushToken;
     try {
       await AuthNetwork.of(context).updateDoctor(users.doctor
         ..name = name
-        ..specialty = specialization);
+        ..specialty = specialization
+        ..pushToken = pushToken);
       await users.saveToPrefs();
       Scaffold.of(context)
         ..removeCurrentSnackBar()

@@ -9,7 +9,7 @@ part 'order.g.dart';
 class Order {
   User user;
   Doctor doctor;
-  String status, address, userComment, doctorComment;
+  String status, address, clientComment, medicComment;
   String date;
   String specialization;
   List<ChatMessage> chat;
@@ -23,8 +23,8 @@ class Order {
       this.doctor,
       this.status,
       this.address,
-      this.userComment,
-      this.doctorComment,
+      this.clientComment,
+      this.medicComment,
       this.id,
       this.date,
       this.specialization,
@@ -36,9 +36,9 @@ class Order {
         status: "Активный",
         date: '1990-12-12',
         address: "ул.Байкальская 5",
-        userComment:
+        clientComment:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-        doctorComment: "Lorem ipsum dolor doctor.",
+        medicComment: "Lorem ipsum dolor doctor.",
         id: "4431");
   }
 
