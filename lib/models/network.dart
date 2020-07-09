@@ -157,9 +157,16 @@ class AuthNetwork extends Network {
     if (ans.statusCode != 200) throw Exception(ans.data);
   }
 
-    Future takeOrder(String medic, String status) async {
-    var ans = await _dio.patch("/crud/order", data: {
+  Future takeOrder(String id, String medic, String status) async {
+    var ans = await _dio.patch("/crud/order" + '?_id=$id', data: {
       "medic": medic,
+      "status": status
+    });
+    if (ans.statusCode != 200) throw Exception(ans.data);
+  }
+
+  Future completeOrder(String id, String status) async {
+    var ans = await _dio.patch("/crud/order" + '?_id=$id', data: {
       "status": status
     });
     if (ans.statusCode != 200) throw Exception(ans.data);

@@ -47,6 +47,7 @@ class MyApp extends StatelessWidget {
                 'userLogin': (context) => LoginPatientScreen(),
                 'choice': (context) => ChoiceScreen(),
               },
+              debugShowCheckedModeBanner: false,
             )
           : MaterialApp(
               title: 'Medical App',

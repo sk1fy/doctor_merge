@@ -23,4 +23,22 @@ class HttpService {
       throw 'Cant get orders.';
     }
   }
+
+    Future<List<Order>> getOrderList(String id, String status, String type) async {
+    Response res = await get(urlApi + '/crud/order' + '?$type=' + id + '&status=' + status);
+
+    if (res.statusCode == 200) {
+      List<dynamic> body = jsonDecode(res.body);
+
+      List<Order> orders = body
+          .map(
+            (dynamic item) => Order.fromJson(item),
+          )
+          .toList();
+
+      return orders;
+    } else {
+      throw 'Cant get orders.';
+    }
+  }
 }

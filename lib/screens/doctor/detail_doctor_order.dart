@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:medical_app/models/data_providers.dart';
 import 'package:medical_app/models/network.dart';
 import 'package:medical_app/models/order.dart';
 import 'package:medical_app/models/users_provider.dart';
+import 'package:medical_app/screens/doctor/home.dart';
 import 'package:provider/provider.dart';
 
 class DetailDoctorOrderScreen extends StatelessWidget {
@@ -91,17 +91,33 @@ class DetailDoctorOrderScreen extends StatelessWidget {
   }
 
   Future update(context) async {
-    final orders = Provider.of<OrderProvider>(context, listen: false);
     final clients = Provider.of<UsersProvider>(context, listen: false);
     final status = "Active";
     final medic = clients.doctor.id;
+    final currentOrder = order.id;
+    // print(currentOrder);
+    // print(medic);
     try {
-      await AuthNetwork.of(context).takeOrder(medic, status);
-      // Scaffold.of(context)
-      //   ..removeCurrentSnackBar()
-      //   ..showSnackBar(SnackBar(
-      //     content: Text("Заявка принята"),
-      //   ));
+      await AuthNetwork.of(context).takeOrder(currentOrder, medic, status);
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (ctx) => HomePageDoctor()));
+      showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text('Заявка принята'),
+          content: ListTile(
+            title: Text("Адрес: ${order.address}"),
+            subtitle: Text(
+                "Дата и время вызова: ${DateFormat('dd.MM.yy hh:mm', 'en_US').format(DateTime.parse(order.date))}"),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Окей'),
+              onPressed: () => Navigator.pop(context),
+            ),
+          ],
+        ),
+      );
     } catch (err) {
       print(err);
     }
