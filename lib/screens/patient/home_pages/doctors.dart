@@ -1,15 +1,18 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:medical_app/models/data_providers.dart';
-import 'package:medical_app/screens/patient/test.dart';
+import 'package:medical_app/models/doctor.dart';
+import 'package:medical_app/utilities/http_service.dart';
 import 'package:medical_app/utilities/medics.dart';
-import 'package:provider/provider.dart';
 
 class DoctorPage extends StatefulWidget {
   @override
   _DoctorPageState createState() => _DoctorPageState();
 }
-final medics =  MedicList.docSpeciality; 
+
+final HttpService httpService = HttpService();
+final medics = MedicList.docSpeciality;
 
 Widget _buildCategoryButton() {
   return Container(
@@ -30,111 +33,76 @@ Widget _buildCategoryButton() {
   );
 }
 
-class _DoctorPageState extends State<DoctorPage> {
-  List doctors = [];
-  List filteredDoctors = [];
+class Debouncer {
+  final int milliseconds;
+  VoidCallback action;
+  Timer _timer;
 
-  getDoctors() async {
-    var response =
-        await Dio().get('https://jsonplaceholder.typicode.com/users');
-    return response.data;
+  Debouncer({this.milliseconds});
+
+  run(VoidCallback action) {
+    if (null != _timer) {
+      _timer.cancel();
+    }
+    _timer = Timer(Duration(milliseconds: milliseconds), action);
   }
+}
+
+class _DoctorPageState extends State<DoctorPage> {
+  final _debouncer = Debouncer(milliseconds: 500);
+  List<Doctor> doctors = [];
+  List<Doctor> filteredDoctors = [];
 
   @override
   void initState() {
-    getDoctors().then((data) {
-      setState(() {
-        doctors = filteredDoctors = data;
-      });
-    });
     super.initState();
-  }
-
-  void _filterDoctors(value) {
-    setState(() {
-      filteredDoctors = doctors
-          .where((doctor) =>
-              doctor['name'].toLowerCase().contains(value.toLowerCase()))
-          .toList();
+    httpService.getDoctors().then((doctorsFromServer) {
+      setState(() {
+        doctors = doctorsFromServer;
+        filteredDoctors = doctors;
+      });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final doctor = Provider.of<DoctorProvider>(context, listen: false);
-
     return Column(
       children: <Widget>[
         Container(
-          color: Color.fromRGBO(33, 153, 252, 1.0),
+          // color: Color.fromRGBO(33, 153, 252, 1.0),
+          padding: EdgeInsets.fromLTRB(10, 0, 50, 0),
+          decoration: BoxDecoration(
+            border: Border(bottom: BorderSide(color: Colors.blue, width: 2.0)),
+          ),
           height: 50.0,
           child: Center(
             child: TextField(
-              onChanged: (value) {
-                _filterDoctors(value);
+              textAlign: TextAlign.center,
+              onChanged: (string) {
+                _debouncer.run(() {
+                  setState(() {
+                    filteredDoctors = doctors
+                        .where((u) => (u.name
+                                .toLowerCase()
+                                .contains(string.toLowerCase()) ||
+                            u.specialty
+                                .toLowerCase()
+                                .contains(string.toLowerCase())))
+                        .toList();
+                  });
+                });
               },
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: Colors.black87),
               decoration: InputDecoration(
+                  border: InputBorder.none,
                   icon: Icon(
                     Icons.search,
-                    color: Colors.white,
+                    color: Colors.blue,
                   ),
-                  hintText: "Найти врача",
-                  hintStyle: TextStyle(color: Colors.white)),
-            ),
-          ),
-        ),
-        Container(
-          height: 130.0,
-          child: Container(
-            child: Column(
-              children: <Widget>[
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 12.0),
-                  padding: EdgeInsets.only(top: 10.0),
-                  child: Row(
-                    children: <Widget>[
-                      Text(
-                        "Категории",
-                        style: TextStyle(
-                          fontSize: 18.0,
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: 10.0),
-                  height: 78.0,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: medics.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Container(
-                        margin: EdgeInsets.symmetric(horizontal: 4.0),
-                        child: RaisedButton(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6.0),
-                          ),
-                          onPressed: () => {
-                            print(medics[index])
-                          },
-                          color: Color.fromRGBO(33, 153, 252, 1.0),
-                          textColor: Colors.white,
-                          padding: EdgeInsets.all(18),
-                          child: Column(
-                            // Replace with a Row for horizontal icon + text
-                            children: <Widget>[
-                              Icon(Icons.person_outline),
-                              Text(medics[index])
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ],
+                  // hintText: "Найти врача",
+                  labelText: 'Найти врача',
+                  labelStyle: TextStyle(color: Colors.blue),
+                  hintStyle: TextStyle(color: Colors.blue)),
             ),
           ),
         ),
@@ -163,44 +131,50 @@ class _DoctorPageState extends State<DoctorPage> {
               ),
               child: Container(
                 padding: EdgeInsets.all(5),
-                child: filteredDoctors.length > 0
-                    ? ListView.builder(
-                        itemCount: filteredDoctors.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (ctx) => TestScreen()));
-                            },
-                            child: Card(
-                              elevation: 5,
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 10, horizontal: 8),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text(
-                                      // filteredDoctors[index]['name'],
-                                      doctor.doctor.name,
-                                      style: TextStyle(fontSize: 18),
-                                    ),
-                                    Text(
-                                      // filteredDoctors[index]['company']['name'],
-                                      doctor.doctor.specialty,
-                                      style: TextStyle(fontSize: 14),
-                                    ),
-                                  ],
+                child: RefreshIndicator(
+                  onRefresh: () async {
+                    httpService.getDoctors().then((doctorsFromServer) {
+                      setState(() {
+                        doctors = doctorsFromServer;
+                        filteredDoctors = doctors;
+                      });
+                    });
+                  },
+                  child: ListView.builder(
+                    padding: EdgeInsets.all(10.0),
+                    itemCount: filteredDoctors.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Card(
+                        child: Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                filteredDoctors[index].name ?? 'Новый врач',
+                                style: TextStyle(
+                                  fontSize: 16.0,
+                                  color: Colors.black,
                                 ),
                               ),
-                            ),
-                          );
-                        })
-                    : Center(
-                        child: CircularProgressIndicator(),
-                      ),
+                              SizedBox(
+                                height: 5.0,
+                              ),
+                              Text(
+                                filteredDoctors[index].specialty ?? 'Не выбрана специальность',
+                                style: TextStyle(
+                                  fontSize: 14.0,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
               ),
             ),
           ),

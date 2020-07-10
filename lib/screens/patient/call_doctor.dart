@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:medical_app/models/data_providers.dart';
+import 'package:medical_app/models/doctor.dart';
 import 'package:medical_app/models/network.dart';
 import 'package:medical_app/models/users_provider.dart';
+import 'package:medical_app/screens/doctor/home.dart';
+import 'package:medical_app/screens/patient/home.dart';
+import 'package:medical_app/utilities/http_service.dart';
 import 'package:provider/provider.dart';
 
 class CallDoctorScreen extends StatefulWidget {
@@ -17,9 +21,11 @@ final TextEditingController _addressController = TextEditingController();
 final TextEditingController _commentController = TextEditingController();
 
 class _CallDoctorScreenState extends State<CallDoctorScreen> {
+  final HttpService httpService = HttpService();
   GlobalKey _globalKey = GlobalKey();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String select = 'Выберите врача..';
+  String docID;
   bool _approve = false;
   bool switcher = false;
   DateTime _dataInfo;
@@ -122,75 +128,40 @@ class _CallDoctorScreenState extends State<CallDoctorScreen> {
                                     Container(
                                       height: 190,
                                       color: Color.fromRGBO(228, 239, 243, 1.0),
-                                      child: ListView(
-                                        children: <Widget>[
-                                          new ListTile(
-                                            title: const Text(
-                                                'Иванов Иван Иванович'),
-                                            onTap: () {
-                                              setState(() {
-                                                this.select =
-                                                    'Иванов Иван Иванович';
-                                                _globalKey = GlobalKey();
-                                              });
-                                            },
-                                          ),
-                                          new ListTile(
-                                            title: const Text(
-                                                'Сидоров Павел Сергеевич'),
-                                            onTap: () {
-                                              setState(() {
-                                                this.select =
-                                                    'Сидоров Павел Сергеевич';
-                                                _globalKey = GlobalKey();
-                                              });
-                                            },
-                                          ),
-                                          new ListTile(
-                                            title: const Text(
-                                                'Петров Петр Петрович'),
-                                            onTap: () {
-                                              setState(() {
-                                                this.select =
-                                                    'Петров Петр Петрович';
-                                                _globalKey = GlobalKey();
-                                              });
-                                            },
-                                          ),
-                                          new ListTile(
-                                            title: const Text(
-                                                'Петров Александр Петрович'),
-                                            onTap: () {
-                                              setState(() {
-                                                this.select =
-                                                    'Петров Александр Петрович';
-                                                _globalKey = GlobalKey();
-                                              });
-                                            },
-                                          ),
-                                          new ListTile(
-                                            title: const Text(
-                                                'Петров Евгений Петрович'),
-                                            onTap: () {
-                                              setState(() {
-                                                this.select =
-                                                    'Петров Евгений Петрович';
-                                                _globalKey = GlobalKey();
-                                              });
-                                            },
-                                          ),
-                                          new ListTile(
-                                            title: const Text(
-                                                'Петров Илья Петрович'),
-                                            onTap: () {
-                                              setState(() {
-                                                this.select =
-                                                    'Петров Илья Петрович';
-                                                _globalKey = GlobalKey();
-                                              });
-                                            },
-                                          ),
-                                        ],
+                                      child: FutureBuilder(
+                                        future: httpService.getDoctorToCall(
+                                            '?specialty=${widget.title}'),
+                                        builder: (BuildContext context,
+                                            AsyncSnapshot<List<Doctor>>
+                                                snapshot) {
+                                          if (snapshot.hasData) {
+                                            List<Doctor> doctors =
+                                                snapshot.data;
+                                            return ListView(
+                                              children: doctors
+                                                  .map(
+                                                    (Doctor doctor) => ListTile(
+                                                      title: Text(doctor.name),
+                                                      onTap: () {
+                                                        setState(() {
+                                                          this.select =
+                                                              doctor.name;
+                                                          this.docID =
+                                                              doctor.id;
+                                                          _globalKey =
+                                                              GlobalKey();
+                                                        });
+                                                      },
+                                                    ),
+                                                  )
+                                                  .toList(),
+                                            );
+                                          } else {
+                                            return Center(
+                                                child:
+                                                    CircularProgressIndicator());
+                                          }
+                                        },
                                       ),
                                     ),
                                   ],
@@ -438,12 +409,13 @@ class _CallDoctorScreenState extends State<CallDoctorScreen> {
     final date =
         _dataInfo == null ? DateTime.now().toString() : _dataInfo.toString();
     final specialization = widget.title;
-    final medic = null;
-    // select == 'Выберите врача..' ? null : select;
-    final status = 'New';
+    final medic = docID == null ? null : docID;
+    final status = docID == null ? 'New' : 'Active';
     try {
       await AuthNetwork.of(context).createOrder(
           client, date, medic, specialization, address, comments, status);
+      Navigator.pop(context);
+      MaterialPageRoute(builder: (ctx) => HomePagePatient());
     } catch (err) {
       print(err);
     }

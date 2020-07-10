@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:medical_app/choice.dart';
 import 'package:medical_app/models/users_provider.dart';
 import 'package:medical_app/screens/doctor/home.dart';
+import 'package:medical_app/screens/doctor/home_pages/orders.dart';
 import 'package:medical_app/screens/doctor/login.dart';
 import 'package:medical_app/screens/patient/home.dart';
 import 'package:medical_app/screens/patient/login.dart';
@@ -44,8 +45,10 @@ class MyApp extends StatelessWidget {
               ),
               routes: {
                 'doctorLogin': (context) => LoginDoctorScreen(),
+                'doctorOrders': (context) => OrderPage(),
                 'userLogin': (context) => LoginPatientScreen(),
                 'choice': (context) => ChoiceScreen(),
+                'patientHome': (context) => HomePagePatient(),
               },
               debugShowCheckedModeBanner: false,
             )
@@ -65,6 +68,7 @@ class MyApp extends StatelessWidget {
                 'userLogin': (context) => LoginPatientScreen(),
                 'choice': (context) => ChoiceScreen(),
               },
+              debugShowCheckedModeBanner: false,
             ),
     );
   }

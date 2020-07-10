@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:medical_app/widgets/sliver_appbar.dart';
 
 class AboutPage extends StatefulWidget {
   @override
@@ -12,7 +11,7 @@ class _AboutPageState extends State<AboutPage> {
     return Column(
       children: <Widget>[
         Expanded(
-          flex: 5,
+          flex: 2,
           child: Padding(
             padding: EdgeInsets.all(12.0),
             child: Card(
@@ -22,20 +21,16 @@ class _AboutPageState extends State<AboutPage> {
                   Padding(
                     padding: const EdgeInsets.all(12.0),
                     child: Text(
-                        "Provider is the officially recommended way to manage app states, "
-                        "it's quite similar to ScopedModel in sharing/updating of app's "
-                        "state from children widgets down the widgets tree. In addition, "
-                        "you can provider multiple states at app root.\n\n"
-                        "In this example, the app's root widget is a MultiProvider, which "
-                        "provides two states: the number of seconds elapsed (StreamProvider) "
-                        "and the counter value(ChangeNotifierProvider).\n\n"
-                        "There's a text widget showing the seconds elapsed, and tow card "
-                        "widgets showing the counter value. Clicking on child widget's "
-                        "button would update the _MyCounterState of the app.\n"
-                        "Provider is the officially recommended way to manage app states, "
-                        "it's quite similar to ScopedModel in sharing/updating of app's "
-                        "state from children widgets down the widgets tree. In addition, "
-                        "you can provider multiple states at app root.\n\n"),
+                      "Provider is the officially recommended way to manage app states, "
+                      "it's quite similar to ScopedModel in sharing/updating of app's "
+                      "state from children widgets down the widgets tree. In addition, "
+                      "you can provider multiple states at app root.\n\n"
+                      "In this example, the app's root widget is a MultiProvider, which "
+                      "provides two states: the number of seconds elapsed (StreamProvider) "
+                      "and the counter value(ChangeNotifierProvider).\n\n",
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 12,
+                    ),
                   ),
                 ],
               ),
@@ -43,11 +38,11 @@ class _AboutPageState extends State<AboutPage> {
           ),
         ),
         Expanded(
-          flex: 1,
+            flex: 1,
             child: Container(
-          child: null,
-          width: double.infinity,
-        ))
+              child: null,
+              width: double.infinity,
+            ))
       ],
     );
   }
