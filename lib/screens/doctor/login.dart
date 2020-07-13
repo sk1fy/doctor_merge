@@ -4,7 +4,7 @@ import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:medical_app/models/network.dart';
 import 'package:medical_app/screens/doctor/home.dart';
-import 'package:medical_app/screens/patient/pin.dart';
+import 'package:medical_app/screens/doctor/pin_medic.dart';
 import 'package:medical_app/utilities/contrast.dart';
 import 'package:medical_app/models/users_provider.dart';
 import 'package:provider/provider.dart';
@@ -204,7 +204,7 @@ class _LoginDoctorScreenState extends State<LoginDoctorScreen> {
                               if (await Network.enterPhone(phone))
                                 Navigator.of(context)
                                     .pushReplacement(MaterialPageRoute(
-                                        builder: (ctx) => PinScreen(
+                                        builder: (ctx) => PinMedicScreen(
                                               password: password,
                                               phone: phone,
                                             )));

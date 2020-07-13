@@ -36,7 +36,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   decoration: InputDecoration(
                     filled: true,
                     icon: Icon(Icons.person),
-                    hintText: doctor.doctor.name,
+                    hintText: users.doctor.name,
                     labelText: 'ФИО',
                     labelStyle: TextStyle(color: Colors.black),
                     fillColor: Color.fromRGBO(228, 239, 243, 1.0),
@@ -71,44 +71,44 @@ class _ProfilePageState extends State<ProfilePage> {
                   }).toList(),
                 ),
                 SizedBox(height: 30.0),
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      flex: 1,
-                      child: FlatButton(
-                          onPressed: () => print("Diplom"),
-                          child: Column(
-                            children: <Widget>[
-                              Icon(
-                                Icons.insert_photo,
-                                size: 64.0,
-                                color: Colors.black87,
-                              ),
-                              const Text("Диплом",
-                                  style: TextStyle(color: Colors.black87))
-                            ],
-                          )),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: FlatButton(
-                          onPressed: () => print("Lisence"),
-                          child: Column(
-                            children: <Widget>[
-                              Icon(
-                                Icons.insert_photo,
-                                size: 64.0,
-                                color: Colors.black87,
-                              ),
-                              const Text(
-                                "Лицензия",
-                                style: TextStyle(color: Colors.black87),
-                              )
-                            ],
-                          )),
-                    )
-                  ],
-                ),
+                // Row(
+                //   children: <Widget>[
+                //     Expanded(
+                //       flex: 1,
+                //       child: FlatButton(
+                //           onPressed: () => print("Diplom"),
+                //           child: Column(
+                //             children: <Widget>[
+                //               Icon(
+                //                 Icons.insert_photo,
+                //                 size: 64.0,
+                //                 color: Colors.black87,
+                //               ),
+                //               const Text("Диплом",
+                //                   style: TextStyle(color: Colors.black87))
+                //             ],
+                //           )),
+                //     ),
+                //     Expanded(
+                //       flex: 1,
+                //       child: FlatButton(
+                //           onPressed: () => print("Lisence"),
+                //           child: Column(
+                //             children: <Widget>[
+                //               Icon(
+                //                 Icons.insert_photo,
+                //                 size: 64.0,
+                //                 color: Colors.black87,
+                //               ),
+                //               const Text(
+                //                 "Лицензия",
+                //                 style: TextStyle(color: Colors.black87),
+                //               )
+                //             ],
+                //           )),
+                //     )
+                //   ],
+                // ),
                 SizedBox(height: 30.0),
                 SwitchListTile(
                   onChanged: (_) {

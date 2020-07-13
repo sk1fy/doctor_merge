@@ -4,9 +4,9 @@ import 'package:medical_app/models/network.dart';
 import 'package:medical_app/models/order.dart';
 import 'package:medical_app/models/users_provider.dart';
 import 'package:medical_app/screens/doctor/detail_order.dart';
-import 'package:medical_app/screens/doctor/home.dart';
 import 'package:medical_app/utilities/http_service.dart';
 import 'package:medical_app/widgets/add_bottom_sheet.dart';
+import 'package:medical_app/widgets/edit_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
 class OrderList extends StatelessWidget {
@@ -242,8 +242,7 @@ class OrderList extends StatelessWidget {
                                                         showModalBottomSheet(
                                                             context: context,
                                                             builder: (ctx) =>
-                                                                _buildEditBottomSheet(
-                                                                    ctx)),
+                                                                EditBottomSheet(orderId: order.id)),
                                                       },
                                                     ),
                                                   )
@@ -317,7 +316,7 @@ class OrderList extends StatelessWidget {
                                           children: <Widget>[
                                             ListTile(
                                               title: Center(
-                                                child: Text("20-04-2020"),
+                                                child: Text(order.connectedCalls[0].datetime.toString()),
                                               ),
                                             ),
                                             ListTile(
@@ -350,49 +349,6 @@ class OrderList extends StatelessWidget {
           return Center(child: CircularProgressIndicator());
         }
       },
-    );
-  }
-
-  Container _buildEditBottomSheet(BuildContext context) {
-    return Container(
-      height: 450,
-      padding: EdgeInsets.all(8.0),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.blue, width: 2.0),
-      ),
-      child: ListView(
-        children: <Widget>[
-          ListTile(title: Text('Коментарии врача:')),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              TextField(
-                maxLines: 5,
-                keyboardType: TextInputType.text,
-                textCapitalization: TextCapitalization.words,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: '...',
-                ),
-              ),
-              SizedBox(height: 60),
-              Container(
-                padding: EdgeInsets.all(5),
-                alignment: Alignment.center,
-                child: RaisedButton.icon(
-                  icon: Icon(
-                    Icons.save,
-                    color: Colors.blue,
-                  ),
-                  label: Text('Сохранить и закрыть',
-                      style: TextStyle(color: Colors.blue, fontSize: 16)),
-                  onPressed: () => Navigator.pop(context),
-                ),
-              )
-            ],
-          )
-        ],
-      ),
     );
   }
 

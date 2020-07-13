@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:medical_app/models/call.dart';
+import 'package:medical_app/models/network.dart';
 
 class AddBottomSheet extends StatefulWidget {
+  String orderId;
+  AddBottomSheet({this.orderId});
   @override
   _AddBottomSheetState createState() => _AddBottomSheetState();
 }
-
+// String ord = orderId;
+List<Call> connectedCalls;
 DateTime _dataTimeLinkedCall;
 
 class _AddBottomSheetState extends State<AddBottomSheet> {
@@ -62,11 +67,22 @@ class _AddBottomSheetState extends State<AddBottomSheet> {
               ),
               label: Text('Сохранить и закрыть',
                   style: TextStyle(color: Colors.blue, fontSize: 16)),
-              onPressed: () => Navigator.pop(context),
+              onPressed: () =>  addConnectedCall(context, '5f0c268e5c7e4e044f2a7f30'),
             ),
           )
         ],
       ),
     );
+  }
+
+  Future addConnectedCall(context, id) async {
+    String call = _dataTimeLinkedCall.toString();
+    try {
+      await AuthNetwork.of(context).addCallToOrder(id, call);
+    } catch (err) {
+      print(err);
+    }
+    Navigator.pop(context);
+    print(call);
   }
 }

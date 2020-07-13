@@ -4,13 +4,13 @@ part 'call.g.dart';
 @JsonSerializable()
 class Call {
   String address;
-  DateTime date;
+  DateTime datetime;
 
-  Call({this.date, this.address});
+  Call({this.datetime, this.address});
 
   factory Call.rand() {
     return Call(
-        date: DateTime.now(),
+        datetime: DateTime.now(),
         address: "ул.Байкальская 9",
     );
   }

@@ -80,14 +80,13 @@ class _PinScreenState extends State<PinScreen> {
                           ud.setData(v.token, widget.phone, v.authId);
 
                           var an = AuthNetwork(v.token);
-                          if(Constants.prefs.getBool("type") == false)ud.user = await an.createUser();
-                          else ud.doctor = await an.createDoctor();
+                          ud.user = await an.createUser();
                           await ud.saveToPrefs();
 
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: (ctx) => Constants.prefs.getBool("type") == false ? HomePagePatient():HomePageDoctor()));
+                                  builder: (ctx) => HomePagePatient()));
                         }
                       }
                     },

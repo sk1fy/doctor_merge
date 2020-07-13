@@ -29,7 +29,7 @@ class HttpService {
   Future<List<Order>> getOrderList(
       String id, String status, String type) async {
     Response res = await get(
-        urlApi + '/crud/order' + '?$type=' + id + '&status=' + status);
+        urlApi + '/crud/order?_sort=date' + '&$type=' + id + '&status=' + status);
 
     if (res.statusCode == 200) {
       List<dynamic> body = jsonDecode(res.body);

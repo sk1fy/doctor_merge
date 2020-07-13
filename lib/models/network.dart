@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
+import 'package:medical_app/models/call.dart';
 import 'package:medical_app/models/doctor.dart';
 import 'package:medical_app/models/order.dart';
 import 'package:medical_app/models/user.dart';
@@ -144,12 +145,19 @@ class AuthNetwork extends Network {
     if (ans.statusCode != 200) throw Exception(ans.data);
   }
 
-  Future createOrder(String client, String date, String medic, String specialization, String address, String comments, String status) async {
+  Future createOrder(
+      String client,
+      String date,
+      String medic,
+      String specialization,
+      String address,
+      String comments,
+      String status) async {
     var ans = await _dio.post("/crud/order", data: {
       "client": client,
       "date": date,
       "medic": medic,
-      "specialization": specialization, 
+      "specialization": specialization,
       "address": address,
       "clientComment": comments,
       "status": status
@@ -158,23 +166,35 @@ class AuthNetwork extends Network {
   }
 
   Future takeOrder(String id, String medic, String status) async {
-    var ans = await _dio.patch("/crud/order" + '?_id=$id', data: {
-      "medic": medic,
-      "status": status
-    });
+    var ans = await _dio.patch("/crud/order" + '?_id=$id',
+        data: {"medic": medic, "status": status});
     if (ans.statusCode != 200) throw Exception(ans.data);
   }
 
   Future completeOrder(String id, String status) async {
-    var ans = await _dio.patch("/crud/order" + '?_id=$id', data: {
-      "status": status
-    });
+    var ans =
+        await _dio.patch("/crud/order" + '?_id=$id', data: {"status": status});
     if (ans.statusCode != 200) throw Exception(ans.data);
   }
 
   Future updateOrder(Order order) async {
     // final fd = await _prepOrderData(order);
     var ans = await _dio.patch("/crud/order", data: order.toJson());
+    if (ans.statusCode != 200) throw Exception(ans.data);
+  }
+
+  Future editCommentOrder(String id, String editedMedicComment) async {
+    var ans = await _dio.patch("/crud/order" + '?_id=$id',
+        data: {"medicComment": editedMedicComment});
+    if (ans.statusCode != 200) throw Exception(ans.data);
+  }
+
+  Future addCallToOrder(String id, String call) async {
+    var ans = await _dio.put("/crud/order" + '?_id=$id', data: {
+      "connectedCalls": {
+        "datetime": call
+        }
+    });
     if (ans.statusCode != 200) throw Exception(ans.data);
   }
 }
