@@ -3,7 +3,6 @@ import 'package:intl/intl.dart';
 import 'package:medical_app/models/network.dart';
 import 'package:medical_app/models/order.dart';
 import 'package:medical_app/models/users_provider.dart';
-import 'package:medical_app/screens/doctor/detail_order.dart';
 import 'package:medical_app/utilities/http_service.dart';
 import 'package:medical_app/widgets/add_bottom_sheet.dart';
 import 'package:medical_app/widgets/edit_bottom_sheet.dart';
@@ -86,52 +85,6 @@ class OrderList extends StatelessWidget {
                                               "Статус:",
                                               style: TextStyle(fontSize: 16.0),
                                             ),
-                                            Spacer(),
-                                            order.status == 'Active' &&
-                                                    typeUser == 'medic'
-                                                ? Padding(
-                                                    padding: const EdgeInsets
-                                                            .symmetric(
-                                                        horizontal: 10),
-                                                    child: GestureDetector(
-                                                      child: Icon(
-                                                        Icons.check_circle,
-                                                        // color: Colors.green[600],
-                                                      ),
-                                                      onTap: () => {
-                                                        showDialog<String>(
-                                                          context: context,
-                                                          builder: (BuildContext
-                                                                  context) =>
-                                                              AlertDialog(
-                                                            title: const Text(
-                                                                'Изменение статуса заказа'),
-                                                            content: Text(
-                                                                'Вы хотите изменить статус заказа на "Завершен"'),
-                                                            actions: <Widget>[
-                                                              FlatButton(
-                                                                child:
-                                                                    Text('Да'),
-                                                                onPressed: () =>
-                                                                    complete(
-                                                                        context,
-                                                                        order
-                                                                            .id),
-                                                              ),
-                                                              FlatButton(
-                                                                child:
-                                                                    Text('Нет'),
-                                                                onPressed: () =>
-                                                                    Navigator.pop(
-                                                                        context),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      },
-                                                    ),
-                                                  )
-                                                : Container()
                                           ],
                                         ),
                                       ),
@@ -242,7 +195,9 @@ class OrderList extends StatelessWidget {
                                                         showModalBottomSheet(
                                                             context: context,
                                                             builder: (ctx) =>
-                                                                EditBottomSheet(orderId: order.id)),
+                                                                EditBottomSheet(
+                                                                    orderId: order
+                                                                        .id)),
                                                       },
                                                     ),
                                                   )
@@ -296,7 +251,9 @@ class OrderList extends StatelessWidget {
                                                         showModalBottomSheet(
                                                             context: context,
                                                             builder: (ctx) =>
-                                                                AddBottomSheet()),
+                                                                AddBottomSheet(
+                                                                    orderId: order
+                                                                        .id)),
                                                       },
                                                     ),
                                                   )
@@ -313,25 +270,65 @@ class OrderList extends StatelessWidget {
                                         color:
                                             Color.fromRGBO(228, 239, 243, 1.0),
                                         child: Column(
-                                          children: <Widget>[
-                                            ListTile(
+                                          children: List.generate(
+                                            order.connectedCalls.length,
+                                            (index) => ListTile(
                                               title: Center(
-                                                child: Text(order.connectedCalls[0].datetime.toString()),
+                                                child: Text(
+                                                  DateFormat('dd.MM.yyyy hh:mm',
+                                                          'en_US')
+                                                      .format(DateTime.parse(
+                                                          order
+                                                              .connectedCalls[
+                                                                  index]
+                                                              .datetime
+                                                              .toString())),
+                                                ),
                                               ),
                                             ),
-                                            ListTile(
-                                              title: Center(
-                                                child: Text("20-04-2020"),
-                                              ),
-                                            ),
-                                            ListTile(
-                                              title: Center(
-                                                child: Text("20-04-2020"),
-                                              ),
-                                            ),
-                                          ],
+                                          ),
                                         ),
                                       ),
+                                      order.status == 'Active' &&
+                                              typeUser == 'medic'
+                                          ? Container(
+                                              margin: EdgeInsets.all(10),
+                                              child: FlatButton(
+                                                child: Text(
+                                                  'Завершить заказ',
+                                                  style:
+                                                      TextStyle(fontSize: 16),
+                                                ),
+                                                onPressed: () {
+                                                  showDialog<String>(
+                                                    context: context,
+                                                    builder: (BuildContext
+                                                            context) =>
+                                                        AlertDialog(
+                                                      title: const Text(
+                                                          'Изменение статуса заказа'),
+                                                      content: Text(
+                                                          'Вы хотите изменить статус заказа на "Завершен"'),
+                                                      actions: <Widget>[
+                                                        FlatButton(
+                                                          child: Text('Да'),
+                                                          onPressed: () =>
+                                                              complete(context,
+                                                                  order.id),
+                                                        ),
+                                                        FlatButton(
+                                                          child: Text('Нет'),
+                                                          onPressed: () =>
+                                                              Navigator.pop(
+                                                                  context),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  );
+                                                },
+                                              ),
+                                            )
+                                          : Container(),
                                     ],
                                   ),
                                 ),

@@ -3,9 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:medical_app/models/network.dart';
 import 'package:medical_app/models/users_provider.dart';
-import 'package:medical_app/screens/doctor/home.dart';
 import 'package:medical_app/screens/patient/home.dart';
-import 'package:medical_app/utilities/constans.dart';
 import 'package:provider/provider.dart';
 
 class PinScreen extends StatefulWidget {

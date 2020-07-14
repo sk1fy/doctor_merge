@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:medical_app/models/chat_message.dart';
 import 'package:medical_app/models/data_providers.dart';
 import 'package:provider/provider.dart';
 

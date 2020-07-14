@@ -5,7 +5,6 @@ import 'package:medical_app/models/data_providers.dart';
 import 'package:medical_app/models/doctor.dart';
 import 'package:medical_app/models/network.dart';
 import 'package:medical_app/models/users_provider.dart';
-import 'package:medical_app/screens/doctor/home.dart';
 import 'package:medical_app/screens/patient/home.dart';
 import 'package:medical_app/utilities/http_service.dart';
 import 'package:provider/provider.dart';

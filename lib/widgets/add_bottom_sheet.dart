@@ -5,11 +5,12 @@ import 'package:medical_app/models/call.dart';
 import 'package:medical_app/models/network.dart';
 
 class AddBottomSheet extends StatefulWidget {
-  String orderId;
+  final String orderId;
   AddBottomSheet({this.orderId});
   @override
   _AddBottomSheetState createState() => _AddBottomSheetState();
 }
+
 // String ord = orderId;
 List<Call> connectedCalls;
 DateTime _dataTimeLinkedCall;
@@ -67,7 +68,7 @@ class _AddBottomSheetState extends State<AddBottomSheet> {
               ),
               label: Text('Сохранить и закрыть',
                   style: TextStyle(color: Colors.blue, fontSize: 16)),
-              onPressed: () =>  addConnectedCall(context, '5f0c268e5c7e4e044f2a7f30'),
+              onPressed: () => addConnectedCall(context, widget.orderId),
             ),
           )
         ],
@@ -76,13 +77,21 @@ class _AddBottomSheetState extends State<AddBottomSheet> {
   }
 
   Future addConnectedCall(context, id) async {
-    String call = _dataTimeLinkedCall.toString();
+    // final order = Provider.of<OrderProvider>(context, listen: false);
+
+    var call = Call(datetime: _dataTimeLinkedCall).toJson();
+
+    // if (order.order.connectedCalls == null) order.order.connectedCalls = [];
+    // order.order.connectedCalls.add(call);
+
     try {
-      await AuthNetwork.of(context).addCallToOrder(id, call);
+      await AuthNetwork.of(context).addCallToOrder(context, id, call);
     } catch (err) {
       print(err);
     }
+    // print(call);
     Navigator.pop(context);
-    print(call);
+    // print(call);
+    // print(id);
   }
 }

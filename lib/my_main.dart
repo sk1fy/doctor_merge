@@ -8,6 +8,7 @@ import 'package:medical_app/screens/patient/home.dart';
 import 'package:medical_app/screens/patient/login.dart';
 import 'package:medical_app/utilities/constans.dart';
 import 'package:provider/provider.dart';
+import 'package:splashscreen/splashscreen.dart';
 import 'models/data_providers.dart';
 
 const Color mainColor = Color.fromRGBO(33, 153, 252, 1.0);
@@ -35,13 +36,26 @@ class MyApp extends StatelessWidget {
                       .copyWith(color: Colors.black),
                   primaryTextTheme:
                       TextTheme(headline6: TextStyle(color: Colors.black))),
-              home: Consumer<UsersProvider>(
-                builder: (_, users, child) =>
-                    Constants.prefs.getBool("type") == true
-                        ? users.authToken == null
-                            ? LoginDoctorScreen()
-                            : HomePageDoctor()
-                        : HomePagePatient(),
+              home: SplashScreen(
+                seconds: 3,
+                navigateAfterSeconds: Consumer<UsersProvider>(
+                  builder: (_, users, child) =>
+                      Constants.prefs.getBool("type") == true
+                          ? users.authToken == null
+                              ? LoginDoctorScreen()
+                              : HomePageDoctor()
+                          : HomePagePatient(),
+                ),
+                title: new Text(
+                  'Medical App',
+                  style: new TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 20.0, color: Colors.white),
+                ),
+                image: Image.asset("assets/images/logo_med.png"),
+                backgroundColor: Color(0xFF61A4F1),
+                styleTextUnderTheLoader: new TextStyle(),
+                photoSize: 120.0,
+                loaderColor: Colors.white,
               ),
               routes: {
                 'doctorLogin': (context) => LoginDoctorScreen(),
@@ -62,7 +76,20 @@ class MyApp extends StatelessWidget {
                       .copyWith(color: Colors.black),
                   primaryTextTheme:
                       TextTheme(headline6: TextStyle(color: Colors.black))),
-              home: ChoiceScreen(),
+              home: SplashScreen(
+                seconds: 3,
+                navigateAfterSeconds: ChoiceScreen(),
+                title: new Text(
+                  'Medical App',
+                  style: new TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 20.0, color: Colors.white),
+                ),
+                image: Image.asset("assets/images/logo_med.png"),
+                backgroundColor: Color(0xFF61A4F1),
+                styleTextUnderTheLoader: new TextStyle(),
+                photoSize: 120.0,
+                loaderColor: Colors.white,
+              ),
               routes: {
                 'doctorLogin': (context) => LoginDoctorScreen(),
                 'userLogin': (context) => LoginPatientScreen(),

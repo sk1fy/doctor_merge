@@ -34,6 +34,7 @@ dependencies:
   intl: ^0.16.1
   hive: ^1.4.1+1
   hive_flutter: ^0.3.0+2
+  splashscreen: ^1.2.0
   flutter:
     sdk: flutter
 

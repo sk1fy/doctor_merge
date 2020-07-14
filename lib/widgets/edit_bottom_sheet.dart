@@ -4,7 +4,7 @@ import 'package:medical_app/models/network.dart';
 final commentController = TextEditingController();
 
 class EditBottomSheet extends StatelessWidget {
-  String orderId;
+  final String orderId;
   EditBottomSheet({this.orderId});
 
   @override
