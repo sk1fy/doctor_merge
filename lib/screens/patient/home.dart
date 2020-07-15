@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:medical_app/models/network.dart';
@@ -22,6 +23,35 @@ class HomePagePatient extends StatefulWidget {
 class _HomePagePatientState extends State<HomePagePatient> {
   final medics =  MedicList.docSpeciality; 
   int currentTabIndex = 0;
+
+  String title = "Title";
+  String helper = "helper";
+
+  FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    _firebaseMessaging.configure(
+      onMessage: (message) async{
+        setState(() {
+          title = message["notification"]["title"];
+          helper = "You have recieved a new notification";
+        });
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        print("onLaunch: $message");
+      },
+      onResume: (message) async{
+        setState(() {
+          title = message["data"]["title"];
+          helper = "You have open the application from notification";
+        });
+      },
+    );
+  }
 
   Widget _buildFloatingActionButton() {
     return Consumer<UsersProvider>(
