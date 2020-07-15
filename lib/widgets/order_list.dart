@@ -63,7 +63,7 @@ class OrderList extends StatelessWidget {
                           ],
                         ),
                         subtitle: Text(
-                          DateFormat('dd.MM.yyyy hh:mm', 'en_US')
+                          DateFormat('dd.MM.yyyy', 'en_US')
                               .format(DateTime.parse(order.date)),
                         ),
                         children: <Widget>[

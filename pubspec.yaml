@@ -34,7 +34,8 @@ dependencies:
   intl: ^0.16.1
   hive: ^1.4.1+1
   hive_flutter: ^0.3.0+2
-  splashscreen: ^1.2.0
+  firebase_messaging: ^6.0.9
+  flutter_local_notifications: ^1.1.1
   flutter:
     sdk: flutter
 
@@ -45,6 +46,7 @@ dependencies:
   dio: ^3.0.6
 
 dev_dependencies:
+  flutter_native_splash: ^0.1.9
   build_runner: ^1.10.0
   hive_generator: ^0.7.0+2
   json_serializable: ^3.3.0
@@ -92,3 +94,8 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+flutter_native_splash:
+  # image: assets/images/logo_med.png 
+  color: "61A4F1"
+  fill: true
+  
