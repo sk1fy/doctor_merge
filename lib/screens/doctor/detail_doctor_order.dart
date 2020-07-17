@@ -12,7 +12,6 @@ class DetailDoctorOrderScreen extends StatelessWidget {
   DetailDoctorOrderScreen({@required this.order});
   @override
   Widget build(BuildContext context) {
-    final clients = Provider.of<UsersProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         title: Text("Откликнуться на заказ"),

@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 class StocksPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final stock = Provider.of<StockProvider>(context);
     return Consumer<StockProvider>(
       builder: (context, stock, child) => ListView.builder(
         itemCount: 3,

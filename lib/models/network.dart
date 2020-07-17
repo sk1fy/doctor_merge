@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
-import 'package:medical_app/models/data_providers.dart';
 import 'package:medical_app/models/doctor.dart';
 import 'package:medical_app/models/order.dart';
 import 'package:medical_app/models/user.dart';
@@ -191,7 +190,6 @@ class AuthNetwork extends Network {
   }
 
   Future addCallToOrder(context, String id, Map call) async {
-    final order = Provider.of<OrderProvider>(context, listen: false);
     var ans = await _dio
         .patch("/crud/order" + '?_id=$id', data: {"connectedCalls": call});
     if (ans.statusCode != 200) throw Exception(ans.data);

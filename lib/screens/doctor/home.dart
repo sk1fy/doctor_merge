@@ -1,4 +1,3 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:medical_app/models/users_provider.dart';
@@ -19,13 +18,6 @@ class HomePageDoctor extends StatefulWidget {
 
 class _HomePageDoctorState extends State<HomePageDoctor> {
   int currentTabIndex = 0;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-
-    super.initState();
-  }
 
   Widget _buildFloatingActionButton() {
     return FloatingActionButton(
