@@ -20,33 +20,11 @@ class HomePageDoctor extends StatefulWidget {
 class _HomePageDoctorState extends State<HomePageDoctor> {
   int currentTabIndex = 0;
 
-  String title = "Title";
-  String helper = "helper";
-
-  FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-
-    @override
+  @override
   void initState() {
     // TODO: implement initState
-    super.initState();
 
-    _firebaseMessaging.configure(
-      onMessage: (message) async{
-        setState(() {
-          title = message["notification"]["title"];
-          helper = "You have recieved a new notification";
-        });
-      },
-      onLaunch: (Map<String, dynamic> message) async {
-        print("onLaunch: $message");
-      },
-      onResume: (message) async{
-        setState(() {
-          title = message["data"]["title"];
-          helper = "You have open the application from notification";
-        });
-      },
-    );
+    super.initState();
   }
 
   Widget _buildFloatingActionButton() {
@@ -87,7 +65,6 @@ class _HomePageDoctorState extends State<HomePageDoctor> {
       onTap: (int index) {
         setState(() {
           currentTabIndex = index;
-          print(index);
         });
       },
     );
