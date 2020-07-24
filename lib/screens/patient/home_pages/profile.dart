@@ -105,7 +105,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               decoration: InputDecoration(
                                 filled: true,
                                 icon: Icon(Icons.room),
-                                hintText: 'г.Улан-Удэ,ул.Байкальская 10',
+                                hintText: users.user.address ?? 'г.Улан-Удэ,ул.Байкальская 10',
                                 labelText: 'Адрес',
                                 labelStyle: TextStyle(color: Colors.black),
                                 fillColor: Color.fromRGBO(228, 239, 243, 1.0),

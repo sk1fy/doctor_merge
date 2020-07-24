@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:medical_app/models/doctor.dart';
 import 'package:medical_app/models/order.dart';
@@ -7,7 +8,7 @@ import 'package:medical_app/models/user.dart';
 import 'package:medical_app/models/users_provider.dart';
 import 'package:provider/provider.dart';
 
-const baseUrlApi = "http://medic.bw2api.ru/api/v1";
+const baseUrlApi = "https://medic.bw2api.ru/api/v1";
 // const baseUrlImage = "http://vp.bw2api.ru/";
 
 // final getImageUrl = (String path) => path != null ? "$baseUrlImage$path" : "";

@@ -1,4 +1,3 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:medical_app/models/users_provider.dart';
@@ -72,7 +71,6 @@ class _HomePagePatientState extends State<HomePagePatient> {
       onTap: (int index) {
         setState(() {
           currentTabIndex = index;
-          print(index);
         });
       },
     );

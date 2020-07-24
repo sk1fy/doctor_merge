@@ -5,7 +5,7 @@ import 'package:medical_app/models/doctor.dart';
 import 'package:medical_app/models/order.dart';
 
 class HttpService {
-  static final String urlApi = "http://medic.bw2api.ru/api/v1";
+  static final String urlApi = "https://medic.bw2api.ru/api/v1";
 
   Future<List<Order>> getOrders(String query) async {
     Response res =
