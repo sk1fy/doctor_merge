@@ -153,6 +153,7 @@ class _HomePagePatientState extends State<HomePagePatient> {
                         style: TextStyle(color: Colors.white, fontSize: 17)),
                     color: Color.fromRGBO(33, 153, 252, 1.0),
                     onPressed: () {
+                      Navigator.pop(context);
                       Navigator.push(
                           context,
                           MaterialPageRoute(

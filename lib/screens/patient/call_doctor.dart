@@ -31,6 +31,8 @@ class _CallDoctorScreenState extends State<CallDoctorScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final clients = Provider.of<UsersProvider>(context, listen: false);
+    _addressController.text = clients.user.address;
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -175,7 +177,7 @@ class _CallDoctorScreenState extends State<CallDoctorScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Text(
-                                      "Время и дата:",
+                                      "Дата и время:",
                                       style: TextStyle(fontSize: 16.0),
                                     ),
                                   ],

@@ -41,8 +41,8 @@ class _ProfilePageState extends State<ProfilePage> {
                               decoration: InputDecoration(
                                 filled: true,
                                 icon: Icon(Icons.person),
-                                hintText: users.user.name,
-                                labelText: 'ФИО',
+                                hintText: 'Иванов Иван Иванович',
+                                labelText: users.user.name ?? 'ФИО',
                                 labelStyle: TextStyle(color: Colors.black),
                                 fillColor: Color.fromRGBO(228, 239, 243, 1.0),
                               ),
@@ -65,7 +65,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 icon: Icon(Icons.calendar_today),
                                 hintText:
                                     '${users.user.birthdate == null ? "1990-01-10" : users.user.birthdate.substring(0, 10)}',
-                                labelText: 'Дата рождения',
+                                labelText: users.user.birthdate.substring(0, 10) ?? 'Дата рождения',
                                 labelStyle: TextStyle(color: Colors.black),
                                 fillColor: Color.fromRGBO(228, 239, 243, 1.0),
                               ),
@@ -105,8 +105,8 @@ class _ProfilePageState extends State<ProfilePage> {
                               decoration: InputDecoration(
                                 filled: true,
                                 icon: Icon(Icons.room),
-                                hintText: users.user.address ?? 'г.Улан-Удэ,ул.Байкальская 10',
-                                labelText: 'Адрес',
+                                hintText:  'г.Улан-Удэ,ул.Байкальская 10',
+                                labelText: users.user.address ?? 'Адрес',
                                 labelStyle: TextStyle(color: Colors.black),
                                 fillColor: Color.fromRGBO(228, 239, 243, 1.0),
                               ),

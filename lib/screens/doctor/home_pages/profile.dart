@@ -36,8 +36,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   decoration: InputDecoration(
                     filled: true,
                     icon: Icon(Icons.person),
-                    hintText: users.doctor.name,
-                    labelText: 'ФИО',
+                    hintText: 'Иванов Иван Иванович',
+                    labelText: users.doctor.name ?? 'ФИО',
                     labelStyle: TextStyle(color: Colors.black),
                     fillColor: Color.fromRGBO(228, 239, 243, 1.0),
                   ),
