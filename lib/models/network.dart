@@ -177,9 +177,9 @@ class AuthNetwork extends Network {
     if (ans.statusCode != 200) throw Exception(ans.data);
   }
 
-  Future updateOrder(Order order) async {
+  Future updateOrder(String id, Order order) async {
     // final fd = await _prepOrderData(order);
-    var ans = await _dio.patch("/crud/order", data: order.toJson());
+    var ans = await _dio.patch("/crud/order" + '?_id=$id', data: order.toJson());
     print("§SOME SHIT${ans.data.toString()}");
     if (ans.statusCode != 200) throw Exception(ans.data);
   }

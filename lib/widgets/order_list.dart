@@ -232,7 +232,7 @@ class OrderList extends StatelessWidget {
                                               CrossAxisAlignment.start,
                                           children: <Widget>[
                                             Text(
-                                              "Связанные вызовы:",
+                                              "Следующий вызов:",
                                               style: TextStyle(fontSize: 16.0),
                                             ),
                                             Spacer(),

@@ -39,14 +39,7 @@ class MyApp extends StatelessWidget {
                         .copyWith(color: Colors.black),
                     primaryTextTheme:
                         TextTheme(headline6: TextStyle(color: Colors.black))),
-                home: Consumer<UsersProvider>(
-                  builder: (_, users, child) =>
-                      Constants.prefs.getBool("type") == true
-                          ? users.authToken == null
-                              ? LoginDoctorScreen()
-                              : HomePageDoctor()
-                          : HomePagePatient(),
-                ),
+                home: SplashScreen(),
                 routes: {
                   'doctorLogin': (context) => LoginDoctorScreen(),
                   'doctorOrders': (context) => OrderPage(),
@@ -75,6 +68,57 @@ class MyApp extends StatelessWidget {
                 debugShowCheckedModeBanner: false,
               ),
       ),
+    );
+  }
+}
+
+
+class SplashScreen extends StatelessWidget {
+  void gotoLoginDoctorScreen(context) {
+    Future.microtask(() => Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (_) => LoginDoctorScreen())));
+  }
+  void gotoLoginPatientScreen(context) {
+    Future.microtask(() => Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (_) => LoginPatientScreen())));
+  }
+
+  void gotoHomeDoctorScreen(context) {
+    Future.microtask(() => Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (_) => HomePageDoctor())));
+  }
+
+  void gotoHomePatientScreen(context) {
+    Future.microtask(() => Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (_) => HomePagePatient())));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: Provider.of<UsersProvider>(context, listen: false).loadFromPrefs(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          //todo change to item 1
+          if (snapshot.data == null)
+            Constants.prefs.getBool("type") == true 
+              ? gotoLoginDoctorScreen(context)
+              : gotoHomePatientScreen(context);
+          else
+            Constants.prefs.getBool("type") == true
+              ? gotoHomeDoctorScreen(context)
+              : gotoHomePatientScreen(context);
+        }
+        return Scaffold(
+          body: Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
+      },
     );
   }
 }
