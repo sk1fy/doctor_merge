@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
                         .copyWith(color: Colors.black),
                     primaryTextTheme:
                         TextTheme(headline6: TextStyle(color: Colors.black))),
-                home: SplashScreen(),
+                home: WelcomeScreen(),
                 routes: {
                   'doctorLogin': (context) => LoginDoctorScreen(),
                   'doctorOrders': (context) => OrderPage(),
@@ -73,7 +73,7 @@ class MyApp extends StatelessWidget {
 }
 
 
-class SplashScreen extends StatelessWidget {
+class WelcomeScreen extends StatelessWidget {
   void gotoLoginDoctorScreen(context) {
     Future.microtask(() => Navigator.pushReplacement(
         context,
@@ -99,15 +99,16 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var ud = Provider.of<UsersProvider>(context, listen: false).loadFromPrefs();
     return FutureBuilder(
-      future: Provider.of<UsersProvider>(context, listen: false).loadFromPrefs(),
+      future: ud,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           //todo change to item 1
-          if (snapshot.data == null)
-            Constants.prefs.getBool("type") == true 
+          if (!snapshot.data.item2)
+            Constants.prefs.getBool("type") == true
               ? gotoLoginDoctorScreen(context)
-              : gotoHomePatientScreen(context);
+              : gotoHomePatientScreen(context); 
           else
             Constants.prefs.getBool("type") == true
               ? gotoHomeDoctorScreen(context)

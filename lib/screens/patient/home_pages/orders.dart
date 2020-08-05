@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:medical_app/models/users_provider.dart';
+import 'package:medical_app/utilities/constans.dart';
 import 'package:medical_app/widgets/order_list.dart';
 import 'package:provider/provider.dart';
 
@@ -62,7 +63,7 @@ class _OrderPageState extends State<OrderPage> {
   @override
   Widget build(BuildContext context) {
     final users = Provider.of<UsersProvider>(context, listen: false);
-    return users.authToken == null
+    return Constants.prefs.getString("user") == null
         ? Center(
             child: Padding(
               padding: const EdgeInsets.all(12.0),

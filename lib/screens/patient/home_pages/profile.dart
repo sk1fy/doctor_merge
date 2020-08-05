@@ -4,6 +4,7 @@ import 'package:medical_app/models/data_providers.dart';
 import 'package:medical_app/models/network.dart';
 import 'package:medical_app/models/users_provider.dart';
 import 'package:medical_app/screens/patient/login.dart';
+import 'package:medical_app/utilities/constans.dart';
 import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -23,7 +24,7 @@ class _ProfilePageState extends State<ProfilePage> {
     final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
     return Consumer2<UsersProvider, UserProvider>(
       builder: (_, users, client, child) => SafeArea(
-          child: users.authToken != null
+          child: Constants.prefs.getString("user") != null
               ? SingleChildScrollView(
                   child: Consumer<UserProvider>(
                     builder: (_, user, child) => Padding(

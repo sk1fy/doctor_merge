@@ -8,6 +8,7 @@ import 'package:medical_app/screens/patient/home_pages/orders.dart';
 import 'package:medical_app/screens/patient/home_pages/profile.dart';
 import 'package:medical_app/screens/patient/home_pages/stocks.dart';
 import 'package:medical_app/screens/patient/login.dart';
+import 'package:medical_app/utilities/constans.dart';
 import 'package:medical_app/utilities/medics.dart';
 import 'package:provider/provider.dart';
 
@@ -28,7 +29,7 @@ class _HomePagePatientState extends State<HomePagePatient> {
   Widget _buildFloatingActionButton() {
     return Consumer<UsersProvider>(
       builder: (_, users, child) => FloatingActionButton(
-        onPressed: () => users.authToken != null
+        onPressed: () => Constants.prefs.getString("user") != null
             ? showModalBottomSheet(
                 context: context, builder: (ctx) => _buildBottomSheet(ctx))
             : Navigator.of(context).pushReplacement(
@@ -96,6 +97,7 @@ class _HomePagePatientState extends State<HomePagePatient> {
                     users.phone = null;
                     await Provider.of<UsersProvider>(context, listen: false)
                         .clear();
+                    await Constants.prefs.remove("user");
                     // Navigator.pushReplacementNamed(context, 'choice');
                     SystemChannels.platform.invokeMethod('SystemNavigator.pop');
                   },
