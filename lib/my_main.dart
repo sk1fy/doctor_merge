@@ -72,19 +72,15 @@ class MyApp extends StatelessWidget {
   }
 }
 
-
 class WelcomeScreen extends StatelessWidget {
   void gotoLoginDoctorScreen(context) {
     Future.microtask(() => Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            builder: (_) => LoginDoctorScreen())));
+        context, MaterialPageRoute(builder: (_) => LoginDoctorScreen())));
   }
+
   void gotoLoginPatientScreen(context) {
     Future.microtask(() => Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            builder: (_) => LoginPatientScreen())));
+        context, MaterialPageRoute(builder: (_) => LoginPatientScreen())));
   }
 
   void gotoHomeDoctorScreen(context) {
@@ -107,12 +103,12 @@ class WelcomeScreen extends StatelessWidget {
           //todo change to item 1
           if (!snapshot.data.item2)
             Constants.prefs.getBool("type") == true
-              ? gotoLoginDoctorScreen(context)
-              : gotoHomePatientScreen(context); 
+                ? gotoLoginDoctorScreen(context)
+                : gotoHomePatientScreen(context);
           else
             Constants.prefs.getBool("type") == true
-              ? gotoHomeDoctorScreen(context)
-              : gotoHomePatientScreen(context);
+                ? gotoHomeDoctorScreen(context)
+                : gotoHomePatientScreen(context);
         }
         return Scaffold(
           body: Center(

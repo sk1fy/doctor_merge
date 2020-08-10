@@ -270,7 +270,8 @@ class OrderList extends StatelessWidget {
                                         color:
                                             Color.fromRGBO(228, 239, 243, 1.0),
                                         child: Column(
-                                          children: List.generate(
+                                          children: 
+                                          List.generate(
                                             order.connectedCalls.length,
                                             (index) => ListTile(
                                               title: Center(
