@@ -415,8 +415,26 @@ class _CallDoctorScreenState extends State<CallDoctorScreen> {
     try {
       await AuthNetwork.of(context).createOrder(
           client, date, medic, specialization, address, comments, status);
-      Navigator.pop(context);
-      MaterialPageRoute(builder: (ctx) => HomePagePatient());
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (ctx) => HomePagePatient()));
+      showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text('Заявка отправлена'),
+          content: ListTile(
+            title: switcher == true
+                ? Text('Врач рассмотрит вашу заявку в ближайшее время')
+                : Text(
+                    'Вы оставили заявку, как только врач откликнется она появиться во вкладке "Заказы"'),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Окей'),
+              onPressed: () => Navigator.pop(context),
+            ),
+          ],
+        ),
+      );
     } catch (err) {
       print(err);
     }

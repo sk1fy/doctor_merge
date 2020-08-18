@@ -190,7 +190,7 @@ class AuthNetwork extends Network {
     if (ans.statusCode != 200) throw Exception(ans.data);
   }
 
-  Future addCallToOrder(context, String id, Map call) async {
+  Future addCallToOrder(context, String id, List call) async {
     var ans = await _dio
         .patch("/crud/order" + '?_id=$id', data: {"connectedCalls": call});
     if (ans.statusCode != 200) throw Exception(ans.data);

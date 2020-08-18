@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:medical_app/models/call.dart';
+import 'package:medical_app/models/data_providers.dart';
 import 'package:medical_app/models/network.dart';
+import 'package:provider/provider.dart';
 
 class AddBottomSheet extends StatefulWidget {
   final String orderId;
@@ -12,7 +14,7 @@ class AddBottomSheet extends StatefulWidget {
 }
 
 // String ord = orderId;
-List<Call> connectedCalls;
+List connectedCalls = [];
 DateTime _dataTimeLinkedCall;
 
 class _AddBottomSheetState extends State<AddBottomSheet> {
@@ -77,21 +79,36 @@ class _AddBottomSheetState extends State<AddBottomSheet> {
   }
 
   Future addConnectedCall(context, id) async {
-    // final order = Provider.of<OrderProvider>(context, listen: false);
+    final order = Provider.of<OrderProvider>(context, listen: false);
+    // Constants.prefs.setStringList('$id', connectedCalls);
+    var call = Call(datetime: _dataTimeLinkedCall);
+    var calls = Call(datetime: _dataTimeLinkedCall).toJson();
 
-    var call = Call(datetime: _dataTimeLinkedCall).toJson();
-
-    // if (order.order.connectedCalls == null) order.order.connectedCalls = [];
-    // order.order.connectedCalls.add(call);
+    if (order.order.connectedCalls == null) order.order.connectedCalls = [];
+    order.order.connectedCalls.add(call);
 
     try {
-      await AuthNetwork.of(context).addCallToOrder(context, id, call);
+      connectedCalls.add(calls);
+      order.order.connectedCalls.add(call);
+      await AuthNetwork.of(context).addCallToOrder(context, id, connectedCalls);
+      showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text('Вызов добавлен'),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Окей'),
+              onPressed: () => Navigator.pop(context),
+            ),
+          ],
+        ),
+      );
     } catch (err) {
       print(err);
     }
-    // print(call);
-    Navigator.pop(context);
-    // print(call);
-    // print(id);
+
+    _dataTimeLinkedCall = null;
+    print(connectedCalls);
+    // Navigator.pop(context);
   }
 }
