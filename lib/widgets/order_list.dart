@@ -232,7 +232,7 @@ class OrderList extends StatelessWidget {
                                               CrossAxisAlignment.start,
                                           children: <Widget>[
                                             Text(
-                                              "Следующий вызов:",
+                                              "Следующие вызовы:",
                                               style: TextStyle(fontSize: 16.0),
                                             ),
                                             Spacer(),
@@ -270,8 +270,7 @@ class OrderList extends StatelessWidget {
                                         color:
                                             Color.fromRGBO(228, 239, 243, 1.0),
                                         child: Column(
-                                          children: 
-                                          List.generate(
+                                          children: List.generate(
                                             order.connectedCalls.length,
                                             (index) => ListTile(
                                               title: Center(
@@ -343,6 +342,10 @@ class OrderList extends StatelessWidget {
                   .toList(),
             ),
           );
+        } else if (snapshot.hashCode == 400) {
+          return Center(child: Text('Соединение потеряно'));
+        } else if (snapshot.hashCode == 401) {
+          return Center(child: Text('Соединение потеряно'));
         } else {
           return Center(child: CircularProgressIndicator());
         }

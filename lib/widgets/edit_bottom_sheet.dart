@@ -31,7 +31,13 @@ class EditBottomSheet extends StatelessWidget {
                   labelText: '...',
                 ),
               ),
-              SizedBox(height: 60),
+              SizedBox(height: 10),
+              Text(
+                'Для обновления информации перезайдите во вкладку "Заказы"',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
+              ),
+              SizedBox(height: 20),
               Container(
                 padding: EdgeInsets.all(5),
                 alignment: Alignment.center,
@@ -63,4 +69,3 @@ class EditBottomSheet extends StatelessWidget {
     Navigator.pop(context);
   }
 }
-

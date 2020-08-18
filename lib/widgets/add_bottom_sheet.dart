@@ -13,7 +13,7 @@ class AddBottomSheet extends StatefulWidget {
   _AddBottomSheetState createState() => _AddBottomSheetState();
 }
 
-// String ord = orderId;
+String orderId;
 List connectedCalls = [];
 DateTime _dataTimeLinkedCall;
 
@@ -43,7 +43,7 @@ class _AddBottomSheetState extends State<AddBottomSheet> {
             },
             child: Row(
               mainAxisAlignment: _dataTimeLinkedCall == null
-                  ? MainAxisAlignment.spaceBetween
+                  ? MainAxisAlignment.spaceAround
                   : MainAxisAlignment.center,
               children: <Widget>[
                 _dataTimeLinkedCall == null
@@ -60,41 +60,57 @@ class _AddBottomSheetState extends State<AddBottomSheet> {
               ],
             ),
           ),
-          Container(
-            padding: EdgeInsets.all(5),
-            alignment: Alignment.center,
-            child: RaisedButton.icon(
-              icon: Icon(
-                Icons.save,
-                color: Colors.blue,
-              ),
-              label: Text('Сохранить и закрыть',
-                  style: TextStyle(color: Colors.blue, fontSize: 16)),
-              onPressed: () => addConnectedCall(context, widget.orderId),
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              _dataTimeLinkedCall != null
+                  ? Container(
+                      padding: EdgeInsets.all(5),
+                      alignment: Alignment.center,
+                      child: RaisedButton.icon(
+                        icon: Icon(
+                          Icons.add_circle_outline,
+                          color: Colors.blue,
+                        ),
+                        label: Text('Добавить',
+                            style: TextStyle(color: Colors.blue, fontSize: 16)),
+                        onPressed: () =>
+                            addConnectedCall(context, widget.orderId),
+                      ),
+                    )
+                  : Container(),
+              Container(
+                padding: EdgeInsets.all(5),
+                alignment: Alignment.center,
+                child: RaisedButton.icon(
+                  icon: Icon(
+                    Icons.send,
+                    color: Colors.blue,
+                  ),
+                  label: Text('Отправить',
+                      style: TextStyle(color: Colors.blue, fontSize: 16)),
+                  onPressed: () => sendConnectedCall(context, widget.orderId),
+                ),
+              )
+            ],
           )
         ],
       ),
     );
   }
 
-  Future addConnectedCall(context, id) async {
-    final order = Provider.of<OrderProvider>(context, listen: false);
-    // Constants.prefs.setStringList('$id', connectedCalls);
-    var call = Call(datetime: _dataTimeLinkedCall);
-    var calls = Call(datetime: _dataTimeLinkedCall).toJson();
-
-    if (order.order.connectedCalls == null) order.order.connectedCalls = [];
-    order.order.connectedCalls.add(call);
-
+  Future sendConnectedCall(context, id) async {
     try {
-      connectedCalls.add(calls);
-      order.order.connectedCalls.add(call);
       await AuthNetwork.of(context).addCallToOrder(context, id, connectedCalls);
+      _dataTimeLinkedCall = null;
+      Navigator.pop(context);
       showDialog<String>(
         context: context,
         builder: (BuildContext context) => AlertDialog(
-          title: const Text('Вызов добавлен'),
+          title: const Text('Вызовы отправлены'),
+          content: Text(
+              'Чтобы увидеть изменеия заявки перезайдите во вкладку "Заказы"',
+              style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic)),
           actions: <Widget>[
             FlatButton(
               child: Text('Окей'),
@@ -106,7 +122,44 @@ class _AddBottomSheetState extends State<AddBottomSheet> {
     } catch (err) {
       print(err);
     }
+  }
 
+  Future addConnectedCall(context, id) async {
+    final order = Provider.of<OrderProvider>(context, listen: false);
+    var call = Call(datetime: _dataTimeLinkedCall);
+    var calls = Call(datetime: _dataTimeLinkedCall).toJson();
+
+    if (order.order.connectedCalls == null) {
+      order.order.connectedCalls = [];
+      order.order.connectedCalls.add(call);
+    }
+
+    if (orderId != id) {
+      connectedCalls.clear();
+    }
+
+    try {
+      connectedCalls.add(calls);
+      order.order.connectedCalls.add(call);
+      showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text('Вызов добавлен'),
+          content: Text(
+              'Для добавления ещё вызовов укажите новую дату и время, чтобы увидеть изменеия заявки перезайдите во вкладку "Заказы"',
+              style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic)),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Окей'),
+              onPressed: () => Navigator.pop(context),
+            ),
+          ],
+        ),
+      );
+    } catch (err) {
+      print(err);
+    }
+    orderId = id;
     _dataTimeLinkedCall = null;
     print(connectedCalls);
     // Navigator.pop(context);
