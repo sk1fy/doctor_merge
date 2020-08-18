@@ -137,17 +137,11 @@ class _AddBottomSheetState extends State<AddBottomSheet> {
     if (orderId != id) {
       connectedCalls.clear();
     }
-
-    try {
-      connectedCalls.add(calls);
-      order.order.connectedCalls.add(call);
+    if (_dataTimeLinkedCall == null) {
       showDialog<String>(
         context: context,
         builder: (BuildContext context) => AlertDialog(
-          title: const Text('Вызов добавлен'),
-          content: Text(
-              'Для добавления ещё вызовов укажите новую дату и время, чтобы увидеть изменеия заявки перезайдите во вкладку "Заказы"',
-              style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic)),
+          title: const Text('Выбирите дату'),
           actions: <Widget>[
             FlatButton(
               child: Text('Окей'),
@@ -156,12 +150,31 @@ class _AddBottomSheetState extends State<AddBottomSheet> {
           ],
         ),
       );
-    } catch (err) {
-      print(err);
+    } else {
+      try {
+        connectedCalls.add(calls);
+        order.order.connectedCalls.add(call);
+        showDialog<String>(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+            title: const Text('Вызов добавлен'),
+            content: Text(
+                'Для добавления ещё вызовов укажите новую дату и время, чтобы увидеть изменеия заявки перезайдите во вкладку "Заказы"',
+                style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic)),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Окей'),
+                onPressed: () => Navigator.pop(context),
+              ),
+            ],
+          ),
+        );
+        orderId = id;
+        _dataTimeLinkedCall = null;
+      } catch (err) {
+        print(err);
+      }
     }
-    orderId = id;
-    _dataTimeLinkedCall = null;
     print(connectedCalls);
-    // Navigator.pop(context);
   }
 }
