@@ -90,7 +90,7 @@ class _AvalibleOrderScreenState extends State<AvalibleOrderScreen> {
                                           SizedBox(width: 10),
                                           Text(
                                             DateFormat(
-                                                    'dd.MM.yyyy hh:mm', 'en_US')
+                                                    'dd.MM.yyyy HH:mm', 'en_US')
                                                 .format(
                                                     DateTime.parse(order.date)),
                                             style: TextStyle(fontSize: 16),

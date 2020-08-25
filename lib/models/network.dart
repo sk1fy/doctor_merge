@@ -179,8 +179,8 @@ class AuthNetwork extends Network {
 
   Future updateOrder(String id, Order order) async {
     // final fd = await _prepOrderData(order);
-    var ans = await _dio.patch("/crud/order" + '?_id=$id', data: order.toJson());
-    print("§SOME SHIT${ans.data.toString()}");
+    var ans =
+        await _dio.patch("/crud/order" + '?_id=$id', data: order.toJson());
     if (ans.statusCode != 200) throw Exception(ans.data);
   }
 
@@ -190,9 +190,14 @@ class AuthNetwork extends Network {
     if (ans.statusCode != 200) throw Exception(ans.data);
   }
 
-  Future addCallToOrder(context, String id, List call) async {
-    var ans = await _dio
-        .patch("/crud/order" + '?_id=$id', data: {"connectedCalls": call});
+  Future addCall(
+      String order, String medic, String status, String datetime) async {
+    var ans = await _dio.post("/crud/connected_call", data: {
+      "order": order,
+      "medic": medic,
+      "datetime": datetime,
+      "status": status
+    });
     if (ans.statusCode != 200) throw Exception(ans.data);
   }
 }

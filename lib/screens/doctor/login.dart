@@ -194,37 +194,37 @@ class _LoginDoctorScreenState extends State<LoginDoctorScreen> {
                           ),
                         ),
                       ),
-                      Container(
-                        alignment: Alignment.center,
-                        child: FlatButton(
-                          onPressed: () async {
-                            if (_formKey.currentState.validate()) {
-                              var phone = phoneController.value.text,
-                                  password = passwordController.value.text;
-                              if (await Network.enterPhone(phone))
-                                Navigator.of(context)
-                                    .pushReplacement(MaterialPageRoute(
-                                        builder: (ctx) => PinMedicScreen(
-                                              password: password,
-                                              phone: phone,
-                                            )));
-                              else
-                                print("error");
-                              Scaffold.of(context)
-                                ..removeCurrentSnackBar()
-                                ..showSnackBar(SnackBar(
-                                  content:
-                                      Text("Ошибка при попытки регистрации"),
-                                ));
-                            }
-                          },
-                          padding: EdgeInsets.only(right: 0.0),
-                          child: Text(
-                            'Зарегистрироваться?',
-                            style: TextStyle(color: Colors.white, fontSize: 16),
-                          ),
-                        ),
-                      ),
+                      // Container(
+                      //   alignment: Alignment.center,
+                      //   child: FlatButton(
+                      //     onPressed: () async {
+                      //       if (_formKey.currentState.validate()) {
+                      //         var phone = phoneController.value.text,
+                      //             password = passwordController.value.text;
+                      //         if (await Network.enterPhone(phone))
+                      //           Navigator.of(context)
+                      //               .pushReplacement(MaterialPageRoute(
+                      //                   builder: (ctx) => PinMedicScreen(
+                      //                         password: password,
+                      //                         phone: phone,
+                      //                       )));
+                      //         else
+                      //           print("error");
+                      //         Scaffold.of(context)
+                      //           ..removeCurrentSnackBar()
+                      //           ..showSnackBar(SnackBar(
+                      //             content:
+                      //                 Text("Ошибка при попытки регистрации"),
+                      //           ));
+                      //       }
+                      //     },
+                      //     padding: EdgeInsets.only(right: 0.0),
+                      //     child: Text(
+                      //       'Зарегистрироваться?',
+                      //       style: TextStyle(color: Colors.white, fontSize: 16),
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),

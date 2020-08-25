@@ -4,6 +4,7 @@ part 'call.g.dart';
 @JsonSerializable()
 class Call {
   DateTime datetime;
+  String order, medic, status;
 
   Call({this.datetime});
 
