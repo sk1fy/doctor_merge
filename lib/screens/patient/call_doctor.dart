@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:medical_app/models/data_providers.dart';
 import 'package:medical_app/models/doctor.dart';
@@ -33,6 +34,7 @@ class _CallDoctorScreenState extends State<CallDoctorScreen> {
   Widget build(BuildContext context) {
     final clients = Provider.of<UsersProvider>(context, listen: false);
     _addressController.text = clients.user.address;
+    initializeDateFormatting('ru_RU', null);
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -217,7 +219,7 @@ class _CallDoctorScreenState extends State<CallDoctorScreen> {
                                             : Container(),
                                         Text(
                                           // '${_dataInfo == null ? 'Нажмите для выбора даты и времени' : _dataInfo.toString().substring(0, 19)}',
-                                          '${_dataInfo == null ? 'Нажмите для выбора даты и времени' : DateFormat('dd.MM.yy hh:mm:ss', 'en_US').format(_dataInfo)}',
+                                          '${_dataInfo == null ? 'Нажмите для выбора даты и времени' : DateFormat('Дата: dd.MM.yy, Время: HH:mm', 'ru_RU').format(_dataInfo)}',
                                           textAlign: TextAlign.center,
                                         ),
                                       ],

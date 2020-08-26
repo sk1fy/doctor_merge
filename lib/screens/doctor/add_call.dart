@@ -58,7 +58,7 @@ class _AddCallState extends State<AddCall> {
                   Text(
                     // '${_dataTimeLinkedCall == null ? 'Нажмите для выбора даты и времени' : _dataTimeLinkedCall.toString().substring(0, 19)}',
                     '${_dataTimeLinkedCall == null ? 'Нажмите для выбора даты и времени' : DateFormat(
-                        'dd.MM.yy HH:mm',
+                        'Дата: dd MMMM yyyy,  Время: HH:mm',
                       ).format(_dataTimeLinkedCall)}',
                     textAlign: TextAlign.center,
                   ),
@@ -119,9 +119,6 @@ class _AddCallState extends State<AddCall> {
         context: context,
         builder: (BuildContext context) => AlertDialog(
           title: const Text('Вызовы добавлен'),
-          content: Text(
-              'Чтобы увидеть изменеия заявки перезайдите во вкладку "Заказы"',
-              style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic)),
           actions: <Widget>[
             FlatButton(
               child: Text('Окей'),

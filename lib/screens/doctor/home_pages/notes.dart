@@ -116,7 +116,7 @@ class _NotesDoctorState extends State<NotesDoctor> {
                             ),
                             title: Text(res.title == null ? '' : res.title,
                                 style: TextStyle(fontSize: 16)),
-                                subtitle: Text(DateFormat('dd.MM.yyyy hh:mm:ss', 'en_US').format(res.createdAt).toString()),
+                                subtitle: Text(DateFormat('dd.MM.yyyy, HH:mm', 'ru_RU').format(res.createdAt).toString()),
                             children: <Widget>[
                               Container(
                                 child: Column(

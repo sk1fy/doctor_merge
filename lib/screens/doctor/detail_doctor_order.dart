@@ -36,11 +36,11 @@ class DetailDoctorOrderScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    const Text("Время и дата:"),
+                    const Text("Дата и время:"),
                     SizedBox(height: 10),
                     ListTile(
                       title: Text(
-                        DateFormat('dd.MM.yy hh:mm', 'en_US')
+                        DateFormat('dd.MM.yyyy, HH:mm', 'en_US')
                             .format(DateTime.parse(order.date)),
                       ),
                     ),

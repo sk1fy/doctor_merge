@@ -60,6 +60,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                     maxLines: 5,
                     decoration: const InputDecoration(
                       labelText: 'Описание',
+                      labelStyle: TextStyle(color: Colors.black)
                     ),
                     onChanged: (value) {
                       setState(() {
