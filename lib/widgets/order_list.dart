@@ -8,6 +8,7 @@ import 'package:medical_app/models/network.dart';
 import 'package:medical_app/models/order.dart';
 import 'package:medical_app/models/users_provider.dart';
 import 'package:medical_app/screens/doctor/add_call.dart';
+import 'package:medical_app/utilities/constans.dart';
 import 'package:medical_app/utilities/http_service.dart';
 import 'package:medical_app/widgets/detail_order.dart';
 import 'package:medical_app/widgets/edit_bottom_sheet.dart';
@@ -45,7 +46,12 @@ class OrderList extends StatelessWidget {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (ctx) => DetailOrderScreen()));
+                                  builder: (ctx) => DetailOrderScreen(
+                                      orderId: order.id,
+                                      type: Constants.prefs.getBool("type") ==
+                                              true
+                                          ? '1'
+                                          : '0')));
                         },
                       ),
                       title: Row(
@@ -95,8 +101,7 @@ class OrderList extends StatelessWidget {
                                     Container(
                                       width: double.infinity,
                                       padding: EdgeInsets.all(24.0),
-                                      color:
-                                          Color.fromRGBO(228, 239, 243, 1.0),
+                                      color: Color.fromRGBO(228, 239, 243, 1.0),
                                       child: Text(order.status == 'Active'
                                           ? 'Активный'
                                           : 'Завершен'),
@@ -128,8 +133,7 @@ class OrderList extends StatelessWidget {
                                     Container(
                                       width: double.infinity,
                                       padding: EdgeInsets.all(24.0),
-                                      color:
-                                          Color.fromRGBO(228, 239, 243, 1.0),
+                                      color: Color.fromRGBO(228, 239, 243, 1.0),
                                       child: Text(order.address),
                                     ),
                                   ],
@@ -159,8 +163,7 @@ class OrderList extends StatelessWidget {
                                     Container(
                                       width: double.infinity,
                                       padding: EdgeInsets.all(24.0),
-                                      color:
-                                          Color.fromRGBO(228, 239, 243, 1.0),
+                                      color: Color.fromRGBO(228, 239, 243, 1.0),
                                       child: Text(order.clientComment),
                                     ),
                                   ],
@@ -190,8 +193,7 @@ class OrderList extends StatelessWidget {
                                                       horizontal: 10),
                                                   child: GestureDetector(
                                                     child: Icon(Icons.edit,
-                                                        color:
-                                                            Colors.black87),
+                                                        color: Colors.black87),
                                                     onTap: () => {
                                                       showModalBottomSheet(
                                                           context: context,
@@ -246,15 +248,13 @@ class OrderList extends StatelessWidget {
                                                   child: GestureDetector(
                                                     child: Icon(
                                                         Icons.playlist_add,
-                                                        color:
-                                                            Colors.black87),
+                                                        color: Colors.black87),
                                                     onTap: () => {
                                                       Navigator.of(context).push(
                                                           MaterialPageRoute(
                                                               builder: (ctx) => AddCall(
                                                                   orderId:
-                                                                      order
-                                                                          .id,
+                                                                      order.id,
                                                                   medic: clients
                                                                       .doctor
                                                                       .id))),
@@ -278,14 +278,13 @@ class OrderList extends StatelessWidget {
                                         width: double.infinity,
                                         // padding: EdgeInsets.all(24.0),
                                         child: FutureBuilder(
-                                          future: httpService.getCalls(
-                                              order.id), // async work
+                                          future: httpService
+                                              .getCalls(order.id), // async work
                                           builder: (BuildContext context,
                                               AsyncSnapshot<List<Call>>
                                                   snapshot) {
                                             List<Call> calls = snapshot.data;
-                                            switch (
-                                                snapshot.connectionState) {
+                                            switch (snapshot.connectionState) {
                                               case ConnectionState.waiting:
                                                 return Center(
                                                   child: SizedBox(
@@ -305,15 +304,18 @@ class OrderList extends StatelessWidget {
                                                       (index) => Container(
                                                         decoration:
                                                             BoxDecoration(
-                                                          color:
-                                                              Color.fromRGBO(
-                                                                  228,
-                                                                  239,
-                                                                  243,
-                                                                  1.0),
+                                                          color: Color.fromRGBO(
+                                                              228,
+                                                              239,
+                                                              243,
+                                                              1.0),
                                                         ),
                                                         child: ListTile(
-                                                          leading: Icon(Icons.event, color: Colors.black87,),
+                                                            leading: Icon(
+                                                              Icons.event,
+                                                              color: Colors
+                                                                  .black87,
+                                                            ),
                                                             title: Text(
                                                               DateFormat(
                                                                       'dd MMMM HH:mm',
@@ -330,13 +332,19 @@ class OrderList extends StatelessWidget {
                                                                     child: Icon(
                                                                         Icons
                                                                             .help_outline),
-                                                                    preferBelow: false,
-                                                                    padding: EdgeInsets.all(15),
+                                                                    preferBelow:
+                                                                        false,
+                                                                    padding:
+                                                                        EdgeInsets.all(
+                                                                            15),
                                                                     message:
                                                                         'Врач назначил этот вызов последним',
                                                                     excludeFromSemantics:
                                                                         true,
-                                                                        showDuration: Duration(milliseconds: 2500),
+                                                                    showDuration:
+                                                                        Duration(
+                                                                            milliseconds:
+                                                                                2500),
                                                                   )
                                                                 : null),
                                                       ),
@@ -352,19 +360,22 @@ class OrderList extends StatelessWidget {
                                             child: FlatButton(
                                               child: Text(
                                                 'Завершить',
-                                                style:
-                                                    TextStyle(fontSize: 16),
+                                                style: TextStyle(fontSize: 16),
                                               ),
                                               onPressed: () {
                                                 showDialog<String>(
                                                   context: context,
-                                                  builder: (BuildContext
-                                                          context) =>
-                                                      AlertDialog(
+                                                  builder:
+                                                      (BuildContext context) =>
+                                                          AlertDialog(
                                                     title: const Text(
                                                         'Изменение статуса заказа'),
                                                     content: Text(
-                                                        'Вы хотите изменить статус заказа на "Завершен".\n Для обновления статуса перейдите в "Завершенные"', style: TextStyle(fontStyle: FontStyle.italic),),
+                                                      'Вы хотите изменить статус заказа на "Завершен".\n Для обновления статуса перейдите в "Завершенные"',
+                                                      style: TextStyle(
+                                                          fontStyle:
+                                                              FontStyle.italic),
+                                                    ),
                                                     actions: <Widget>[
                                                       FlatButton(
                                                         child: Text('Да'),

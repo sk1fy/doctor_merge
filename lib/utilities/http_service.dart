@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart';
 import 'package:medical_app/models/call.dart';
+import 'package:medical_app/models/chat_message.dart';
 import 'package:medical_app/models/doctor.dart';
 import 'package:medical_app/models/order.dart';
 
@@ -66,6 +67,24 @@ class HttpService {
       return doctors;
     } else {
       throw 'Cant get doctors';
+    }
+  }
+
+  Future<List<Order>> getChat(String id) async {
+    Response res = await get(urlApi + '/crud/order' + '?_id=$id');
+
+    if (res.statusCode == 200) {
+      List<dynamic> body = jsonDecode(res.body);
+
+      List<Order> orders = body
+          .map(
+            (dynamic item) => Order.fromJson(item),
+          )
+          .toList();
+
+      return orders;
+    } else {
+      throw 'Cant get chat';
     }
   }
 

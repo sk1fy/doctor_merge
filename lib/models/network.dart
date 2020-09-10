@@ -200,4 +200,9 @@ class AuthNetwork extends Network {
     });
     if (ans.statusCode != 200) throw Exception(ans.data);
   }
+
+  Future sendMessage(String id, List chat) async {
+    var ans = await _dio.patch("/crud/order" + "?_id=$id", data: {"chat": chat});
+    if (ans.statusCode != 200) throw Exception(ans.data);
+  }
 }

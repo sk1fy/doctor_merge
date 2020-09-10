@@ -4,7 +4,6 @@ import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:medical_app/models/network.dart';
 import 'package:medical_app/screens/doctor/home.dart';
-import 'package:medical_app/screens/doctor/pin_medic.dart';
 import 'package:medical_app/utilities/contrast.dart';
 import 'package:medical_app/models/users_provider.dart';
 import 'package:provider/provider.dart';

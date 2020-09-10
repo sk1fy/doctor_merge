@@ -16,7 +16,6 @@ class _NotesDoctorState extends State<NotesDoctor> {
 
   @override
   Widget build(BuildContext context) {
-    Intl.defaultLocale = 'ru_RU';
     return Column(
       children: <Widget>[
         Container(
@@ -116,7 +115,7 @@ class _NotesDoctorState extends State<NotesDoctor> {
                             ),
                             title: Text(res.title == null ? '' : res.title,
                                 style: TextStyle(fontSize: 16)),
-                                subtitle: Text(DateFormat('dd.MM.yyyy, HH:mm', 'ru_RU').format(res.createdAt).toString()),
+                                subtitle: Text(DateFormat('dd.MM.yyyy, HH:mm', 'en_US').format(res.createdAt).toString()),
                             children: <Widget>[
                               Container(
                                 child: Column(
